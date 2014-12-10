@@ -1,0 +1,6 @@
+# General
+xcuserdata
+project.xcworkspace
+.DS_Store
+.xcodeproj
+Shared Data
