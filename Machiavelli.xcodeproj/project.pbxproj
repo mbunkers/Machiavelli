@@ -7,10 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CB093DF1A38416D001688BF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093DE1A38416D001688BF /* main.cpp */; };
 		0CB093F61A386669001688BF /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F11A386669001688BF /* Socket.cpp */; };
 		0CB093F71A386669001688BF /* throw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F41A386669001688BF /* throw.cpp */; };
 		0CB093F91A3866AF001688BF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F81A3866AF001688BF /* main.cpp */; };
+		0CB094031A387B62001688BF /* ASCIIgen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093FA1A387B62001688BF /* ASCIIgen.cpp */; };
+		0CB094041A387B62001688BF /* Machiavelli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093FC1A387B62001688BF /* Machiavelli.cpp */; };
+		0CB094051A387B62001688BF /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093FD1A387B62001688BF /* Socket.cpp */; };
+		0CB094061A387B62001688BF /* stdafx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093FF1A387B62001688BF /* stdafx.cpp */; };
+		0CB094071A387B62001688BF /* throw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB094011A387B62001688BF /* throw.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,7 +40,6 @@
 
 /* Begin PBXFileReference section */
 		0CB093DB1A38416D001688BF /* Machiavelli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Machiavelli; sourceTree = BUILT_PRODUCTS_DIR; };
-		0CB093DE1A38416D001688BF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		0CB093E91A386611001688BF /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Server; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB093F01A386669001688BF /* ClientCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCommand.h; sourceTree = "<group>"; };
 		0CB093F11A386669001688BF /* Socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
@@ -45,6 +48,15 @@
 		0CB093F41A386669001688BF /* throw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = throw.cpp; sourceTree = "<group>"; };
 		0CB093F51A386669001688BF /* throw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = throw.h; sourceTree = "<group>"; };
 		0CB093F81A3866AF001688BF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		0CB093FA1A387B62001688BF /* ASCIIgen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ASCIIgen.cpp; sourceTree = "<group>"; };
+		0CB093FB1A387B62001688BF /* ASCIIgen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCIIgen.h; sourceTree = "<group>"; };
+		0CB093FC1A387B62001688BF /* Machiavelli.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Machiavelli.cpp; sourceTree = "<group>"; };
+		0CB093FD1A387B62001688BF /* Socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
+		0CB093FE1A387B62001688BF /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
+		0CB093FF1A387B62001688BF /* stdafx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stdafx.cpp; sourceTree = "<group>"; };
+		0CB094001A387B62001688BF /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stdafx.h; sourceTree = "<group>"; };
+		0CB094011A387B62001688BF /* throw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = throw.cpp; sourceTree = "<group>"; };
+		0CB094021A387B62001688BF /* throw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = throw.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +98,15 @@
 		0CB093DD1A38416D001688BF /* Machiavelli */ = {
 			isa = PBXGroup;
 			children = (
-				0CB093DE1A38416D001688BF /* main.cpp */,
+				0CB093FA1A387B62001688BF /* ASCIIgen.cpp */,
+				0CB093FB1A387B62001688BF /* ASCIIgen.h */,
+				0CB093FC1A387B62001688BF /* Machiavelli.cpp */,
+				0CB093FD1A387B62001688BF /* Socket.cpp */,
+				0CB093FE1A387B62001688BF /* Socket.h */,
+				0CB093FF1A387B62001688BF /* stdafx.cpp */,
+				0CB094001A387B62001688BF /* stdafx.h */,
+				0CB094011A387B62001688BF /* throw.cpp */,
+				0CB094021A387B62001688BF /* throw.h */,
 			);
 			path = Machiavelli;
 			sourceTree = "<group>";
@@ -182,7 +202,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CB093DF1A38416D001688BF /* main.cpp in Sources */,
+				0CB094051A387B62001688BF /* Socket.cpp in Sources */,
+				0CB094031A387B62001688BF /* ASCIIgen.cpp in Sources */,
+				0CB094071A387B62001688BF /* throw.cpp in Sources */,
+				0CB094041A387B62001688BF /* Machiavelli.cpp in Sources */,
+				0CB094061A387B62001688BF /* stdafx.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

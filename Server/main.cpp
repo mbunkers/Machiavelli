@@ -91,14 +91,14 @@ int main(int argc, const char * argv[])
 	while (true) {
 		try {
 			// wait for connection from client; will create new socket
-			cerr << "server listening" << '\n';
+			cerr << "Server is up and running" << '\n';
 			Socket* client = nullptr;
 			
 			while ((client = server.accept()) != nullptr) {
 				// communicate with client over new socket in separate thread
                 thread handler {handle_client, client};
                 handler.detach(); // detaching is usually ugly, but in this case the right thing to do
-				cerr << "server listening again" << '\n';
+				cerr << "Server is listinging for more incoming clients" << '\n';
 			}
 		} catch (const exception& ex) {
 			cerr << ex.what() << ", resuming..." << '\n';
