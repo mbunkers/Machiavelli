@@ -18,7 +18,7 @@ using namespace std;
 
 namespace socketexample {
     const int tcp_port {1080};
-    const std::string prompt {"> "};
+    const std::string prompt {"> \n"};
 }
 
 static Sync_queue<ClientCommand> queue;
@@ -53,7 +53,7 @@ void handle_client(Socket* socket) // this function runs in a separate thread
 {
     shared_ptr<Socket> client {socket};
     client->write("Welcome to Server 1.0! To quit, type 'quit'.\n");
-    client->write(socketexample::prompt);
+    client->write(socketexample::prompt); 
 
     while (true) { // game loop
         try {
@@ -69,6 +69,8 @@ void handle_client(Socket* socket) // this function runs in a separate thread
             ClientCommand command {cmd, client};
             queue.put(command);
             
+			
+
         } catch (const exception& ex) {
             client->write("ERROR: ");
             client->write(ex.what());

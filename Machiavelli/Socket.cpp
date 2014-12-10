@@ -56,7 +56,7 @@
 		{
 			int iResult = WSAStartup(MAKEWORD(2, 2), &data);
 			if (iResult != 0) {
-				std::cerr << "WSAStartup failed with error: " << iResult << '\n';
+				cerr << "WSAStartup failed with error: " << iResult << '\n';
 			}
 		}
 		~WSA()
@@ -88,7 +88,7 @@ Socket::Socket(SOCKET sock, const struct sockaddr& address)
             break;
         }
         default: {
-            throw std::runtime_error("invalid type of socket address");
+            throw runtime_error("invalid type of socket address");
         }
     }
 }
@@ -105,10 +105,10 @@ ssize_t Socket::read(char *buf, ssize_t maxlen)
 	return len;
 }
 
-std::string Socket::readline()
+string Socket::readline()
 {
 	// read a line: ignore '\r', stop at '\n'
-	std::string line;
+	string line;
 	char c;
 	while (ssize_t n = ::recv(sock, &c, 1, 0)) {
 		throw_if_min1((int)n);
@@ -118,7 +118,7 @@ std::string Socket::readline()
 	return line;
 }
 
-void Socket::write(const std::string& msg)
+void Socket::write(const string& msg)
 {
 	write(msg.c_str(), msg.length());
 }
@@ -135,7 +135,7 @@ Socket::~Socket()
 
 void Socket::close()
 {
-	std::cerr << "will close socket " << sock << std::endl;
+	cerr << "will close socket " << sock << endl;
 #if defined(__APPLE__) || defined(__linux__)
 	throw_if_min1(::close(sock));
 #else
@@ -144,7 +144,7 @@ void Socket::close()
 	sock = 0;
 }
 
-std::string Socket::get_dotted_ip() const
+string Socket::get_dotted_ip() const
 {
     const char* result {nullptr};
     char textbuf[INET6_ADDRSTRLEN]; // large enough for both IPv4 and IPv6 addresses
@@ -191,7 +191,7 @@ Socket *ServerSocket::accept()
 	int fd;
 	throw_if_min1(fd = ::accept(sock, &client_addr, &len));
 	Socket* client = new Socket(fd, client_addr);
-    std::cerr << "Connection accepted from " << client->get_dotted_ip() << ", with socket " << fd << std::endl;
+    cerr << "Connection accepted from " << client->get_dotted_ip() << ", with socket " << fd << endl;
 	return client;
 }
 
@@ -203,23 +203,23 @@ ClientSocket::ClientSocket(const char *host, int port)
 {
     // construct network address for server
     struct addrinfo hint;
-    std::memset(&hint, 0, sizeof(hint));
+    memset(&hint, 0, sizeof(hint));
     hint.ai_family = AF_INET;
     hint.ai_socktype = SOCK_STREAM;
     struct addrinfo* infolist {nullptr};
-    int gai_error = ::getaddrinfo(host, std::to_string(port).c_str(), &hint, &infolist);
+    int gai_error = ::getaddrinfo(host, to_string(port).c_str(), &hint, &infolist);
     if (gai_error) {
-        std::ostringstream oss;
+        ostringstream oss;
         oss << "getaddrinfo error " << gai_error << ": " << gai_strerror(gai_error) << " (" << __FILE__ << ":" << __LINE__ << ")";
-        throw std::runtime_error(oss.str());
+        throw runtime_error(oss.str());
     }
     // wrap our list pointer inside unique_ptr for auto cleanup
 #if defined(__APPLE__) || defined(__linux__)
     using cleanup_func = void(*)(struct addrinfo*);
-    std::unique_ptr<struct addrinfo, cleanup_func> list {infolist, ::freeaddrinfo};
+    unique_ptr<struct addrinfo, cleanup_func> list {infolist, ::freeaddrinfo};
 #else // Windows
     using cleanup_func = void(__stdcall*)(PADDRINFOA);
-    std::unique_ptr<struct addrinfo, cleanup_func> list(infolist, ::freeaddrinfo);
+    unique_ptr<struct addrinfo, cleanup_func> list(infolist, ::freeaddrinfo);
 #endif
     // create socket
     throw_if_min1(sock = ::socket(list->ai_family, list->ai_socktype, list->ai_protocol));
