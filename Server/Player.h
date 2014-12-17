@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <string>
 #include "Socket.h"
+#include <memory>
+
 using namespace std;
 
 class Player{

@@ -117,7 +117,7 @@ int main(int argc, const char * argv[])
                     // communicate with client over new socket in separate thread
                     thread handler {handle_client, client};
                     handler.detach(); // detaching is usually ugly, but in this case the right thing to do
-                    cerr << "Server is listinging for more incoming clients" << '\n';
+                    cerr << "Server is listening for more incoming clients" << '\n';
                 }
             } catch (const exception& ex) {
                 cerr << ex.what() << ", resuming..." << '\n';
