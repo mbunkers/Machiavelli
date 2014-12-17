@@ -67,7 +67,9 @@
 
 #endif // Windows
 
+#if defined(__APPLE__)
 #pragma mark Socket
+#endif
 
 Socket::Socket(SOCKET sock, const struct sockaddr& address)
 : sock {sock}
@@ -164,7 +166,9 @@ std::string Socket::get_dotted_ip() const
     return result;
 }
 
+#if defined(__APPLE__)
 #pragma mark ServerSocket
+#endif
 
 ServerSocket::ServerSocket(int port)
 {
@@ -191,7 +195,9 @@ Socket *ServerSocket::accept()
 	return client;
 }
 
+#if defined(__APPLE__)
 #pragma mark ClientSocket
+#endif
 
 ClientSocket::ClientSocket(const char *host, int port)
 {
