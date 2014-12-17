@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C2238531A3E4557007293E5 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C2238511A3E4557007293E5 /* Game.cpp */; };
+		0C2238561A3E46D6007293E5 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C2238541A3E46D6007293E5 /* Player.cpp */; };
 		0CB093F61A386669001688BF /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F11A386669001688BF /* Socket.cpp */; };
 		0CB093F71A386669001688BF /* throw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F41A386669001688BF /* throw.cpp */; };
 		0CB093F91A3866AF001688BF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F81A3866AF001688BF /* main.cpp */; };
@@ -39,6 +41,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C2238511A3E4557007293E5 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
+		0C2238521A3E4557007293E5 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		0C2238541A3E46D6007293E5 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		0C2238551A3E46D6007293E5 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		0CB093DB1A38416D001688BF /* Machiavelli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Machiavelli; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB093E91A386611001688BF /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Server; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB093F01A386669001688BF /* ClientCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCommand.h; sourceTree = "<group>"; };
@@ -121,6 +127,10 @@
 				0CB093F31A386669001688BF /* Sync_queue.h */,
 				0CB093F41A386669001688BF /* throw.cpp */,
 				0CB093F51A386669001688BF /* throw.h */,
+				0C2238511A3E4557007293E5 /* Game.cpp */,
+				0C2238521A3E4557007293E5 /* Game.h */,
+				0C2238541A3E46D6007293E5 /* Player.cpp */,
+				0C2238551A3E46D6007293E5 /* Player.h */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -217,6 +227,8 @@
 				0CB093F71A386669001688BF /* throw.cpp in Sources */,
 				0CB093F61A386669001688BF /* Socket.cpp in Sources */,
 				0CB093F91A3866AF001688BF /* main.cpp in Sources */,
+				0C2238531A3E4557007293E5 /* Game.cpp in Sources */,
+				0C2238561A3E46D6007293E5 /* Player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +360,7 @@
 				0CB093E41A38416D001688BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0CB093ED1A386611001688BF /* Build configuration list for PBXNativeTarget "Server" */ = {
 			isa = XCConfigurationList;
@@ -356,6 +369,7 @@
 				0CB093EF1A386611001688BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -15,13 +15,16 @@ using namespace std;
 #include "Socket.h"
 #include "Sync_queue.h"
 #include "ClientCommand.h"
+#include "Game.h"
+#include <chrono>
+#include <thread>
 
 namespace socketexample {
-    const int tcp_port {1080};
     const std::string prompt {"> \n"};
 }
 
 static Sync_queue<ClientCommand> queue;
+static Game mGame;
 
 void consume_command() // runs in its own thread
 {
@@ -31,18 +34,19 @@ void consume_command() // runs in its own thread
         shared_ptr<Socket> client {command.get_client()};
         if (client) {
             try {
-                // TODO handle command here
-                client->write("Hey, you wrote: '");
-                client->write(command.get_cmd());
-                client->write("', but I'm not doing anything with it.\n");
+                string returnValue = mGame.handleRequest(client, command);
+                client->write(returnValue);
+                client->write("\n");
+                
             } catch (const exception& ex) {
                 client->write("Sorry, ");
                 client->write(ex.what());
                 client->write("\n");
+                client->write(socketexample::prompt);
             } catch (...) {
                 client->write("Sorry, something went wrong during handling of your request.\n");
+                client->write(socketexample::prompt);
             }
-            client->write(socketexample::prompt);
         } else {
             cerr << "trying to handle command for client who has disappeared...\n";
         }
@@ -52,8 +56,8 @@ void consume_command() // runs in its own thread
 void handle_client(Socket* socket) // this function runs in a separate thread
 {
     shared_ptr<Socket> client {socket};
-    client->write("Welcome to Server 1.0! To quit, type 'quit'.\n");
-    client->write(socketexample::prompt); 
+    client->write("Welcome to Machiavelli 1.0! What is your name?\n");
+    client->write(socketexample::prompt);
 
     while (true) { // game loop
         try {
@@ -68,15 +72,15 @@ void handle_client(Socket* socket) // this function runs in a separate thread
             
             ClientCommand command {cmd, client};
             queue.put(command);
-            
-			
 
         } catch (const exception& ex) {
             client->write("ERROR: ");
             client->write(ex.what());
             client->write("\n");
+            client->write(socketexample::prompt);
         } catch (...) {
             client->write("ERROR: something went wrong during handling of your request. Sorry!\n");
+            client->write(socketexample::prompt);
         }
     }
 }
@@ -86,26 +90,45 @@ int main(int argc, const char * argv[])
     // start command consumer thread
     thread consumer {consume_command};
     consumer.detach(); // detaching is usually ugly, but in this case the right thing to do
+
+    // Aks for port to connect with, otherwise use default
+    cout << "Please insert the port of the server. or default to 1080\n";
+    string port = "";
+    getline(cin, port);
+    if (port.empty()){
+        port = "1080";
+        cout << port << "\n";
+    }
+
+    cout << "Trying to initialize on port " << port << "\n";
     
 	// create a server socket
-	ServerSocket server(socketexample::tcp_port);
-	
-	while (true) {
-		try {
-			// wait for connection from client; will create new socket
-			cerr << "Server is up and running" << '\n';
-			Socket* client = nullptr;
-			
-			while ((client = server.accept()) != nullptr) {
-				// communicate with client over new socket in separate thread
-                thread handler {handle_client, client};
-                handler.detach(); // detaching is usually ugly, but in this case the right thing to do
-				cerr << "Server is listinging for more incoming clients" << '\n';
-			}
-		} catch (const exception& ex) {
-			cerr << ex.what() << ", resuming..." << '\n';
-		}
-	}
+    try {
+        ServerSocket server(atoi(port.c_str()));
+        mGame = *new Game();
+
+        while (true) {
+            try {
+                // wait for connection from client; will create new socket
+                cerr << "Server is up and running" << '\n';
+                Socket* client = nullptr;
+
+                while ((client = server.accept()) != nullptr) {
+                    // communicate with client over new socket in separate thread
+                    thread handler {handle_client, client};
+                    handler.detach(); // detaching is usually ugly, but in this case the right thing to do
+                    cerr << "Server is listinging for more incoming clients" << '\n';
+                }
+            } catch (const exception& ex) {
+                cerr << ex.what() << ", resuming..." << '\n';
+            }
+        }
+    } catch (exception exception) {
+        cout << exception.what();
+        chrono::seconds dura(5);
+        this_thread::sleep_for(dura);
+    }
+
     return 0;
 }
 

@@ -38,22 +38,22 @@ int main(int argc, const char * argv[]) {
 
     cout << "Trying to connect on " << serverIp << ":" << serverPort << "\n";
 
-    //TODO smartpointer
-
     try {
         unique_ptr<ClientSocket> socket(new ClientSocket(serverIp.c_str(), atoi(serverPort.c_str())));
         if (socket){
-
-            cout << "You've succeeded in connecting with the server. \n" << "Please wait for the game to start\n";
             while (socket){
-                string input = socket->readline();
+                string input = "";
+                while (input.empty()){
+                    input = socket->readline();
+                }
+
                 string output = "";
                 if (input == "> "){
                     cout << "\n > ";
                     getline(cin, output);
                 }
                 else{
-                    cout << input;
+                    cout << input << "\n";
                 }
 
                 if (!output.empty()){
