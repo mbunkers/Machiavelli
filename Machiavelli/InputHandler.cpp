@@ -36,7 +36,9 @@ int InputHandler::handleInput(string input){
 		break;
 	case TITLE:	
 		handleMessage = 0;
+		setTextColor(YELLOW);
 		cout << artGen.getTitle().c_str();
+		setTextColor(WHITE);
 		break;
 	case TABLE:
 		handleMessage = 0;
@@ -53,7 +55,7 @@ void InputHandler::clear()
 {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 	COORD topLeft = { 0, 0 };
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); 	
 	CONSOLE_SCREEN_BUFFER_INFO screen;
 	DWORD written;
 
@@ -71,4 +73,16 @@ void InputHandler::clear()
 	std::cout << "\x1B[2J\x1B[H";
 #endif
 
+}
+
+void InputHandler::setTextColor(int colorCode){
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console, colorCode);
+#endif
+#if defined(__APPLE__) || defined(__linux__)
+	if(colorCode < 10){
+		cout << "\x1B[" << colorCode << "m";
+	}
+#endif
 }
