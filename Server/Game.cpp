@@ -62,6 +62,8 @@ void Game::sendStartMessage(){
     for (size_t i = 0; i < mPlayers->size(); i++){
         Player *tempPlayer = mPlayers->at(i);
         shared_ptr<Socket> socket = tempPlayer->getSocket();
+		socket->write("CLEAR\n");
+		socket->write("TITLE\n");
         socket->write("The game has started and it's " + player->getName() + "'s turn!\n");
     }
 

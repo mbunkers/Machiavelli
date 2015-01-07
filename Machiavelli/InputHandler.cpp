@@ -31,17 +31,19 @@ int InputHandler::handleInput(string input){
 		cout << "\n";
 		break;
 	case CLEAR:
+		handleMessage = 0;
 		clear();
 		break;
-	case TITLE:		
+	case TITLE:	
+		handleMessage = 0;
 		cout << artGen.getTitle().c_str();
 		break;
 	case TABLE:
+		handleMessage = 0;
 		break;
 	default:
 		handleMessage = 1;
 		break;
-
 	}
 	return handleMessage;
 }
