@@ -9,7 +9,7 @@
 #include "Game.h"
 
 Game::Game(){
-    mPlayers = new vector<Player *>();
+    mPlayers = new vector<unique_ptr<Player>>();
 }
 
 Game::~Game(){
@@ -17,7 +17,7 @@ Game::~Game(){
 }
 
 string Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
-    Player *player = getPlayer(socket);
+    weak_ptr<Player> player = getPlayer(socket);
     if (player == nullptr){
         player = new Player(command.get_cmd(), socket);
         mPlayers->push_back(player);
@@ -27,7 +27,8 @@ string Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
 
         if (mPlayers->size() == 2){
             startGame();
-            return "The game will be started soon, when the game is ready";
+            weak_ptr<Player> tempPlayer = mPlayers->at(0);
+            return "The game has started and it's " + tempPlayer->getName() + "'s turn!\n";
         }
 
         return returnValue;
@@ -38,7 +39,7 @@ string Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
     return "Not yet implemented\n";
 }
 
-Player* Game::getPlayer(shared_ptr<Socket> socket){
+weak_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket){
     if (!mPlayers->empty()){
         for (size_t i = 0; i < mPlayers->size(); i++){
             if (mPlayers->at(i)->isPlayer(socket)){
@@ -51,22 +52,32 @@ Player* Game::getPlayer(shared_ptr<Socket> socket){
 
 void Game::startGame(){
     // Setup game
+    if (!loadDecks()){
+        sendErrorMessage();
+    }
 
     // Notifiy all players that the game has started
     sendStartMessage();
 }
 
-void Game::sendStartMessage(){
-    Player *player = mPlayers->at(0);
+bool Game::loadDecks(){
+    return true;
+}
 
+void Game::sendErrorMessage(){
     for (size_t i = 0; i < mPlayers->size(); i++){
         Player *tempPlayer = mPlayers->at(i);
         shared_ptr<Socket> socket = tempPlayer->getSocket();
 		socket->write("CLEAR\n");
 		socket->write("TITLE\n");
         socket->write("The game has started and it's " + player->getName() + "'s turn!\n");
-    }
+        unique_ptr<Player> player = mPlayers->at(i);
 
+    }
+}
+
+void Game::sendStartMessage(){
+    unique_ptr<Player> player = mPlayers->at(0);
     shared_ptr<Socket> socket = player->getSocket();
     socket->write("It's your turn, what do you want to do?\n");
     socket->write("< \n");

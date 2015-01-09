@@ -92,7 +92,7 @@ int main(int argc, const char * argv[])
     consumer.detach(); // detaching is usually ugly, but in this case the right thing to do
 
     // Aks for port to connect with, otherwise use default
-    cout << "Please insert the port of the server. or default to 1080\n";
+    cout << "Enter the port the server should listen to or use as default 1080\n";
     string port = "";
     getline(cin, port);
     if (port.empty()){

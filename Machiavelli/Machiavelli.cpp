@@ -1,4 +1,9 @@
-// Machiavelli.cpp : Defines the entry point for the console application.
+//
+//  Machiavelli.cpp
+//  Machiavelli
+//
+//  Created by Marc Bunkers and Leon van Tuijl.
+//  Copyright (c) 2014 Marc Bunkers. All rights reserved.
 //
 
 #include "stdafx.h"

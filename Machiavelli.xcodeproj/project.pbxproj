@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0C2238531A3E4557007293E5 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C2238511A3E4557007293E5 /* Game.cpp */; };
 		0C2238561A3E46D6007293E5 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C2238541A3E46D6007293E5 /* Player.cpp */; };
+		0C32EFE21A4180D000679A6A /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE01A4180D000679A6A /* Card.cpp */; };
+		0C32EFE71A4181E300679A6A /* CharacterCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE51A4181E300679A6A /* CharacterCard.cpp */; };
+		0C32EFEA1A4182CA00679A6A /* BuildingCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE81A4182CA00679A6A /* BuildingCard.cpp */; };
 		0CB093F61A386669001688BF /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F11A386669001688BF /* Socket.cpp */; };
 		0CB093F71A386669001688BF /* throw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F41A386669001688BF /* throw.cpp */; };
 		0CB093F91A3866AF001688BF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F81A3866AF001688BF /* main.cpp */; };
@@ -45,6 +48,13 @@
 		0C2238521A3E4557007293E5 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		0C2238541A3E46D6007293E5 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		0C2238551A3E46D6007293E5 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		0C32EFDC1A417E3F00679A6A /* CardDeck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDeck.h; sourceTree = "<group>"; };
+		0C32EFE01A4180D000679A6A /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Card.cpp; sourceTree = "<group>"; };
+		0C32EFE11A4180D000679A6A /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
+		0C32EFE51A4181E300679A6A /* CharacterCard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterCard.cpp; sourceTree = "<group>"; };
+		0C32EFE61A4181E300679A6A /* CharacterCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterCard.h; sourceTree = "<group>"; };
+		0C32EFE81A4182CA00679A6A /* BuildingCard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildingCard.cpp; sourceTree = "<group>"; };
+		0C32EFE91A4182CA00679A6A /* BuildingCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildingCard.h; sourceTree = "<group>"; };
 		0CB093DB1A38416D001688BF /* Machiavelli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Machiavelli; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB093E91A386611001688BF /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Server; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB093F01A386669001688BF /* ClientCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCommand.h; sourceTree = "<group>"; };
@@ -83,6 +93,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C32EFE31A4180E700679A6A /* Server Stuff */ = {
+			isa = PBXGroup;
+			children = (
+				0CB093F81A3866AF001688BF /* main.cpp */,
+				0CB093F01A386669001688BF /* ClientCommand.h */,
+				0CB093F11A386669001688BF /* Socket.cpp */,
+				0CB093F21A386669001688BF /* Socket.h */,
+				0CB093F31A386669001688BF /* Sync_queue.h */,
+				0CB093F41A386669001688BF /* throw.cpp */,
+				0CB093F51A386669001688BF /* throw.h */,
+			);
+			name = "Server Stuff";
+			sourceTree = "<group>";
+		};
+		0C32EFE41A41810100679A6A /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				0C32EFDC1A417E3F00679A6A /* CardDeck.h */,
+				0C32EFE01A4180D000679A6A /* Card.cpp */,
+				0C32EFE11A4180D000679A6A /* Card.h */,
+				0C32EFE51A4181E300679A6A /* CharacterCard.cpp */,
+				0C32EFE61A4181E300679A6A /* CharacterCard.h */,
+				0C32EFE81A4182CA00679A6A /* BuildingCard.cpp */,
+				0C32EFE91A4182CA00679A6A /* BuildingCard.h */,
+			);
+			name = Cards;
+			sourceTree = "<group>";
+		};
 		0CB093D21A38416D001688BF = {
 			isa = PBXGroup;
 			children = (
@@ -120,13 +158,8 @@
 		0CB093EA1A386611001688BF /* Server */ = {
 			isa = PBXGroup;
 			children = (
-				0CB093F81A3866AF001688BF /* main.cpp */,
-				0CB093F01A386669001688BF /* ClientCommand.h */,
-				0CB093F11A386669001688BF /* Socket.cpp */,
-				0CB093F21A386669001688BF /* Socket.h */,
-				0CB093F31A386669001688BF /* Sync_queue.h */,
-				0CB093F41A386669001688BF /* throw.cpp */,
-				0CB093F51A386669001688BF /* throw.h */,
+				0C32EFE41A41810100679A6A /* Cards */,
+				0C32EFE31A4180E700679A6A /* Server Stuff */,
 				0C2238511A3E4557007293E5 /* Game.cpp */,
 				0C2238521A3E4557007293E5 /* Game.h */,
 				0C2238541A3E46D6007293E5 /* Player.cpp */,
@@ -224,11 +257,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C32EFE71A4181E300679A6A /* CharacterCard.cpp in Sources */,
 				0CB093F71A386669001688BF /* throw.cpp in Sources */,
 				0CB093F61A386669001688BF /* Socket.cpp in Sources */,
+				0C32EFEA1A4182CA00679A6A /* BuildingCard.cpp in Sources */,
 				0CB093F91A3866AF001688BF /* main.cpp in Sources */,
 				0C2238531A3E4557007293E5 /* Game.cpp in Sources */,
 				0C2238561A3E46D6007293E5 /* Player.cpp in Sources */,
+				0C32EFE21A4180D000679A6A /* Card.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

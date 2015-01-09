@@ -19,10 +19,12 @@ using namespace std;
 
 class Game{
 private:
-    vector<Player *> *mPlayers;
-    Player* getPlayer(shared_ptr<Socket> socket);
+    vector<unique_ptr<Player>> *mPlayers;
+    unique_ptr<Player> getPlayer(shared_ptr<Socket> socket);
     void startGame();
     void sendStartMessage();
+    void sendErrorMessage();
+    bool loadDecks();
 public:
     Game();
     ~Game();
