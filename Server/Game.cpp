@@ -9,7 +9,7 @@
 #include "Game.h"
 
 Game::Game(){
-    mPlayers = new vector<unique_ptr<Player>>();
+    mPlayers = vector<shared_ptr<Player>>();
 }
 
 Game::~Game(){
@@ -17,37 +17,33 @@ Game::~Game(){
 }
 
 string Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
-    weak_ptr<Player> player = getPlayer(socket);
-    if (player == nullptr){
-        player = new Player(command.get_cmd(), socket);
-        mPlayers->push_back(player);
-        string cmd = command.get_cmd();
+    shared_ptr<Player> player = getPlayer(socket, command);
 
-        string returnValue = "Ok " + cmd + ", just wait for the other player to connect";
-
-        if (mPlayers->size() == 2){
-            startGame();
-            weak_ptr<Player> tempPlayer = mPlayers->at(0);
-            return "The game has started and it's " + tempPlayer->getName() + "'s turn!\n";
-        }
-
-        return returnValue;
-    }
-    else {
-        return "Not yet implemented\n";
-    }
     return "Not yet implemented\n";
 }
 
-weak_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket){
-    if (!mPlayers->empty()){
-        for (size_t i = 0; i < mPlayers->size(); i++){
-            if (mPlayers->at(i)->isPlayer(socket)){
-                return mPlayers->at(i);
+shared_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket, ClientCommand command){
+    if (!mPlayers.empty()){
+        for (size_t i = 0; i < mPlayers.size(); i++){
+            if (mPlayers.at(i)->isPlayer(socket)){
+                return mPlayers.at(i);
             }
         }
     }
-    return nullptr;
+    auto p = make_shared<Player>(new Player{ command.get_cmd(), socket});
+    //weak_ptr<Player> p{ new Player{ command.get_cmd(), socket}};
+    //player = new Player(command.get_cmd(), socket);
+    mPlayers.push_back(p);
+    string cmd = command.get_cmd();
+
+    string returnValue = "Ok " + cmd + ", just wait for the other player to connect";
+
+    socket->write(returnValue);
+
+    if (mPlayers.size() == 2){
+        startGame();
+    }
+    return p;
 }
 
 void Game::startGame(){
@@ -65,19 +61,19 @@ bool Game::loadDecks(){
 }
 
 void Game::sendErrorMessage(){
-    for (size_t i = 0; i < mPlayers->size(); i++){
-        Player *tempPlayer = mPlayers->at(i);
-        shared_ptr<Socket> socket = tempPlayer->getSocket();
-		socket->write("CLEAR\n");
-		socket->write("TITLE\n");
-        socket->write("The game has started and it's " + player->getName() + "'s turn!\n");
-        unique_ptr<Player> player = mPlayers->at(i);
 
-    }
 }
 
 void Game::sendStartMessage(){
-    unique_ptr<Player> player = mPlayers->at(0);
+    for (size_t i = 0; i < mPlayers.size(); i++){
+        shared_ptr<Player> tempPlayer = mPlayers.at(i);
+        shared_ptr<Socket> socket = tempPlayer->getSocket();
+        socket->write("CLEAR\n");
+        socket->write("TITLE\n");
+        socket->write("The game has started and it's " + tempPlayer->getName() + "'s turn!\n");
+    }
+
+    shared_ptr<Player> player = mPlayers.at(0);
     shared_ptr<Socket> socket = player->getSocket();
     socket->write("It's your turn, what do you want to do?\n");
     socket->write("< \n");

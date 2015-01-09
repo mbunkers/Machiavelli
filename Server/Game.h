@@ -19,8 +19,8 @@ using namespace std;
 
 class Game{
 private:
-    vector<unique_ptr<Player>> *mPlayers;
-    unique_ptr<Player> getPlayer(shared_ptr<Socket> socket);
+    vector<shared_ptr<Player>> mPlayers;
+    shared_ptr<Player> getPlayer(shared_ptr<Socket> socket, ClientCommand command);
     void startGame();
     void sendStartMessage();
     void sendErrorMessage();
