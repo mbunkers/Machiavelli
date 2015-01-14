@@ -49,16 +49,6 @@ shared_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket, ClientCommand comm
     return p;
 }
 
-void Game::startGame(){
-    // Setup game
-    if (!loadDecks()){
-        sendErrorMessage();
-    }
-
-    // Notifiy all players that the game has started
-    sendStartMessage();
-}
-
 bool Game::loadDecks(){
     return true;
 }
@@ -82,11 +72,7 @@ void Game::sendStartMessage(){
     socket->write("< \n");
 }
 
-void Game::startRound(){
-    // Shuffle characterdeck
-    // Koning mag beginnen
-    pickCharacterCard();
-}
+
 
 void Game::pickCharacterCard(){
     // Loop voor character kaarten typen
@@ -97,4 +83,87 @@ void Game::doTurn(){
     // Doorloop characterdeck
     // Voor elke character "ingame" vraag de speler op
     // laat hem zijn beurt doen.
+}
+
+
+void Game::startGame(){
+	// Setup game
+	if (!loadDecks()){
+		sendErrorMessage();
+	}
+	//shuffle buildingsdeck
+
+	//Give players starting cards and gold
+
+	// Notify all players that the game has started
+	sendStartMessage();
+	changePhase(STARTROUND);
+}
+
+void Game::startRound(){
+	// Shuffle characterdeck
+	// Set first player.
+	// if king is avialable that player is first. Else first in player vector.
+	// Notify players who starts next phase.
+	changePhase(SELECTCHARACTERS);
+}
+
+void Game::selectCharactersPhase(){
+	//(LOOP)
+
+	//First player picks his character and removes another.
+	//first player notifies second player to pick from remaining characters
+	//second player notifies first player to pick from remaining characters.
+	//first player notifies second player again.
+	pickCharacterCard();
+
+	//if remaining cards = 0 -> next phase
+	changePhase(STARTROUND);
+	
+}
+
+void Game::playCharactersPhase(){
+	//(LOOP)
+
+	//Get current card from characters deck.
+		//if ingame is false -> next card
+		//else get owner
+			// notify owner to play his turn with "character" 
+			// wait for turn to finish.
+			// next card
+	//if all cards played -> finish
+
+	changePhase()
+
+}
+
+void Game::endRound(){
+
+}
+
+void Game::countScoresPhase(){
+
+}
+
+void Game::endGame(){
+
+}
+
+
+void Game::changePhase(phases nextPhase){
+
+	switch (nextPhase){
+	case STARTGAME:
+		break;
+	case STARTROUND:
+		break;
+	case SELECTCHARACTERS:
+		break;
+	case PLAYCHARACTERS:
+		break;
+	case ENDGAME:
+		break;
+	default:
+		break;
+	}
 }

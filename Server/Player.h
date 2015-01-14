@@ -21,7 +21,7 @@ using namespace std;
 class Player{
 private:
     string mName;
-    int mMoney;
+    int mGold;
     vector<shared_ptr<BuildingCard>> mBuiltCards;
     vector<shared_ptr<BuildingCard>> mCardHand;
     shared_ptr<Socket> mSocket;

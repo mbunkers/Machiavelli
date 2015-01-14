@@ -22,6 +22,15 @@ using namespace std;
 
 class Game{
 private:
+	enum phases{
+		SETUP = 0,
+		STARTGAME = 1,
+		STARTROUND = 2,
+		SELECTCHARACTERS = 3,
+		PLAYCHARACTERS = 4,
+		ENDGAME = 5,
+	};
+
     vector<shared_ptr<Player>> mPlayers;
     shared_ptr<Player> getPlayer(shared_ptr<Socket> socket, ClientCommand command);
     unique_ptr<CardDeck<shared_ptr<CharacterCard>>> characterDeck;
@@ -38,14 +47,10 @@ private:
     void endRound();
     void countScoresPhase();
     void endGame();
+
+	void changePhase(phases);
 public:
-    enum phases{
-        STARTGAME = 1,
-        STARTROUND = 2,
-        SELECTCHARACTERS = 3,
-        PLAYCHARACTERS = 4,
-        ENDGAME = 5,
-    };
+    
 
     Game();
     ~Game();
