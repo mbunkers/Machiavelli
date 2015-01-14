@@ -11,14 +11,19 @@
 
 #include <stdio.h>
 #include <string>
+#include <vector>
 #include "Socket.h"
 #include <memory>
+#include "BuildingCard.h"
 
 using namespace std;
 
 class Player{
 private:
     string mName;
+    int mMoney;
+    vector<shared_ptr<BuildingCard>> mBuiltCards;
+    vector<shared_ptr<BuildingCard>> mCardHand;
     shared_ptr<Socket> mSocket;
 public:
     Player(string name, shared_ptr<Socket> socket);
@@ -27,6 +32,7 @@ public:
     bool isPlayer(shared_ptr<Socket> socket);
     shared_ptr<Socket> getSocket();
     string getName();
+    int calculateScore();
 };
 
 #endif /* defined(__Machiavelli__Player__) */

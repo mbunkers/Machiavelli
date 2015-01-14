@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "Card.h"
+#include "Player.h"
 
 class CharacterCard : public Card{
 public:
@@ -18,6 +19,7 @@ public:
     ~CharacterCard();
 private:
     int mPriority;
+    shared_ptr<Player> mCurrentOwner;
 };
 
 #endif /* defined(__Machiavelli__CharacterCard__) */

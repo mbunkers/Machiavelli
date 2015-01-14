@@ -21,7 +21,6 @@ class CardDeck {
 private:
     unique_ptr<vector<Card>> mCards = new vector<Card>();
     //unique_ptr<vector<unique_ptr<Card>>> mCards = { new vector<Card>};
-    vector<>
 public:
     CardDeck<T>(){
 
@@ -42,7 +41,7 @@ public:
     }
 
     addCard(shared_ptr<Card> card){
-        m
+        
     }
 };
 

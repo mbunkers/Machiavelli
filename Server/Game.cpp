@@ -81,3 +81,20 @@ void Game::sendStartMessage(){
     socket->write("It's your turn, what do you want to do?\n");
     socket->write("< \n");
 }
+
+void Game::startRound(){
+    // Shuffle characterdeck
+    // Koning mag beginnen
+    pickCharacterCard();
+}
+
+void Game::pickCharacterCard(){
+    // Loop voor character kaarten typen
+    // Alle character kaarten zonder owner in string bijhouden
+}
+
+void Game::doTurn(){
+    // Doorloop characterdeck
+    // Voor elke character "ingame" vraag de speler op
+    // laat hem zijn beurt doen.
+}

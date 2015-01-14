@@ -28,3 +28,7 @@ shared_ptr<Socket> Player::getSocket(){
 string Player::getName(){
     return mName;
 }
+
+int Player::calculateScore(){
+    return 0;
+}
