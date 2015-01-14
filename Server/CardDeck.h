@@ -19,14 +19,14 @@ using namespace std;
 template <typename T>
 class CardDeck {
 private:
-    unique_ptr<vector<Card>> mCards = new vector<Card>();
-    //unique_ptr<vector<unique_ptr<Card>>> mCards = { new vector<Card>};
+    unique_ptr<vector<shared_ptr<Card>>> mCards;
 public:
     CardDeck<T>(){
-
     }
 
-    ~CardDeck();
+    ~CardDeck(){
+
+    }
 
     CardDeck(const CardDeck& other){
 
@@ -40,8 +40,8 @@ public:
 
     }
 
-    addCard(shared_ptr<Card> card){
-        
+    void addCard(shared_ptr<Card> card){
+        mCards->push_back(card);
     }
 };
 
