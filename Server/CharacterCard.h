@@ -16,7 +16,7 @@
 class CharacterCard : public Card{
 public:
     CharacterCard(string name, int priority, CardColor);
-    ~CharacterCard();
+//    ~CharacterCard();
 private:
     int mPriority;
     shared_ptr<Player> mCurrentOwner;

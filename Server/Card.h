@@ -18,13 +18,14 @@ enum CardColor{
     BLUE = 1,
     GREEN = 2,
     RED = 3,
-    CLEAR = 4
+    LILA = 4,
+    UNKNOWN = 5
 };
 
 class Card{
 public:
     Card(string name, CardColor color);
-    ~Card();
+//    ~Card();
 
     CardColor getCardColor();
     string getName();

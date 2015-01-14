@@ -31,10 +31,12 @@ private:
 		ENDGAME = 5,
 	};
 
+    enum phases mCurrentPhase = SETUP;
+
     vector<shared_ptr<Player>> mPlayers;
     shared_ptr<Player> getPlayer(shared_ptr<Socket> socket, ClientCommand command);
-    unique_ptr<CardDeck<shared_ptr<CharacterCard>>> characterDeck;
-    unique_ptr<CardDeck<shared_ptr<BuildingCard>>> buildingDeck;
+    shared_ptr<CardDeck<shared_ptr<CharacterCard>>> mCharacterDeck;
+    shared_ptr<CardDeck<shared_ptr<BuildingCard>>> mBuildingDeck;
     void sendStartMessage();
     void sendErrorMessage();
     bool loadDecks();

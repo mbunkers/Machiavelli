@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		0C2238531A3E4557007293E5 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C2238511A3E4557007293E5 /* Game.cpp */; };
 		0C2238561A3E46D6007293E5 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C2238541A3E46D6007293E5 /* Player.cpp */; };
+		0C307D141A671E8E005649FC /* Bouwkaarten.csv in Sources */ = {isa = PBXBuildFile; fileRef = 0CF038EF1A66BDA1001F40E9 /* Bouwkaarten.csv */; };
+		0C307D151A671E8E005649FC /* Karakterkaarten.csv in Sources */ = {isa = PBXBuildFile; fileRef = 0CF038F01A66BDA1001F40E9 /* Karakterkaarten.csv */; };
+		0C307D161A671F5C005649FC /* Bouwkaarten.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0CF038EF1A66BDA1001F40E9 /* Bouwkaarten.csv */; };
+		0C307D171A671F5C005649FC /* Karakterkaarten.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0CF038F01A66BDA1001F40E9 /* Karakterkaarten.csv */; };
 		0C32EFE21A4180D000679A6A /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE01A4180D000679A6A /* Card.cpp */; };
 		0C32EFE71A4181E300679A6A /* CharacterCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE51A4181E300679A6A /* CharacterCard.cpp */; };
 		0C32EFEA1A4182CA00679A6A /* BuildingCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE81A4182CA00679A6A /* BuildingCard.cpp */; };
@@ -35,12 +39,14 @@
 		};
 		0CB093E71A386611001688BF /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				0C307D161A671F5C005649FC /* Bouwkaarten.csv in CopyFiles */,
+				0C307D171A671F5C005649FC /* Karakterkaarten.csv in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -49,6 +55,7 @@
 		0C2238521A3E4557007293E5 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		0C2238541A3E46D6007293E5 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		0C2238551A3E46D6007293E5 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		0C307D121A671D5B005649FC /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		0C32EFDC1A417E3F00679A6A /* CardDeck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDeck.h; sourceTree = "<group>"; };
 		0C32EFE01A4180D000679A6A /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Card.cpp; sourceTree = "<group>"; };
 		0C32EFE11A4180D000679A6A /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
@@ -76,6 +83,8 @@
 		0CB094021A387B62001688BF /* throw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = throw.h; sourceTree = "<group>"; };
 		0CF038EA1A66ACDA001F40E9 /* InputHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputHandler.h; sourceTree = "<group>"; };
 		0CF038EB1A66ACDA001F40E9 /* InputHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputHandler.cpp; sourceTree = "<group>"; };
+		0CF038EF1A66BDA1001F40E9 /* Bouwkaarten.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bouwkaarten.csv; sourceTree = "<group>"; };
+		0CF038F01A66BDA1001F40E9 /* Karakterkaarten.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Karakterkaarten.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,8 +136,9 @@
 		0CB093D21A38416D001688BF = {
 			isa = PBXGroup;
 			children = (
-				0CB093DD1A38416D001688BF /* Machiavelli */,
+				0C307D121A671D5B005649FC /* CoreFoundation.framework */,
 				0CB093EA1A386611001688BF /* Server */,
+				0CB093DD1A38416D001688BF /* Machiavelli */,
 				0CB093DC1A38416D001688BF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -163,6 +173,7 @@
 		0CB093EA1A386611001688BF /* Server */ = {
 			isa = PBXGroup;
 			children = (
+				0CF038EE1A66BD93001F40E9 /* Resources */,
 				0C32EFE41A41810100679A6A /* Cards */,
 				0C32EFE31A4180E700679A6A /* Server Stuff */,
 				0C2238511A3E4557007293E5 /* Game.cpp */,
@@ -171,6 +182,15 @@
 				0C2238551A3E46D6007293E5 /* Player.h */,
 			);
 			path = Server;
+			sourceTree = "<group>";
+		};
+		0CF038EE1A66BD93001F40E9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0CF038EF1A66BDA1001F40E9 /* Bouwkaarten.csv */,
+				0CF038F01A66BDA1001F40E9 /* Karakterkaarten.csv */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +283,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C307D141A671E8E005649FC /* Bouwkaarten.csv in Sources */,
+				0C307D151A671E8E005649FC /* Karakterkaarten.csv in Sources */,
 				0C32EFE71A4181E300679A6A /* CharacterCard.cpp in Sources */,
 				0CB093F71A386669001688BF /* throw.cpp in Sources */,
 				0CB093F61A386669001688BF /* Socket.cpp in Sources */,

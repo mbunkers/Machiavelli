@@ -24,7 +24,7 @@ namespace socketexample {
 }
 
 static Sync_queue<ClientCommand> queue;
-static Game mGame;
+static shared_ptr<Game> mGame;
 
 void consume_command() // runs in its own thread
 {
@@ -34,9 +34,9 @@ void consume_command() // runs in its own thread
         shared_ptr<Socket> client {command.get_client()};
         if (client) {
             try {
-                string returnValue = mGame.handleRequest(client, command);
-                client->write(returnValue);
-                client->write("\n");
+                string returnValue = mGame->handleRequest(client, command);
+                //client->write(returnValue);
+                //client->write("\n");
                 
             } catch (const exception& ex) {
                 client->write("Sorry, ");
@@ -105,7 +105,7 @@ int main(int argc, const char * argv[])
 	// create a server socket
     try {
         ServerSocket server(atoi(port.c_str()));
-        mGame = *new Game();
+        mGame = make_shared<Game>();
 
         while (true) {
             try {

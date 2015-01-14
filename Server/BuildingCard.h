@@ -14,9 +14,10 @@
 
 class BuildingCard : public Card{
 public:
-    BuildingCard(string name, CardColor color);
-    ~BuildingCard();
+    BuildingCard(string name, int value, CardColor color);
+//    ~BuildingCard();
 private:
+    int mValue;
 };
 
 #endif /* defined(__Machiavelli__BuildingCard__) */

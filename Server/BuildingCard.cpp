@@ -8,7 +8,7 @@
 
 #include "BuildingCard.h"
 
-BuildingCard::BuildingCard(string name, CardColor color): Card(name, color){
-
+BuildingCard::BuildingCard(string name, int value, CardColor color): Card(name, color){
+    mValue = value;
 }
 

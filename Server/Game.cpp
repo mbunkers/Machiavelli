@@ -19,7 +19,24 @@ Game::~Game(){
 string Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
     shared_ptr<Player> player = getPlayer(socket, command);
 
-    return "Not yet implemented\n";
+    switch (mCurrentPhase){
+        case SETUP:
+            break;
+        case STARTGAME:
+            break;
+        case STARTROUND:
+            break;
+        case SELECTCHARACTERS:
+            break;
+        case PLAYCHARACTERS:
+            break;
+        case ENDGAME:
+            break;
+        default:
+            break;
+    }
+
+    return "";
 }
 
 shared_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket, ClientCommand command){
@@ -31,25 +48,23 @@ shared_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket, ClientCommand comm
         }
     }
     auto p = make_shared<Player>(command.get_cmd(), socket);
-
-    //make_shared<Player>(new Player{ command.get_cmd(), socket});
-    //weak_ptr<Player> p{ new Player{ command.get_cmd(), socket}};
-    //player = new Player(command.get_cmd(), socket);
     
     mPlayers.push_back(p);
     string cmd = command.get_cmd();
 
-    string returnValue = "Ok " + cmd + ", just wait for the other player to connect";
+    string returnValue = "Ok " + cmd + ", just wait for the other player to connect\n";
 
     socket->write(returnValue);
 
     if (mPlayers.size() == 2){
-        startGame();
+        changePhase(STARTGAME);
     }
     return p;
 }
 
 bool Game::loadDecks(){
+    mBuildingDeck = make_shared<CardDeck<shared_ptr<BuildingCard>>>("Bouwkaarten.csv");
+    mCharacterDeck = make_shared<CardDeck<shared_ptr<CharacterCard>>>("Karakterkaarten.csv");
     return true;
 }
 
@@ -58,18 +73,20 @@ void Game::sendErrorMessage(){
 }
 
 void Game::sendStartMessage(){
+    shared_ptr<Player> player = mPlayers.at(0);
     for (size_t i = 0; i < mPlayers.size(); i++){
         shared_ptr<Player> tempPlayer = mPlayers.at(i);
         shared_ptr<Socket> socket = tempPlayer->getSocket();
         socket->write("CLEAR\n");
         socket->write("TITLE\n");
-        socket->write("The game has started and it's " + tempPlayer->getName() + "'s turn!\n");
+        if (player != tempPlayer){
+            socket->write("The game has started and it's " + player->getName() + "'s turn!\n");
+        }
+        else {
+            socket->write("The game is started and it's your turn, what do you want to do?\n");
+            socket->write("< \n");
+        }
     }
-
-    shared_ptr<Player> player = mPlayers.at(0);
-    shared_ptr<Socket> socket = player->getSocket();
-    socket->write("It's your turn, what do you want to do?\n");
-    socket->write("< \n");
 }
 
 
@@ -133,7 +150,7 @@ void Game::playCharactersPhase(){
 			// next card
 	//if all cards played -> finish
 
-	changePhase()
+    changePhase(STARTGAME);
 
 }
 
@@ -154,6 +171,7 @@ void Game::changePhase(phases nextPhase){
 
 	switch (nextPhase){
 	case STARTGAME:
+            startGame();
 		break;
 	case STARTROUND:
 		break;
