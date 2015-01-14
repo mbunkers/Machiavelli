@@ -20,6 +20,7 @@
 		0CB094051A387B62001688BF /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093FD1A387B62001688BF /* Socket.cpp */; };
 		0CB094061A387B62001688BF /* stdafx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093FF1A387B62001688BF /* stdafx.cpp */; };
 		0CB094071A387B62001688BF /* throw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB094011A387B62001688BF /* throw.cpp */; };
+		0CF038EC1A66ACDA001F40E9 /* InputHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CF038EB1A66ACDA001F40E9 /* InputHandler.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -73,6 +74,8 @@
 		0CB094001A387B62001688BF /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stdafx.h; sourceTree = "<group>"; };
 		0CB094011A387B62001688BF /* throw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = throw.cpp; sourceTree = "<group>"; };
 		0CB094021A387B62001688BF /* throw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = throw.h; sourceTree = "<group>"; };
+		0CF038EA1A66ACDA001F40E9 /* InputHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputHandler.h; sourceTree = "<group>"; };
+		0CF038EB1A66ACDA001F40E9 /* InputHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputHandler.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +145,8 @@
 		0CB093DD1A38416D001688BF /* Machiavelli */ = {
 			isa = PBXGroup;
 			children = (
+				0CF038EA1A66ACDA001F40E9 /* InputHandler.h */,
+				0CF038EB1A66ACDA001F40E9 /* InputHandler.cpp */,
 				0CB093FA1A387B62001688BF /* ASCIIgen.cpp */,
 				0CB093FB1A387B62001688BF /* ASCIIgen.h */,
 				0CB093FC1A387B62001688BF /* Machiavelli.cpp */,
@@ -246,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CB094051A387B62001688BF /* Socket.cpp in Sources */,
+				0CF038EC1A66ACDA001F40E9 /* InputHandler.cpp in Sources */,
 				0CB094031A387B62001688BF /* ASCIIgen.cpp in Sources */,
 				0CB094071A387B62001688BF /* throw.cpp in Sources */,
 				0CB094041A387B62001688BF /* Machiavelli.cpp in Sources */,

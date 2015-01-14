@@ -13,6 +13,10 @@ Player::Player(string name, shared_ptr<Socket> socket){
     mSocket = socket;
 }
 
+Player::~Player(){
+
+}
+
 bool Player::isPlayer(shared_ptr<Socket> socket){
     return mSocket == socket;
 }

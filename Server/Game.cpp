@@ -30,9 +30,12 @@ shared_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket, ClientCommand comm
             }
         }
     }
-    auto p = make_shared<Player>(new Player{ command.get_cmd(), socket});
+    auto p = make_shared<Player>(command.get_cmd(), socket);
+
+    //make_shared<Player>(new Player{ command.get_cmd(), socket});
     //weak_ptr<Player> p{ new Player{ command.get_cmd(), socket}};
     //player = new Player(command.get_cmd(), socket);
+    
     mPlayers.push_back(p);
     string cmd = command.get_cmd();
 
