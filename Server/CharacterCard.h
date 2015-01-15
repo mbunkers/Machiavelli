@@ -17,8 +17,14 @@ class CharacterCard : public Card{
 public:
     CharacterCard(string name, int priority, CardColor);
 //    ~CharacterCard();
+    bool hasOwner();
+    bool isTaken();
+    void setIsTaken(bool taken);
+    void setOwner(shared_ptr<Player> player);
+
 private:
     int mPriority;
+    bool mIsTaken;
     shared_ptr<Player> mCurrentOwner;
 };
 

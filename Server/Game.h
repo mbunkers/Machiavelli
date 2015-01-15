@@ -44,7 +44,7 @@ private:
     // Phases
     void startGame();
     void startRound();
-    void selectCharactersPhase();
+    void selectCharactersPhase(shared_ptr<Player> player);
     void playCharactersPhase();
     void endRound();
     void countScoresPhase();
@@ -58,7 +58,7 @@ public:
     ~Game();
     string handleRequest(shared_ptr<Socket> socket, ClientCommand command);
 
-    void pickCharacterCard();
+    void pickCharacterCard(shared_ptr<Player> player);
     void doTurn();
 };
 

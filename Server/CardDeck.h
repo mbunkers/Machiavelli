@@ -53,6 +53,38 @@ public:
 
     }
 
+    void resetCharacters(){
+        for (int i = 0; i < mCards.size(); i++){
+            shared_ptr<CharacterCard> card = card = static_pointer_cast<CharacterCard>(mCards.at(1));
+            card->setIsTaken(false);
+            card->setOwner(nullptr);
+        }
+    }
+
+    bool allCardsHaveOwners(){
+        for (int i = 0; i < mCards.size(); i++){
+            shared_ptr<CharacterCard> card = card = static_pointer_cast<CharacterCard>(mCards.at(1));
+            if (!card->hasOwner()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool allCardsTaken(){
+        for (int i = 0; i < mCards.size(); i++){
+            shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(mCards.at(1));
+            if (!card->isTaken()){
+                return false;
+            }
+        }
+        return true;;
+    }
+
+    vector<shared_ptr<Card>> allCards(){
+        return mCards;
+    }
+
     void addCard(shared_ptr<Card> card){
         mCards.push_back(card);
     }

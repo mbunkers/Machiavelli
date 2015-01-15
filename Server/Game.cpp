@@ -25,6 +25,7 @@ string Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
         case STARTGAME:
             break;
         case STARTROUND:
+            selectCharactersPhase(player);
             break;
         case SELECTCHARACTERS:
             break;
@@ -83,15 +84,27 @@ void Game::sendStartMessage(){
             socket->write("The game has started and it's " + player->getName() + "'s turn!\n");
         }
         else {
-            socket->write("The game is started and it's your turn, what do you want to do?\n");
-            socket->write("< \n");
+            socket->write("The game is started and it's your turn.\n");
         }
     }
 }
 
 
 
-void Game::pickCharacterCard(){
+void Game::pickCharacterCard(shared_ptr<Player> player){
+
+    vector<shared_ptr<Card>> cards = mCharacterDeck->allCards();
+    player->getSocket()->write("You may choose one card\n");
+    for (int i = 0; i < cards.size(); i++){
+        shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(cards.at(i));
+        if (!card->hasOwner()){
+            string option = "[" + to_string(i) + "]" + card->getName();
+            player->getSocket()->write(option);
+        }
+    }
+
+    player->getSocket()->write("> \n");
+
     // Loop voor character kaarten typen
     // Alle character kaarten zonder owner in string bijhouden
 }
@@ -125,18 +138,18 @@ void Game::startRound(){
 	changePhase(SELECTCHARACTERS);
 }
 
-void Game::selectCharactersPhase(){
+void Game::selectCharactersPhase(shared_ptr<Player> player){
 	//(LOOP)
 
 	//First player picks his character and removes another.
 	//first player notifies second player to pick from remaining characters
 	//second player notifies first player to pick from remaining characters.
 	//first player notifies second player again.
-	pickCharacterCard();
+	pickCharacterCard(player);
 
-	//if remaining cards = 0 -> next phase
-	changePhase(STARTROUND);
-	
+    if (mCharacterDeck->allCardsTaken()){
+        changePhase(STARTROUND);
+    }
 }
 
 void Game::playCharactersPhase(){
@@ -151,7 +164,6 @@ void Game::playCharactersPhase(){
 	//if all cards played -> finish
 
     changePhase(STARTGAME);
-
 }
 
 void Game::endRound(){
