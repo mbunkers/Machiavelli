@@ -78,6 +78,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BuildingCard.h" />
+    <ClInclude Include="Card.h" />
+    <ClInclude Include="CardDeck.h" />
+    <ClInclude Include="CharacterCard.h" />
     <ClInclude Include="ClientCommand.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
@@ -86,6 +90,9 @@
     <ClInclude Include="throw.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BuildingCard.cpp" />
+    <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CharacterCard.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />

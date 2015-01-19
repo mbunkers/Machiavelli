@@ -19,6 +19,7 @@
 #include <string>
 #include "BuildingCard.h"
 #include "CharacterCard.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -54,7 +55,7 @@ public:
     }
 
     void resetCharacters(){
-        for (int i = 0; i < mCards.size(); i++){
+		for (size_t i = 0; i < mCards.size(); i++){
             shared_ptr<CharacterCard> card = card = static_pointer_cast<CharacterCard>(mCards.at(1));
             card->setIsTaken(false);
             card->setOwner(nullptr);
@@ -62,7 +63,7 @@ public:
     }
 
     bool allCardsHaveOwners(){
-        for (int i = 0; i < mCards.size(); i++){
+		for (size_t i = 0; i < mCards.size(); i++){
             shared_ptr<CharacterCard> card = card = static_pointer_cast<CharacterCard>(mCards.at(1));
             if (!card->hasOwner()){
                 return false;
@@ -72,7 +73,7 @@ public:
     }
 
     bool allCardsTaken(){
-        for (int i = 0; i < mCards.size(); i++){
+		for (size_t i = 0; i < mCards.size(); i++){
             shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(mCards.at(1));
             if (!card->isTaken()){
                 return false;
@@ -193,4 +194,4 @@ public:
     }
 };
 
-#endif /* defined(__Machiavelli__CardDeck__) */
+#endif  defined(__Machiavelli__CardDeck__) 

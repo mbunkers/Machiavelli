@@ -89,7 +89,7 @@ void Game::sendStartMessage(){
 void Game::pickCharacterCard(shared_ptr<Player> player){
     vector<shared_ptr<Card>> cards = mCharacterDeck->allCards();
     player->getSocket()->write("You may choose one card\n");
-    for (int i = 0; i < cards.size(); i++){
+    for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(cards.at(i));
         if (!card->hasOwner()){
             string option = "[Draw " + to_string(i) + "]" + card->getName() + "\n";
@@ -123,7 +123,7 @@ void Game::startGame(){
 	//shuffle buildingsdeck
 
 	//Give players starting cards and gold
-    for (int i = 0; i < mPlayers.size(); i++){
+	for (size_t i = 0; i < mPlayers.size(); i++){
         shared_ptr<Player> player = mPlayers.at(i);
         player->addGold(2);
 
@@ -140,7 +140,7 @@ void Game::startGame(){
 void Game::displayCardHand(shared_ptr<Player> player){
     vector<shared_ptr<BuildingCard>> cards = player->cardHand();
     player->getSocket()->write("You have the following cards in your hand\n");
-    for (int i = 0; i < cards.size(); i++){
+	for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<BuildingCard> card = cards.at(i);
             string option = "[" + card->getCardColorString() + "] " + card->getName() + "\n";
             player->getSocket()->write(option);
@@ -150,7 +150,7 @@ void Game::displayCardHand(shared_ptr<Player> player){
 void Game::displayBuiltCards(shared_ptr<Player> player){
     vector<shared_ptr<BuildingCard>> cards = player->builtCards();
     player->getSocket()->write("You have the following cards built.\n");
-    for (int i = 0; i < cards.size(); i++){
+	for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<BuildingCard> card = cards.at(i);
         string option = "[" + card->getCardColorString() + "] " + card->getName() + "\n";
         player->getSocket()->write(option);
@@ -231,7 +231,7 @@ void Game::endGame(){
 
 shared_ptr<Player> Game::getKing(){
     vector<shared_ptr<Card>> cards = mCharacterDeck->allCards();
-    for (int i = 0; i < cards.size(); i++){
+	for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(cards.at(i));
         if (card->getName() == "Koning"){
             return card->owner();
