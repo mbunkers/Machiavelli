@@ -204,37 +204,47 @@ void Game::selectCharactersPhase(shared_ptr<Player> player, string command){
                         if (digit > -1 && digit < 9){
                             // Actie op basis van staat
                             if (player->mState == Player::CHOOSECARD){
-                                attachPlayerToCard(player, digit);
-                                notifyOtherPlayers(player, player->getName() + " picked a card\n");
-                                player->setState(Player::DISCARDCARD);
-                                player->getSocket()->write("You must remove a card from the characterdeck");
-                                pickCharacterCard(player);
-                                player->getSocket()->write(socketDefaults::prompt);
+                                if (attachPlayerToCard(player, digit)){
+                                    notifyOtherPlayers(player, player->getName() + " picked a card\n");
+                                    player->setState(Player::DISCARDCARD);
+                                    player->getSocket()->write("You must remove a card from the characterdeck");
+                                    pickCharacterCard(player);
+                                    player->getSocket()->write(socketDefaults::prompt);
+                                }
+                                else {
+                                    player->getSocket()->write("Option not found, try again...\n");
+                                    player->getSocket()->write(socketDefaults::prompt);
+                                }
                             }
                             else {
                                 if (player->mState == Player::DISCARDCARD){
-                                    attachPlayerToCard(nullptr, digit);
-                                    notifyOtherPlayers(player, player->getName() + " removed a card from the characterdeck\n");
-                                    // Volgende speler aanwijzen
-                                    player->setState(Player::IDLE);
-                                    player->getSocket()->write("Your turn has ended\n");
-                                    if (mCharacterDeck->allCardsTaken()){
-                                        changePhase(PLAYCHARACTERS);
+                                    if (attachPlayerToCard(nullptr, digit)){
+                                        notifyOtherPlayers(player, player->getName() + " removed a card from the characterdeck\n");
+                                        // Volgende speler aanwijzen
+                                        player->setState(Player::IDLE);
+                                        player->getSocket()->write("Your turn has ended\n");
+                                        if (mCharacterDeck->allCardsTaken()){
+                                            changePhase(PLAYCHARACTERS);
+                                        }
+                                        else {
+                                            assignNextPlayerCardChoosing(player);
+                                        }
                                     }
                                     else {
-                                        assignNextPlayerCardChoosing(player);
+                                        player->getSocket()->write("Option not found, try again...\n");
+                                        player->getSocket()->write(socketDefaults::prompt);
                                     }
                                 }
                             }
                         }
                         else {
-                            player->getSocket()->write("That is not a card, try again...");
+                            player->getSocket()->write("Option not found, try again...\n");
                             player->getSocket()->write(socketDefaults::prompt);
                         }
                     }
                     else {
                         if (command != player->getName()){
-                            player->getSocket()->write("Option not found, try again...");
+                            player->getSocket()->write("Option not found, try again...\n");
                             player->getSocket()->write(socketDefaults::prompt);
                         }
                     }
@@ -244,17 +254,21 @@ void Game::selectCharactersPhase(shared_ptr<Player> player, string command){
     }
 }
 
-void Game::attachPlayerToCard(shared_ptr<Player> player, int characterIndex){
+bool Game::attachPlayerToCard(shared_ptr<Player> player, int characterIndex){
     vector<shared_ptr<Card>> cards = mCharacterDeck->allCards();
 
     for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(cards.at(i));
         if (card->priority() == characterIndex){
-            card->setOwner(player);
-            card->setIsTaken(true);
-            break;
+            if (!card->isTaken()){
+                card->setOwner(player);
+                card->setIsTaken(true);
+                return true;
+            }
+            return false;
         }
     }
+    return false;
 }
 
 void Game::assignNextPlayerCardChoosing(shared_ptr<Player> player){
@@ -272,7 +286,7 @@ void Game::assignNextPlayerCardChoosing(shared_ptr<Player> player){
     }
     notifyOtherPlayers(nextPlayer, "Now it's " + nextPlayer->getName() + "'s turn\n");
     nextPlayer->setState(Player::CHOOSECARD);
-    nextPlayer->getSocket()->write("It's your turn now");
+    nextPlayer->getSocket()->write("It's your turn now\n");
     pickCharacterCard(nextPlayer);
     nextPlayer->getSocket()->write(socketDefaults::prompt);
 }

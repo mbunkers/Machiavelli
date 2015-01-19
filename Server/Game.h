@@ -62,7 +62,7 @@ private:
     void doTurn();
     void notifyOtherPlayers(shared_ptr<Player> player,  string message);
     void assignNextPlayerCardChoosing(shared_ptr<Player> player);
-    void attachPlayerToCard(shared_ptr<Player> player, int characterIndex);
+    bool attachPlayerToCard(shared_ptr<Player> player, int characterIndex);
     shared_ptr<Player> getKing();
 
     bool is_number(const string& s);
