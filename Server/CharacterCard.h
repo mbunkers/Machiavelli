@@ -22,6 +22,7 @@ public:
     void setIsTaken(bool taken);
     void setOwner(shared_ptr<Player> player);
     shared_ptr<Player> owner();
+    int priority();
 
 private:
     int mPriority;

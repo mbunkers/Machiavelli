@@ -73,13 +73,14 @@ public:
     }
 
     bool allCardsTaken(){
-		for (size_t i = 0; i < mCards.size(); i++){
-            shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(mCards.at(1));
-            if (!card->isTaken()){
-                return false;
+        int takenCards = 0;
+        for (size_t i = 0; i < mCards.size(); i++){
+            shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(mCards.at(i));
+            if (card->isTaken()){
+                takenCards++;
             }
         }
-        return true;;
+        return takenCards == mCards.size();
     }
 
     vector<shared_ptr<Card>> allCards(){

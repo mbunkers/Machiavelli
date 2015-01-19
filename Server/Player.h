@@ -26,7 +26,17 @@ private:
     vector<shared_ptr<BuildingCard>> mBuiltCards;
     vector<shared_ptr<BuildingCard>> mCardHand;
     shared_ptr<Socket> mSocket;
+
+
 public:
+    enum states{
+        CHOOSECARD = 0,
+        DISCARDCARD = 1,
+        IDLE = 2,
+    };
+
+    enum states mState = IDLE;
+
     Player(string name, shared_ptr<Socket> socket);
     ~Player();
 
@@ -42,6 +52,7 @@ public:
     vector<shared_ptr<BuildingCard>> builtCards();
 
 	void setFirstFinished();
+    void setState(enum states newState);
 };
 
 #endif /* defined(__Machiavelli__Player__) */

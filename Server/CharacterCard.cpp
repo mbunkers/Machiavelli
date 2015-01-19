@@ -35,3 +35,7 @@ void CharacterCard::setOwner(shared_ptr<Player> player){
 shared_ptr<Player> CharacterCard::owner(){
     return mCurrentOwner;
 }
+
+int CharacterCard::priority(){
+    return mPriority;
+}
