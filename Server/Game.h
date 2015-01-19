@@ -21,7 +21,8 @@
 using namespace std;
 
 namespace socketDefaults {
-    const std::string prompt {"> \n"};
+    const string prompt {"> \n"};
+    const string endLine {"\n"};
 }
 
 class Game{
@@ -37,6 +38,8 @@ private:
 
     enum phases mCurrentPhase = SETUP;
 
+    shared_ptr<CharacterCard> mCurrentCharacter;
+
     vector<shared_ptr<Player>> mPlayers;
     shared_ptr<Player> getPlayer(shared_ptr<Socket> socket, ClientCommand command);
     shared_ptr<CardDeck<shared_ptr<CharacterCard>>> mCharacterDeck;
@@ -49,23 +52,30 @@ private:
     void startGame();
     void startRound();
     void selectCharactersPhase(shared_ptr<Player> player, string command);
-    void playCharactersPhase();
+    void playCharactersPhase(shared_ptr<CharacterCard> card, string command);
     void endRound();
     void countScoresPhase();
     void endGame();
 	void changePhase(phases);
 
     // Actions
+    void endTurn(shared_ptr<CharacterCard> card);
     void displayCardHand(shared_ptr<Player> player);
     void displayBuiltCards(shared_ptr<Player> player);
     void pickCharacterCard(shared_ptr<Player> player);
-    void doTurn();
+    void doTurn(shared_ptr<CharacterCard> card, string command);
     void notifyOtherPlayers(shared_ptr<Player> player,  string message);
     void assignNextPlayerCardChoosing(shared_ptr<Player> player);
     bool attachPlayerToCard(shared_ptr<Player> player, int characterIndex);
+    void nextPlayerTurn(shared_ptr<CharacterCard> card);
     shared_ptr<Player> getKing();
+    void notifyPlayers(string message);
+    shared_ptr<CharacterCard> whoIsNextCharacter(shared_ptr<CharacterCard> card);
 
     bool is_number(const string& s);
+    vector<string> splittedString(const string line, char delim);
+
+    void notYetImplementedMessage(shared_ptr<Player> player);
 public:
     
 

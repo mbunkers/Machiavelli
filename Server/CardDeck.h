@@ -87,8 +87,17 @@ public:
         return mCards;
     }
 
+    shared_ptr<Card> cardAtIndex(size_t index){
+        shared_ptr<Card> card = mCards.at(index);
+        return card;
+    }
+
     void addCard(shared_ptr<Card> card){
         mCards.push_back(card);
+    }
+
+    size_t size(){
+        return mCards.size();
     }
 
     void removeCard(shared_ptr<Card> card){

@@ -13,6 +13,8 @@ Player::Player(string name, shared_ptr<Socket> socket){
     mSocket = socket;
     mGold = 0;
 	mFirstFinished = false;
+    mIsKing = false;
+    mHasDoneTurnAction = false;
 }
 
 Player::~Player(){
@@ -108,4 +110,20 @@ void Player::setKing(bool isKing){
 
 bool Player::isKing(){
 	return mIsKing;
+}
+
+void Player::setHasDoneTurnAction(bool state){
+    mHasDoneTurnAction = state;
+}
+
+bool Player::hasDoneTurnAction(){
+    return mHasDoneTurnAction;
+}
+
+void Player::setHasBuild(bool hasBuilt){
+    mHasBuild = hasBuilt;
+}
+
+bool Player::hasBuild(){
+    return mHasBuild;
 }

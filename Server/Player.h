@@ -24,6 +24,9 @@ private:
     int mGold;
 	bool mFirstFinished;
 	bool mIsKing;
+    bool mHasDoneTurnAction;
+    bool mHasBuild;
+
     vector<shared_ptr<BuildingCard>> mBuiltCards;
     vector<shared_ptr<BuildingCard>> mCardHand;
     shared_ptr<Socket> mSocket;
@@ -54,6 +57,10 @@ public:
 
 	void setFirstFinished();
     void setState(enum states newState);
+    void setHasDoneTurnAction(bool state);
+    bool hasDoneTurnAction();
+    void setHasBuild(bool hasBuilt);
+    bool hasBuild();
 
 	bool isKing();
 	void setKing(bool isKing);
