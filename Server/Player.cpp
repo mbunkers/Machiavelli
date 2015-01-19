@@ -11,6 +11,7 @@
 Player::Player(string name, shared_ptr<Socket> socket){
     mName = name;
     mSocket = socket;
+    mGold = 0;
 }
 
 Player::~Player(){
@@ -32,3 +33,26 @@ string Player::getName(){
 int Player::calculateScore(){
     return 0;
 }
+
+void Player::addGold(int goldToAdd){
+    mGold += goldToAdd;
+}
+
+void Player::setGold(int newGold){
+    mGold = newGold;
+}
+int Player::gold(){
+    return mGold;
+}
+
+void Player::addCardToHand(shared_ptr<BuildingCard> card){
+    mCardHand.push_back(card);
+}
+
+vector<shared_ptr<BuildingCard>> Player::cardHand(){
+    return mCardHand;
+}
+vector<shared_ptr<BuildingCard>> Player::builtCards(){
+    return mBuiltCards;
+}
+

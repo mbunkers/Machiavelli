@@ -20,3 +20,22 @@ string Card::getName(){
 CardColor Card::getCardColor(){
     return mColor;
 }
+
+string Card::getCardColorString(){
+    switch (mColor) {
+        case YELLOW:
+            return "Yellow";
+            break;
+        case BLUE:
+            return "Blue";
+        case GREEN:
+            return "Green";
+        case RED:
+            return "Red";
+            case LILA:
+            return "Lila";
+        default:
+            return "Unknown";
+            break;
+    }
+}

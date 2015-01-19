@@ -31,3 +31,7 @@ void CharacterCard::setIsTaken(bool taken){
 void CharacterCard::setOwner(shared_ptr<Player> player){
     mCurrentOwner = player;
 }
+
+shared_ptr<Player> CharacterCard::owner(){
+    return mCurrentOwner;
+}

@@ -16,7 +16,7 @@ Game::~Game(){
     
 }
 
-string Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
+void Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
     shared_ptr<Player> player = getPlayer(socket, command);
 
     switch (mCurrentPhase){
@@ -25,7 +25,7 @@ string Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
         case STARTGAME:
             break;
         case STARTROUND:
-            selectCharactersPhase(player);
+            selectCharactersPhase(player, command.get_cmd());
             break;
         case SELECTCHARACTERS:
             break;
@@ -36,8 +36,6 @@ string Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
         default:
             break;
     }
-
-    return "";
 }
 
 shared_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket, ClientCommand command){
@@ -83,25 +81,25 @@ void Game::sendStartMessage(){
         if (player != tempPlayer){
             socket->write("The game has started and it's " + player->getName() + "'s turn!\n");
         }
-        else {
-            socket->write("The game is started and it's your turn.\n");
-        }
     }
 }
 
 
 
 void Game::pickCharacterCard(shared_ptr<Player> player){
-
     vector<shared_ptr<Card>> cards = mCharacterDeck->allCards();
     player->getSocket()->write("You may choose one card\n");
     for (int i = 0; i < cards.size(); i++){
         shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(cards.at(i));
         if (!card->hasOwner()){
-            string option = "[" + to_string(i) + "]" + card->getName();
+            string option = "[Draw " + to_string(i) + "]" + card->getName() + "\n";
             player->getSocket()->write(option);
         }
     }
+
+    // Opties om kaarten in te zien
+    player->getSocket()->write("[See Hand] Display the card in your hands\n");
+    player->getSocket()->write("[See Buildings] Display the buildings you have built\n");
 
     player->getSocket()->write("> \n");
 
@@ -121,31 +119,78 @@ void Game::startGame(){
 	if (!loadDecks()){
 		sendErrorMessage();
 	}
+    mBuildingDeck->shuffle();
 	//shuffle buildingsdeck
 
 	//Give players starting cards and gold
+    for (int i = 0; i < mPlayers.size(); i++){
+        shared_ptr<Player> player = mPlayers.at(i);
+        player->addGold(2);
+
+        for (int j = 0; j < 3; j++){
+            player->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
+        }
+    }
 
 	// Notify all players that the game has started
 	sendStartMessage();
 	changePhase(STARTROUND);
 }
 
+void Game::displayCardHand(shared_ptr<Player> player){
+    vector<shared_ptr<BuildingCard>> cards = player->cardHand();
+    player->getSocket()->write("You have the following cards in your hand\n");
+    for (int i = 0; i < cards.size(); i++){
+        shared_ptr<BuildingCard> card = cards.at(i);
+            string option = "[" + card->getCardColorString() + "] " + card->getName() + "\n";
+            player->getSocket()->write(option);
+    }
+}
+
+void Game::displayBuiltCards(shared_ptr<Player> player){
+    vector<shared_ptr<BuildingCard>> cards = player->builtCards();
+    player->getSocket()->write("You have the following cards built.\n");
+    for (int i = 0; i < cards.size(); i++){
+        shared_ptr<BuildingCard> card = cards.at(i);
+        string option = "[" + card->getCardColorString() + "] " + card->getName() + "\n";
+        player->getSocket()->write(option);
+    }
+}
+
 void Game::startRound(){
 	// Shuffle characterdeck
 	// Set first player.
-	// if king is avialable that player is first. Else first in player vector.
+	// if king is available that player is first. Else first in player vector.
 	// Notify players who starts next phase.
 	changePhase(SELECTCHARACTERS);
 }
 
-void Game::selectCharactersPhase(shared_ptr<Player> player){
+void Game::selectCharactersPhase(shared_ptr<Player> player, string command){
 	//(LOOP)
 
 	//First player picks his character and removes another.
 	//first player notifies second player to pick from remaining characters
 	//second player notifies first player to pick from remaining characters.
 	//first player notifies second player again.
-	pickCharacterCard(player);
+    if (command == "See Hand"){
+        displayCardHand(player);
+    }
+    else{
+        if (command == "See Buildings"){
+            displayBuiltCards(player);
+        }
+        else {
+            if (command == ""){
+                pickCharacterCard(player);
+            }
+            else {
+                if (command != player->getName()){
+                    player->getSocket()->write("Option not found, try again...");
+                    player->getSocket()->write("> \n");
+                }
+            }
+        }
+    }
 
     if (mCharacterDeck->allCardsTaken()){
         changePhase(STARTROUND);
@@ -178,16 +223,30 @@ void Game::endGame(){
 
 }
 
+shared_ptr<Player> Game::getKing(){
+    vector<shared_ptr<Card>> cards = mCharacterDeck->allCards();
+    for (int i = 0; i < cards.size(); i++){
+        shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(cards.at(i));
+        if (card->getName() == "Koning"){
+            return card->owner();
+        }
+    }
+    return mPlayers.at(0);
+}
 
 void Game::changePhase(phases nextPhase){
-
+    mCurrentPhase = nextPhase;
+    // Find king or first player
+    shared_ptr<Player> king = getKing();
 	switch (nextPhase){
 	case STARTGAME:
             startGame();
 		break;
 	case STARTROUND:
+            startRound();
 		break;
 	case SELECTCHARACTERS:
+            selectCharactersPhase(king, "");
 		break;
 	case PLAYCHARACTERS:
 		break;

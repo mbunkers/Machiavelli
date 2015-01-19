@@ -34,9 +34,7 @@ void consume_command() // runs in its own thread
         shared_ptr<Socket> client {command.get_client()};
         if (client) {
             try {
-                string returnValue = mGame->handleRequest(client, command);
-                //client->write(returnValue);
-                //client->write("\n");
+                mGame->handleRequest(client, command);
                 
             } catch (const exception& ex) {
                 client->write("Sorry, ");

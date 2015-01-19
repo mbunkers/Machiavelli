@@ -33,7 +33,7 @@ public:
 
     CardDeck<T>(string name){
         if (loadCards(name)){
-            shuffle();
+            
         }
     }
 
@@ -95,6 +95,12 @@ public:
             mCards.erase(it);
     }
 
+    shared_ptr<Card> drawCard(){
+        shared_ptr<Card> card = mCards.at(mCards.size() - 1);
+        mCards.pop_back();
+        return card;
+    }
+
     bool loadCards(string name){
         string line;
         ifstream cardsFile(name);
@@ -112,12 +118,10 @@ public:
                     shared_ptr<CharacterCard> card = createCharacterCard(line);
                     addCard(card);
                 }
-
             }
             cardsFile.close();
         }
         else{
-            perror("Error");
             return false;
         }
         return true;
@@ -126,13 +130,15 @@ public:
     shared_ptr<BuildingCard> createBuildingCard(string line){
         string name;
         int value;
-        enum CardColor color;
+        enum CardColor color = UNKNOWN;
 
         vector<string> data = splittedString(line, ';');
 
         name = data.at(0);
         value = atoi(data.at(1).c_str());
-        color = colorForString(data.at(2));
+        if (data.size() > 2){
+            color = colorForString(data.at(2));
+        }
 
         return make_shared<BuildingCard>(name, value, color);
     }
@@ -140,13 +146,15 @@ public:
     shared_ptr<CharacterCard> createCharacterCard(string line){
         string name;
         int priority;
-        enum CardColor color;
+        enum CardColor color = UNKNOWN;
 
         vector<string> data = splittedString(line, ';');
 
         priority = atoi(data.at(0).c_str());
         name = data.at(1);
-        color = colorForString(data.at(2));
+        if (data.size() > 2){
+            color = colorForString(data.at(2));
+        }
 
         return make_shared<CharacterCard>(name, priority, color);
     }

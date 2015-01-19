@@ -29,6 +29,9 @@ public:
 
     CardColor getCardColor();
     string getName();
+
+    string getCardColorString();
+
 private:
     string mName;
     CardColor mColor;

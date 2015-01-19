@@ -44,22 +44,25 @@ private:
     // Phases
     void startGame();
     void startRound();
-    void selectCharactersPhase(shared_ptr<Player> player);
+    void selectCharactersPhase(shared_ptr<Player> player, string command);
     void playCharactersPhase();
     void endRound();
     void countScoresPhase();
     void endGame();
-
 	void changePhase(phases);
+
+    // Actions
+    void displayCardHand(shared_ptr<Player> player);
+    void displayBuiltCards(shared_ptr<Player> player);
+    void pickCharacterCard(shared_ptr<Player> player);
+    void doTurn();
+    shared_ptr<Player> getKing();
 public:
     
 
     Game();
     ~Game();
-    string handleRequest(shared_ptr<Socket> socket, ClientCommand command);
-
-    void pickCharacterCard(shared_ptr<Player> player);
-    void doTurn();
+    void handleRequest(shared_ptr<Socket> socket, ClientCommand command);
 };
 
 #endif /* defined(__Machiavelli__Game__) */

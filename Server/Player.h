@@ -33,6 +33,12 @@ public:
     shared_ptr<Socket> getSocket();
     string getName();
     int calculateScore();
+    void addGold(int goldToAdd);
+    void setGold(int newGold);
+    int gold();
+    void addCardToHand(shared_ptr<BuildingCard> card);
+    vector<shared_ptr<BuildingCard>> cardHand();
+    vector<shared_ptr<BuildingCard>> builtCards();
 };
 
 #endif /* defined(__Machiavelli__Player__) */
