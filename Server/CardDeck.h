@@ -194,4 +194,4 @@ public:
     }
 };
 
-#endif  defined(__Machiavelli__CardDeck__) 
+#endif /* defined(__Machiavelli__CardDeck__) */
