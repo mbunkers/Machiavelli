@@ -20,6 +20,10 @@
 
 using namespace std;
 
+namespace socketDefaults {
+    const std::string prompt {"> \n"};
+}
+
 class Game{
 private:
 	enum phases{
@@ -56,7 +60,12 @@ private:
     void displayBuiltCards(shared_ptr<Player> player);
     void pickCharacterCard(shared_ptr<Player> player);
     void doTurn();
+    void notifyOtherPlayers(shared_ptr<Player> player,  string message);
+    void assignNextPlayerCardChoosing(shared_ptr<Player> player);
+    void attachPlayerToCard(shared_ptr<Player> player, int characterIndex);
     shared_ptr<Player> getKing();
+
+    bool is_number(const string& s);
 public:
     
 

@@ -97,3 +97,7 @@ vector<shared_ptr<BuildingCard>> Player::builtCards(){
 void Player::setFirstFinished(){
 	mFirstFinished = true;
 }
+
+void Player::setState(enum states newState){
+    mState = newState;
+}
