@@ -63,6 +63,7 @@ int main(int argc, const char * argv[]) {
                 if (input == "> "){
                     cout << "\n > ";
                     getline(cin, output);
+					socket->write(output + "\r\n");
                 }
                 else{
 				//No output request.
@@ -87,10 +88,6 @@ int main(int argc, const char * argv[]) {
 						break;
 					}
                 }	
-				//If output was requested then send it back to the server.
-				if (!output.empty()){
-					socket->write(output + "\r\n");
-				}
             }
         }
     } catch (exception exception) {

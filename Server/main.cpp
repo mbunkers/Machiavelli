@@ -32,19 +32,29 @@ void consume_command() // runs in its own thread
         ClientCommand command;
         queue.get(command); // will block here unless there still are command objects in the queue
         shared_ptr<Socket> client {command.get_client()};
-        if (client) {
-            try {
-                mGame->handleRequest(client, command);
-                
-            } catch (const exception& ex) {
-                client->write("Sorry, ");
-                client->write(ex.what());
-                client->write("\n");
-                client->write(socketexample::prompt);
-            } catch (...) {
-                client->write("Sorry, something went wrong during handling of your request.\n");
-                client->write(socketexample::prompt);
-            }
+        if (client) {			
+			try {
+				string test = command.get_cmd();
+				if (!command.get_cmd().empty()){
+					mGame->handleRequest(client, command);
+				}
+				else{
+					client->write("No input, try again.\n");
+					client->write(socketexample::prompt);
+				}
+			}
+			catch (const exception& ex) {
+				client->write("Sorry, ");
+				client->write(ex.what());
+				client->write("\n");
+				client->write(socketexample::prompt);
+			}
+			catch (...) {
+				client->write("Sorry, something went wrong during handling of your request.\n");
+				client->write(socketexample::prompt);
+			}
+			
+			
         } else {
             cerr << "trying to handle command for client who has disappeared...\n";
         }
