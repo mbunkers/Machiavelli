@@ -163,19 +163,25 @@ void Game::playCharactersPhase(){
 			// next card
 	//if all cards played -> finish
 
-    changePhase(STARTGAME);
+    changePhase(STARTROUND);
 }
 
 void Game::endRound(){
 
 }
 
-void Game::countScoresPhase(){
 
+void Game::countScoresPhase(){
+		// (loop) for each player getscore()
+	// put into map  "player" "score" 
+	//sort based on scores 
+	//notify all players the scores in order from high to low and to who the scores belongs.
+	
+		
 }
 
 void Game::endGame(){
-
+	//Notify players that the game has finished they should restart the program to start a new game.
 }
 
 
