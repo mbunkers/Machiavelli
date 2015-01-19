@@ -101,8 +101,6 @@ void Game::pickCharacterCard(shared_ptr<Player> player){
     player->getSocket()->write("[See Hand] Display the card in your hands\n");
     player->getSocket()->write("[See Buildings] Display the buildings you have built\n");
 
-    player->getSocket()->write("> \n");
-
     // Loop voor character kaarten typen
     // Alle character kaarten zonder owner in string bijhouden
 }
@@ -174,14 +172,17 @@ void Game::selectCharactersPhase(shared_ptr<Player> player, string command){
 	//first player notifies second player again.
     if (command == "See Hand"){
         displayCardHand(player);
+        player->getSocket()->write("> \n");
     }
     else{
         if (command == "See Buildings"){
             displayBuiltCards(player);
+            player->getSocket()->write("> \n");
         }
         else {
             if (command == ""){
                 pickCharacterCard(player);
+                player->getSocket()->write("> \n");
             }
             else {
                 if (command != player->getName()){
