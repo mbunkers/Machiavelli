@@ -15,6 +15,8 @@
 class BuildingCard : public Card{
 public:
     BuildingCard(string name, int value, CardColor color);
+	int getValue();
+	void setValue(int value);
 //    ~BuildingCard();
 private:
     int mValue;

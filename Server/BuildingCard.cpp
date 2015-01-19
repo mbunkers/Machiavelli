@@ -12,3 +12,10 @@ BuildingCard::BuildingCard(string name, int value, CardColor color): Card(name, 
     mValue = value;
 }
 
+int BuildingCard::getValue(){
+	return mValue;
+}
+
+void BuildingCard::setValue(int value){
+	mValue = value;
+}

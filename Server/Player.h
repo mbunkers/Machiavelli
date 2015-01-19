@@ -22,6 +22,7 @@ class Player{
 private:
     string mName;
     int mGold;
+	bool mFirstFinished;
     vector<shared_ptr<BuildingCard>> mBuiltCards;
     vector<shared_ptr<BuildingCard>> mCardHand;
     shared_ptr<Socket> mSocket;
@@ -39,6 +40,8 @@ public:
     void addCardToHand(shared_ptr<BuildingCard> card);
     vector<shared_ptr<BuildingCard>> cardHand();
     vector<shared_ptr<BuildingCard>> builtCards();
+
+	void setFirstFinished();
 };
 
 #endif /* defined(__Machiavelli__Player__) */
