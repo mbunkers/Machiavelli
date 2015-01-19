@@ -101,3 +101,11 @@ void Player::setFirstFinished(){
 void Player::setState(enum states newState){
     mState = newState;
 }
+
+void Player::setKing(bool isKing){
+	mIsKing = isKing;
+}
+
+bool Player::isKing(){
+	return mIsKing;
+}

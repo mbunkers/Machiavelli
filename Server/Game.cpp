@@ -177,8 +177,6 @@ void Game::notifyOtherPlayers(shared_ptr<Player> player,  string message){
 }
 
 void Game::selectCharactersPhase(shared_ptr<Player> player, string command){
-	//(LOOP)
-
 	//First player picks his character and removes another.
 	//first player notifies second player to pick from remaining characters
 	//second player notifies first player to pick from remaining characters.
@@ -330,18 +328,11 @@ void Game::endGame(){
 }
 
 shared_ptr<Player> Game::getKing(){
-    vector<shared_ptr<Card>> cards = mCharacterDeck->allCards();
-	for (size_t i = 0; i < cards.size(); i++){
-        shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(cards.at(i));
-        if (card->getName() == "Koning"){
-            if (card->hasOwner()){
-                return card->owner();
-            }
-            else {
-                break;
-            }
-        }
-    }
+	for (size_t i = 0; i < mPlayers.size(); i++){
+		if (mPlayers[i]->isKing()){
+			return mPlayers[i];
+		}
+	}
     return mPlayers.at(0);
 }
 
@@ -362,7 +353,6 @@ void Game::changePhase(phases nextPhase){
             selectCharactersPhase(king, "");
 		break;
 	case PLAYCHARACTERS:
-            king = getKing();
             playCharactersPhase();
 		break;
 	case ENDGAME:

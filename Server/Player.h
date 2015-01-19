@@ -23,6 +23,7 @@ private:
     string mName;
     int mGold;
 	bool mFirstFinished;
+	bool mIsKing;
     vector<shared_ptr<BuildingCard>> mBuiltCards;
     vector<shared_ptr<BuildingCard>> mCardHand;
     shared_ptr<Socket> mSocket;
@@ -53,6 +54,9 @@ public:
 
 	void setFirstFinished();
     void setState(enum states newState);
+
+	bool isKing();
+	void setKing(bool isKing);
 };
 
 #endif /* defined(__Machiavelli__Player__) */
