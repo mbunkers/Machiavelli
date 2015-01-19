@@ -14,12 +14,22 @@
 
 class BuildingCard : public Card{
 public:
-    BuildingCard(string name, int value, CardColor color);
+    BuildingCard(string name, int value, CardColor color, string flavorText, int specialFunction);
 	int getValue();
+	int getFunctionId();
+	int getBuildPrice();
 	void setValue(int value);
+	bool hasSpecialFunction();
+	//void doSpecialFunction();
+	//int getFunctionId();
+	string getText();
 //    ~BuildingCard();
 private:
+	void setFunction(int functionId);
+	string mFlavorText;
+	int mSpecialFunction;
     int mValue;
+	int mPrice;
 };
 
 #endif /* defined(__Machiavelli__BuildingCard__) */

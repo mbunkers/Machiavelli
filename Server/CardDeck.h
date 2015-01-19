@@ -132,6 +132,8 @@ public:
         string name;
         int value;
         enum CardColor color = UNKNOWN;
+		string flavorText = "";
+		int specialFunction = 0;
 
         vector<string> data = splittedString(line, ';');
 
@@ -140,8 +142,14 @@ public:
         if (data.size() > 2){
             color = colorForString(data.at(2));
         }
+		if (data.size() > 3){
+			flavorText = data.at(3);
+		}
+		if (data.size() > 4){
+			specialFunction = atoi(data.at(4).c_str());
+		}
 
-        return make_shared<BuildingCard>(name, value, color);
+        return make_shared<BuildingCard>(name, value, color, flavorText, specialFunction);
     }
 
     shared_ptr<CharacterCard> createCharacterCard(string line){
