@@ -52,6 +52,7 @@ public:
     void setGold(int newGold);
     int gold();
     void addCardToHand(shared_ptr<BuildingCard> card);
+    bool buildCard(shared_ptr<BuildingCard> card);
     vector<shared_ptr<BuildingCard>> cardHand();
     vector<shared_ptr<BuildingCard>> builtCards();
 

@@ -127,3 +127,14 @@ void Player::setHasBuild(bool hasBuilt){
 bool Player::hasBuild(){
     return mHasBuild;
 }
+
+bool Player::buildCard(shared_ptr<BuildingCard> card){
+    if (card->getBuildPrice() > mGold){
+        return false;
+    }
+
+    mBuiltCards.push_back(card);
+    mGold -= card->getBuildPrice();
+
+    return true;
+}

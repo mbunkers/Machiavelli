@@ -444,6 +444,7 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
                             if (is_number(splittedCommand.at(1))){
                                 int number = atoi(splittedCommand.at(1).c_str());
                                 if (number < card->owner()->cardHand().size()){
+                                    card->owner();
                                     notYetImplementedMessage(card->owner());
                                 }
                                 else {
