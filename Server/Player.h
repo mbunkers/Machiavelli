@@ -26,6 +26,7 @@ private:
 	bool mIsKing;
     bool mHasDoneTurnAction;
     bool mHasBuild;
+	bool mHasDrawnCards;
 
     vector<shared_ptr<BuildingCard>> mBuiltCards;
     vector<shared_ptr<BuildingCard>> mCardHand;
@@ -62,6 +63,9 @@ public:
     bool hasDoneTurnAction();
     void setHasBuild(bool hasBuilt);
     bool hasBuild();
+	void setHasDrawnCards(bool hasDrawn);
+	bool hasDrawnCards();
+	void removeCard(int index);
 
 	size_t getNumberOfBuildings();
 	bool isKing();
