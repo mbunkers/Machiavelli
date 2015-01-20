@@ -17,6 +17,7 @@ Player::Player(string name, shared_ptr<Socket> socket){
 	mFirstFinished = false;
     mIsKing = false;
     mHasDoneTurnAction = false;
+	mHasDrawnCards = false;
 }
 
 Player::~Player(){
@@ -145,4 +146,16 @@ bool Player::buildCard(shared_ptr<BuildingCard> card){
 
 size_t Player::getNumberOfBuildings(){
 	return mBuiltCards.size();
+}
+
+void Player::setHasDrawnCards(bool hasDrawn){
+	mHasDrawnCards = hasDrawn;
+}
+
+bool Player::hasDrawnCards(){
+	return mHasDrawnCards;
+}
+
+void Player::removeCard(int i){
+	mCardHand.erase(mCardHand.end() - i);
 }

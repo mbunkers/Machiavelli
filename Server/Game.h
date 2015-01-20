@@ -71,6 +71,7 @@ private:
     shared_ptr<Player> getKing();
     void notifyPlayers(string message);
     shared_ptr<CharacterCard> whoIsNextCharacter(shared_ptr<CharacterCard> card);
+	void removeDrawnCards(shared_ptr<CharacterCard> card, string command);
 
     bool is_number(const string& s);
     vector<string> splittedString(const string line, char delim);
