@@ -38,7 +38,11 @@ int InputHandler::handleInput(string input){
 		handleMessage = 0;
 		setTextColor(YELLOW);
 		cout << artGen.getTitle().c_str();
-		setTextColor(WHITE);
+#ifdef __APPLE__
+		setTextColor(GREEN);
+#else
+        setTextColor(WHITE);
+#endif
 		break;
 	case TABLE:
 		handleMessage = 0;
@@ -80,9 +84,10 @@ void InputHandler::setTextColor(int colorCode){
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console, colorCode);
 #endif
+
 #if defined(__APPLE__) || defined(__linux__)
-	if(colorCode < 10){
-		cout << "\x1B[" << colorCode << "m";
-	}
+    if(colorCode < 40){
+        cout << "\x1B[" << colorCode << "m";
+    }
 #endif
 }

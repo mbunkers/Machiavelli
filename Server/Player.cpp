@@ -7,6 +7,7 @@
 //
 
 #include "Player.h"
+#include <algorithm>
 
 Player::Player(string name, shared_ptr<Socket> socket){
     mName = name;

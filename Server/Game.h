@@ -76,6 +76,14 @@ private:
     vector<string> splittedString(const string line, char delim);
 
     void notYetImplementedMessage(shared_ptr<Player> player);
+
+    void takeGold(shared_ptr<CharacterCard> card);
+    void drawCards(shared_ptr<CharacterCard> card);
+    void build(shared_ptr<CharacterCard> card, vector<string> commands);
+    void checkPlayer(shared_ptr<CharacterCard> card, vector<string> commands);
+
+    void pickCard(shared_ptr<Player> player, int command);
+    void removeCard(shared_ptr<Player> player, int command);
 public:
     
 
