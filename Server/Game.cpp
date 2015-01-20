@@ -160,7 +160,7 @@ void Game::displayBuiltCards(shared_ptr<Player> player){
 }
 
 void Game::startRound(){
-	// Notify players who starts next phase.
+	// Notify players who starts next phase.	
     vector<shared_ptr<Card>> cards = mCharacterDeck->allCards();
 
     for (size_t i = 0; i < mCharacterDeck->size(); i++){
@@ -318,7 +318,7 @@ bool Game::is_number(const string& s){
 }
 
 shared_ptr<CharacterCard> Game::whoIsNextCharacter(shared_ptr<CharacterCard> card){
-    int newPriority = card->priority() + 1;
+    size_t newPriority = card->priority() + 1;
     shared_ptr<CharacterCard> newCard = nullptr;
     if (newPriority <= mCharacterDeck->size()){
         for (size_t i = 0; i < mCharacterDeck->size(); i++){
@@ -499,57 +499,108 @@ void Game::checkPlayer(shared_ptr<CharacterCard> card, vector<string> commands){
 }
 
 void Game::doTurn(shared_ptr<CharacterCard> card, string command){
-    if (command == "End turn"){
-        endTurn(card);
-    }
-    else {
-        if (command == "Draw cards"){
-            drawCards(card);
-        }
-        else {
-            if (command == "Take gold"){
-                takeGold(card);
-            }
-            else {
-                if (command == "See hand"){
-                    displayCardHand(card->owner());
-                    card->owner()->getSocket()->write(socketDefaults::prompt);
-                }
-                else {
-                    if (command == "See buildings"){
-                        displayBuiltCards(card->owner());
-                        card->owner()->getSocket()->write(socketDefaults::prompt);
-                    }
-                    else {
-                        vector<string> splittedCommand = splittedString(command, char(32));
+	if (command == "End turn"){
+		endTurn(card);
+	}
+	else {
+		if (command == "Draw cards"){
+			drawCards(card);
+		}
+		else {
+			if (command == "Take gold"){
+				takeGold(card);
+			}
+			else {
+				if (command == "See hand"){
+					displayCardHand(card->owner());
+					card->owner()->getSocket()->write(socketDefaults::prompt);
+				}
+				else {
+					if (command == "See buildings"){
+						displayBuiltCards(card->owner());
+						card->owner()->getSocket()->write(socketDefaults::prompt);
+					}
+					else {
+						vector<string> splittedCommand = splittedString(command, char(32));
 
-                        if (splittedCommand.size() == 2){
-                            if (splittedCommand.at(0) == "Build"){
-                                build(card, splittedCommand);
-                            }
-                            else {
-                                if (splittedCommand.at(0) == "Check"){
-                                    checkPlayer(card, splittedCommand);
-                                }
-                                else {
-                                    card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-                                    card->owner()->getSocket()->write(socketDefaults::prompt);
-                                }
-                            }
-                        }
-                        else {
-                            card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-                            card->owner()->getSocket()->write(socketDefaults::prompt);
-                        }
-                    }
-                }
-            }
-        }
-    }
+						if (splittedCommand.size() == 2){
+							if (splittedCommand.at(0) == "Build"){
+								if (!card->owner()->hasBuild()){
+									if (is_number(splittedCommand.at(1))){
+										size_t number = atoi(splittedCommand.at(1).c_str());
+										if (number < card->owner()->cardHand().size()){
+											shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(number);
+											if (card->owner()->buildCard(buildingCard)){
+												card->owner()->getSocket()->write("You have build your building" + socketDefaults::endLine);
+												card->owner()->getSocket()->write(socketDefaults::prompt);
+
+												notifyOtherPlayers(card->owner(), card->owner()->getName() + " has built " + buildingCard->getName() + "(" + buildingCard->getCardColorString() + ") cost: " + to_string(buildingCard->getBuildPrice()) + " value: " + to_string(buildingCard->getValue()) + socketDefaults::endLine);
+											}
+											else {
+												card->owner()->getSocket()->write("You don't have a sufficient amount of gold..." + socketDefaults::endLine);
+												card->owner()->getSocket()->write(socketDefaults::prompt);
+											}
+										}
+										else {
+											card->owner()->getSocket()->write("That is not a card, try again..." + socketDefaults::endLine);
+											card->owner()->getSocket()->write(socketDefaults::prompt);
+										}
+									}
+									else {
+										card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+										card->owner()->getSocket()->write(socketDefaults::prompt);
+									}
+								}
+								else {
+									card->owner()->getSocket()->write("You have already built a building..." + socketDefaults::endLine);
+									card->owner()->getSocket()->write(socketDefaults::prompt);
+								}
+							}
+							else {
+								vector<string> splittedCommand = splittedString(command, char(32));
+
+								if (splittedCommand.size() == 2){
+									if (splittedCommand.at(0) == "Build"){
+										build(card, splittedCommand);
+									}
+									else {
+										if (splittedCommand.at(0) == "Check"){
+											checkPlayer(card, splittedCommand);
+										}
+										else {
+											card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+											card->owner()->getSocket()->write(socketDefaults::prompt);
+										}
+									}
+								}
+								else {
+									card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+									card->owner()->getSocket()->write(socketDefaults::prompt);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 void Game::endRound(){
-    notYetImplementedMessage(mCurrentCharacter->owner());
+	//check if a player has 8 or more building
+	bool finishGame = false;
+	for (size_t i = 0; i < mPlayers.size(); i++){
+		if (mPlayers[i]->getNumberOfBuildings() > 7){
+			finishGame = true;
+		}
+	}
+
+	if (finishGame){
+		endGame();
+	}
+	else{
+		changePhase(STARTROUND);
+	}
 }
 
 
@@ -584,9 +635,11 @@ void Game::changePhase(phases nextPhase){
             startGame();
 		break;
 	case STARTROUND:
+
             startRound();
 		break;
 	case SELECTCHARACTERS:
+
             king = getKing();
             king->setState(Player::CHOOSECARD);
             selectCharactersPhase(king, "");

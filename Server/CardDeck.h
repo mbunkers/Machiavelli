@@ -20,6 +20,7 @@
 #include "BuildingCard.h"
 #include "CharacterCard.h"
 #include <algorithm>
+#include <time.h>
 
 using namespace std;
 
@@ -208,6 +209,7 @@ public:
     }
 
     void shuffle(){
+		srand(time(0));
         random_shuffle ( mCards.begin(), mCards.end());
     }
 };

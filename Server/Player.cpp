@@ -13,6 +13,7 @@ Player::Player(string name, shared_ptr<Socket> socket){
     mName = name;
     mSocket = socket;
     mGold = 0;
+	mHasBuild = false;
 	mFirstFinished = false;
     mIsKing = false;
     mHasDoneTurnAction = false;
@@ -136,7 +137,12 @@ bool Player::buildCard(shared_ptr<BuildingCard> card){
 
     mGold -= card->getBuildPrice();
     mBuiltCards.push_back(card);
+	
     mCardHand.erase(remove(mCardHand.begin(), mCardHand.end(), card), mCardHand.end());
 
     return true;
+}
+
+int Player::getNumberOfBuildings(){
+	return mBuiltCards.size();
 }
