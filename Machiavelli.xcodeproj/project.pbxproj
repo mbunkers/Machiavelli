@@ -15,6 +15,15 @@
 		0C32EFE71A4181E300679A6A /* CharacterCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE51A4181E300679A6A /* CharacterCard.cpp */; };
 		0C32EFEA1A4182CA00679A6A /* BuildingCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE81A4182CA00679A6A /* BuildingCard.cpp */; };
 		0C9929BF1A6E91A40084AD04 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C307D121A671D5B005649FC /* CoreFoundation.framework */; };
+		0CA388081A6EE05F0038B151 /* King.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CA388061A6EE05F0038B151 /* King.cpp */; };
+		0CA3880B1A6EE0720038B151 /* Magician.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CA388091A6EE0720038B151 /* Magician.cpp */; };
+		0CA3880E1A6EE07F0038B151 /* Thief.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CA3880C1A6EE07F0038B151 /* Thief.cpp */; };
+		0CA388111A6EE0CA0038B151 /* Assassin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CA3880F1A6EE0CA0038B151 /* Assassin.cpp */; };
+		0CA388141A6EE0F10038B151 /* Merchant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CA388121A6EE0F10038B151 /* Merchant.cpp */; };
+		0CA388171A6EE1070038B151 /* Architect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CA388151A6EE1070038B151 /* Architect.cpp */; };
+		0CA3881A1A6EE13D0038B151 /* Condottiere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CA388181A6EE13D0038B151 /* Condottiere.cpp */; };
+		0CA3881D1A6EE1680038B151 /* Preacher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CA3881B1A6EE1680038B151 /* Preacher.cpp */; };
+		0CA388201A6EE3B50038B151 /* CardFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CA3881E1A6EE3B50038B151 /* CardFactory.cpp */; };
 		0CB093F61A386669001688BF /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F11A386669001688BF /* Socket.cpp */; };
 		0CB093F71A386669001688BF /* throw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F41A386669001688BF /* throw.cpp */; };
 		0CB093F91A3866AF001688BF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F81A3866AF001688BF /* main.cpp */; };
@@ -62,6 +71,24 @@
 		0C32EFE61A4181E300679A6A /* CharacterCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterCard.h; sourceTree = "<group>"; };
 		0C32EFE81A4182CA00679A6A /* BuildingCard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildingCard.cpp; sourceTree = "<group>"; };
 		0C32EFE91A4182CA00679A6A /* BuildingCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildingCard.h; sourceTree = "<group>"; };
+		0CA388061A6EE05F0038B151 /* King.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = King.cpp; sourceTree = "<group>"; };
+		0CA388071A6EE05F0038B151 /* King.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = King.h; sourceTree = "<group>"; };
+		0CA388091A6EE0720038B151 /* Magician.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Magician.cpp; sourceTree = "<group>"; };
+		0CA3880A1A6EE0720038B151 /* Magician.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magician.h; sourceTree = "<group>"; };
+		0CA3880C1A6EE07F0038B151 /* Thief.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thief.cpp; sourceTree = "<group>"; };
+		0CA3880D1A6EE07F0038B151 /* Thief.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thief.h; sourceTree = "<group>"; };
+		0CA3880F1A6EE0CA0038B151 /* Assassin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assassin.cpp; sourceTree = "<group>"; };
+		0CA388101A6EE0CA0038B151 /* Assassin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assassin.h; sourceTree = "<group>"; };
+		0CA388121A6EE0F10038B151 /* Merchant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Merchant.cpp; sourceTree = "<group>"; };
+		0CA388131A6EE0F10038B151 /* Merchant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Merchant.h; sourceTree = "<group>"; };
+		0CA388151A6EE1070038B151 /* Architect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Architect.cpp; sourceTree = "<group>"; };
+		0CA388161A6EE1070038B151 /* Architect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Architect.h; sourceTree = "<group>"; };
+		0CA388181A6EE13D0038B151 /* Condottiere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Condottiere.cpp; sourceTree = "<group>"; };
+		0CA388191A6EE13D0038B151 /* Condottiere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condottiere.h; sourceTree = "<group>"; };
+		0CA3881B1A6EE1680038B151 /* Preacher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Preacher.cpp; sourceTree = "<group>"; };
+		0CA3881C1A6EE1680038B151 /* Preacher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preacher.h; sourceTree = "<group>"; };
+		0CA3881E1A6EE3B50038B151 /* CardFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CardFactory.cpp; sourceTree = "<group>"; };
+		0CA3881F1A6EE3B50038B151 /* CardFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardFactory.h; sourceTree = "<group>"; };
 		0CB093DB1A38416D001688BF /* Machiavelli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Machiavelli; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB093E91A386611001688BF /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Server; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CB093F01A386669001688BF /* ClientCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientCommand.h; sourceTree = "<group>"; };
@@ -122,6 +149,7 @@
 		0C32EFE41A41810100679A6A /* Cards */ = {
 			isa = PBXGroup;
 			children = (
+				0CA388051A6EE03A0038B151 /* CharacterCards */,
 				0C32EFDC1A417E3F00679A6A /* CardDeck.h */,
 				0C32EFE01A4180D000679A6A /* Card.cpp */,
 				0C32EFE11A4180D000679A6A /* Card.h */,
@@ -129,8 +157,33 @@
 				0C32EFE61A4181E300679A6A /* CharacterCard.h */,
 				0C32EFE81A4182CA00679A6A /* BuildingCard.cpp */,
 				0C32EFE91A4182CA00679A6A /* BuildingCard.h */,
+				0CA3881E1A6EE3B50038B151 /* CardFactory.cpp */,
+				0CA3881F1A6EE3B50038B151 /* CardFactory.h */,
 			);
 			name = Cards;
+			sourceTree = "<group>";
+		};
+		0CA388051A6EE03A0038B151 /* CharacterCards */ = {
+			isa = PBXGroup;
+			children = (
+				0CA388061A6EE05F0038B151 /* King.cpp */,
+				0CA388071A6EE05F0038B151 /* King.h */,
+				0CA388091A6EE0720038B151 /* Magician.cpp */,
+				0CA3880A1A6EE0720038B151 /* Magician.h */,
+				0CA3880C1A6EE07F0038B151 /* Thief.cpp */,
+				0CA3880D1A6EE07F0038B151 /* Thief.h */,
+				0CA3880F1A6EE0CA0038B151 /* Assassin.cpp */,
+				0CA388101A6EE0CA0038B151 /* Assassin.h */,
+				0CA388121A6EE0F10038B151 /* Merchant.cpp */,
+				0CA388131A6EE0F10038B151 /* Merchant.h */,
+				0CA388151A6EE1070038B151 /* Architect.cpp */,
+				0CA388161A6EE1070038B151 /* Architect.h */,
+				0CA388181A6EE13D0038B151 /* Condottiere.cpp */,
+				0CA388191A6EE13D0038B151 /* Condottiere.h */,
+				0CA3881B1A6EE1680038B151 /* Preacher.cpp */,
+				0CA3881C1A6EE1680038B151 /* Preacher.h */,
+			);
+			name = CharacterCards;
 			sourceTree = "<group>";
 		};
 		0CB093D21A38416D001688BF = {
@@ -283,14 +336,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CA3880E1A6EE07F0038B151 /* Thief.cpp in Sources */,
+				0CA388081A6EE05F0038B151 /* King.cpp in Sources */,
 				0C32EFE71A4181E300679A6A /* CharacterCard.cpp in Sources */,
 				0CB093F71A386669001688BF /* throw.cpp in Sources */,
 				0CB093F61A386669001688BF /* Socket.cpp in Sources */,
+				0CA3880B1A6EE0720038B151 /* Magician.cpp in Sources */,
+				0CA3881A1A6EE13D0038B151 /* Condottiere.cpp in Sources */,
+				0CA3881D1A6EE1680038B151 /* Preacher.cpp in Sources */,
 				0C32EFEA1A4182CA00679A6A /* BuildingCard.cpp in Sources */,
 				0CB093F91A3866AF001688BF /* main.cpp in Sources */,
 				0C2238531A3E4557007293E5 /* Game.cpp in Sources */,
+				0CA388201A6EE3B50038B151 /* CardFactory.cpp in Sources */,
+				0CA388141A6EE0F10038B151 /* Merchant.cpp in Sources */,
 				0C2238561A3E46D6007293E5 /* Player.cpp in Sources */,
+				0CA388111A6EE0CA0038B151 /* Assassin.cpp in Sources */,
 				0C32EFE21A4180D000679A6A /* Card.cpp in Sources */,
+				0CA388171A6EE1070038B151 /* Architect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

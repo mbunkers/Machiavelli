@@ -1,8 +1,8 @@
-1;Moordenaar;geen;
-2;Dief;geen;
-3;Magier;geen;
-4;Koning;geel;
-5;Prediker;blauw;
-6;Koopman;groen;
-7;Bouwmeester;geen;
-8;Condottiere;rood;
+Character;Moordenaar;1;geen;
+Character;Dief;2;geen;
+Character;Magier;3;geen;
+Character;Koning;4;geel;
+Character;Prediker;5;blauw;
+Character;Koopman;6;groen;
+Character;Bouwmeester;7;geen;
+Character;Condottiere;8;rood;

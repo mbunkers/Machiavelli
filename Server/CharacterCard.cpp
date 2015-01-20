@@ -39,3 +39,7 @@ shared_ptr<Player> CharacterCard::owner(){
 int CharacterCard::priority(){
     return mPriority;
 }
+
+void CharacterCard::doSpecialAction(){
+    owner()->getSocket()->write("This character doesn't have an special ability\n");
+}

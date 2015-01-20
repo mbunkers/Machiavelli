@@ -28,6 +28,8 @@ private:
     int mPriority;
     bool mIsTaken;
     shared_ptr<Player> mCurrentOwner;
+
+    virtual void doSpecialAction();
 };
 
 #endif /* defined(__Machiavelli__CharacterCard__) */

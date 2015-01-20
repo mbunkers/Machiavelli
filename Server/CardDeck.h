@@ -22,6 +22,8 @@
 #include <algorithm>
 #include <time.h>
 
+#include "CardFactory.h"
+
 using namespace std;
 
 template <typename T>
@@ -120,19 +122,14 @@ public:
         string line;
         ifstream cardsFile(name);
         if (cardsFile.is_open()){
+            CardFactory factory = CardFactory();
             while (cardsFile.good()){
                 getline(cardsFile, line);
                 if (line == ""){
                     break;
                 }
-                if (name == "Bouwkaarten.csv"){
-                    shared_ptr<BuildingCard> card = createBuildingCard(line);
-                    addCard(card);
-                }
-                if (name == "Karakterkaarten.csv"){
-                    shared_ptr<CharacterCard> card = createCharacterCard(line);
-                    addCard(card);
-                }
+                shared_ptr<Card> card = factory.createCard(line);
+                addCard(card);
             }
             cardsFile.close();
         }
@@ -140,46 +137,6 @@ public:
             return false;
         }
         return true;
-    }
-
-    shared_ptr<BuildingCard> createBuildingCard(string line){
-        string name;
-        int value;
-        enum CardColor color = UNKNOWN;
-		string flavorText = "";
-		int specialFunction = 0;
-
-        vector<string> data = splittedString(line, ';');
-
-        name = data.at(0);
-        value = atoi(data.at(1).c_str());
-        if (data.size() > 2){
-            color = colorForString(data.at(2));
-        }
-		if (data.size() > 3){
-			flavorText = data.at(3);
-		}
-		if (data.size() > 4){
-			specialFunction = atoi(data.at(4).c_str());
-		}
-
-        return make_shared<BuildingCard>(name, value, color, flavorText, specialFunction);
-    }
-
-    shared_ptr<CharacterCard> createCharacterCard(string line){
-        string name;
-        int priority;
-        enum CardColor color = UNKNOWN;
-
-        vector<string> data = splittedString(line, ';');
-
-        priority = atoi(data.at(0).c_str());
-        name = data.at(1);
-        if (data.size() > 2){
-            color = colorForString(data.at(2));
-        }
-
-        return make_shared<CharacterCard>(name, priority, color);
     }
 
     vector<string> splittedString(const string line, char delim){
@@ -190,25 +147,6 @@ public:
             elems.push_back(item);
         }
         return elems;
-    }
-
-    CardColor colorForString(string stringColor){
-        if (stringColor == "geel"){
-            return YELLOW;
-        }
-        if (stringColor == "blauw"){
-            return BLUE;
-        }
-        if (stringColor == "lila"){
-            return LILA;
-        }
-        if (stringColor == "groen"){
-            return GREEN;
-        }
-        if (stringColor == "rood"){
-            return RED;
-        }
-        return UNKNOWN;
     }
 
     void shuffle(){
