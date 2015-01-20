@@ -152,7 +152,7 @@ void Game::displayCardHand(shared_ptr<Player> player){
 
 	for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<BuildingCard> card = cards.at(i);
-        string option = "[" + card->getCardColorString() + "] " + card->getName() + socketDefaults::endLine;
+        string option = card->getName() + "(" + card->getCardColorString() + ") cost: " + to_string(card->getBuildPrice()) + " value: " + to_string(card->getValue()) + socketDefaults::endLine;
         player->getSocket()->write(option);
     }
 }
@@ -162,7 +162,7 @@ void Game::displayBuiltCards(shared_ptr<Player> player){
     player->getSocket()->write("You have the following cards built" + socketDefaults::endLine);
 	for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<BuildingCard> card = cards.at(i);
-        string option = "[" + card->getCardColorString() + "] " + card->getName()  + socketDefaults::endLine;
+        string option = card->getName() + "(" + card->getCardColorString() + ") cost: " + to_string(card->getBuildPrice()) + " value: " + to_string(card->getValue()) + socketDefaults::endLine;
         player->getSocket()->write(option);
     }
 }
