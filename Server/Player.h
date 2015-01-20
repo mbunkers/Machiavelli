@@ -63,7 +63,7 @@ public:
     void setHasBuild(bool hasBuilt);
     bool hasBuild();
 
-	int getNumberOfBuildings();
+	size_t getNumberOfBuildings();
 	bool isKing();
 	void setKing(bool isKing);
 };

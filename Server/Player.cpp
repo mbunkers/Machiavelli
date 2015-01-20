@@ -143,6 +143,6 @@ bool Player::buildCard(shared_ptr<BuildingCard> card){
     return true;
 }
 
-int Player::getNumberOfBuildings(){
+size_t Player::getNumberOfBuildings(){
 	return mBuiltCards.size();
 }

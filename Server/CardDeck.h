@@ -209,7 +209,7 @@ public:
     }
 
     void shuffle(){
-		srand(time(0));
+		srand(static_cast<int>(time(0)));
         random_shuffle ( mCards.begin(), mCards.end());
     }
 };

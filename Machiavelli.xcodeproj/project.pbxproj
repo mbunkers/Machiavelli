@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		0C2238531A3E4557007293E5 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C2238511A3E4557007293E5 /* Game.cpp */; };
 		0C2238561A3E46D6007293E5 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C2238541A3E46D6007293E5 /* Player.cpp */; };
-		0C307D141A671E8E005649FC /* Bouwkaarten.csv in Sources */ = {isa = PBXBuildFile; fileRef = 0CF038EF1A66BDA1001F40E9 /* Bouwkaarten.csv */; };
-		0C307D151A671E8E005649FC /* Karakterkaarten.csv in Sources */ = {isa = PBXBuildFile; fileRef = 0CF038F01A66BDA1001F40E9 /* Karakterkaarten.csv */; };
 		0C307D161A671F5C005649FC /* Bouwkaarten.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0CF038EF1A66BDA1001F40E9 /* Bouwkaarten.csv */; };
 		0C307D171A671F5C005649FC /* Karakterkaarten.csv in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0CF038F01A66BDA1001F40E9 /* Karakterkaarten.csv */; };
 		0C32EFE21A4180D000679A6A /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE01A4180D000679A6A /* Card.cpp */; };
@@ -237,7 +235,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "Marc Bunkers";
+				ORGANIZATIONNAME = "Marc Bunkers & Leon van Tuijl";
 				TargetAttributes = {
 					0CB093DA1A38416D001688BF = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -283,8 +281,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C307D141A671E8E005649FC /* Bouwkaarten.csv in Sources */,
-				0C307D151A671E8E005649FC /* Karakterkaarten.csv in Sources */,
 				0C32EFE71A4181E300679A6A /* CharacterCard.cpp in Sources */,
 				0CB093F71A386669001688BF /* throw.cpp in Sources */,
 				0CB093F61A386669001688BF /* Socket.cpp in Sources */,

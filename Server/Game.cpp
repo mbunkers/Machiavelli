@@ -74,7 +74,9 @@ bool Game::loadDecks(){
 }
 
 void Game::sendErrorMessage(){
-
+    notifyPlayers("Something went terribly wrong therefor the game cannot be started. Are the resourcefiles available?" + socketDefaults::endLine);
+    notifyPlayers("The game quits now!" + socketDefaults::endLine);
+    notifyPlayers("Bye!" + socketDefaults::endLine);
 }
 
 void Game::sendStartMessage(){
@@ -117,25 +119,31 @@ void Game::pickCharacterCard(shared_ptr<Player> player){
 
 void Game::startGame(){
 	// Setup game
-	if (!loadDecks()){
-		sendErrorMessage();
-	}
-    //shuffle buildingsdeck
-    mBuildingDeck->shuffle();
-
-	//Give players starting cards and gold
-	for (size_t i = 0; i < mPlayers.size(); i++){
-        shared_ptr<Player> player = mPlayers.at(i);
-        player->addGold(2);
-
-        for (int j = 0; j < 3; j++){
-            player->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
+    try {
+        if (!loadDecks()){
+            sendErrorMessage();
         }
-    }
+        else {
+            //shuffle buildingsdeck
+            mBuildingDeck->shuffle();
 
-	// Notify all players that the game has started
-	sendStartMessage();
-	changePhase(STARTROUND);
+            //Give players starting cards and gold
+            for (size_t i = 0; i < mPlayers.size(); i++){
+                shared_ptr<Player> player = mPlayers.at(i);
+                player->setGold(2);
+
+                for (int j = 0; j < 3; j++){
+                    player->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
+                }
+            }
+
+            // Notify all players that the game has started
+            sendStartMessage();
+            changePhase(STARTROUND);
+        }
+    } catch (exception exception) {
+        sendErrorMessage();
+    }
 }
 
 void Game::displayCardHand(shared_ptr<Player> player){
@@ -422,7 +430,7 @@ void Game::takeGold(shared_ptr<CharacterCard> card){
         card->owner()->setHasDoneTurnAction(true);
 
         card->owner()->getSocket()->write("You got " + to_string(goldToAdd) + " golden coins from the bank" + socketDefaults::endLine);
-        card->owner()->getSocket()->write("You have a total of " + to_string(goldToAdd) + " golden coins" + socketDefaults::endLine);
+        card->owner()->getSocket()->write("You have a total of " + to_string(card->owner()->gold()) + " golden coins" + socketDefaults::endLine);
         notifyOtherPlayers(card->owner(), card->owner()->getName() + " took " + to_string(goldToAdd) + " golden coins" + socketDefaults::endLine);
         card->owner()->getSocket()->write(socketDefaults::prompt);
     }
@@ -525,62 +533,24 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
 					else {
 						vector<string> splittedCommand = splittedString(command, char(32));
 
-						if (splittedCommand.size() == 2){
-							if (splittedCommand.at(0) == "Build"){
-								if (!card->owner()->hasBuild()){
-									if (is_number(splittedCommand.at(1))){
-										size_t number = atoi(splittedCommand.at(1).c_str());
-										if (number < card->owner()->cardHand().size()){
-											shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(number);
-											if (card->owner()->buildCard(buildingCard)){
-												card->owner()->getSocket()->write("You have build your building" + socketDefaults::endLine);
-												card->owner()->getSocket()->write(socketDefaults::prompt);
-
-												notifyOtherPlayers(card->owner(), card->owner()->getName() + " has built " + buildingCard->getName() + "(" + buildingCard->getCardColorString() + ") cost: " + to_string(buildingCard->getBuildPrice()) + " value: " + to_string(buildingCard->getValue()) + socketDefaults::endLine);
-											}
-											else {
-												card->owner()->getSocket()->write("You don't have a sufficient amount of gold..." + socketDefaults::endLine);
-												card->owner()->getSocket()->write(socketDefaults::prompt);
-											}
-										}
-										else {
-											card->owner()->getSocket()->write("That is not a card, try again..." + socketDefaults::endLine);
-											card->owner()->getSocket()->write(socketDefaults::prompt);
-										}
-									}
-									else {
-										card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-										card->owner()->getSocket()->write(socketDefaults::prompt);
-									}
-								}
-								else {
-									card->owner()->getSocket()->write("You have already built a building..." + socketDefaults::endLine);
-									card->owner()->getSocket()->write(socketDefaults::prompt);
-								}
-							}
-							else {
-								vector<string> splittedCommand = splittedString(command, char(32));
-
-								if (splittedCommand.size() == 2){
-									if (splittedCommand.at(0) == "Build"){
-										build(card, splittedCommand);
-									}
-									else {
-										if (splittedCommand.at(0) == "Check"){
-											checkPlayer(card, splittedCommand);
-										}
-										else {
-											card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-											card->owner()->getSocket()->write(socketDefaults::prompt);
-										}
-									}
-								}
-								else {
-									card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-									card->owner()->getSocket()->write(socketDefaults::prompt);
-								}
-							}
-						}
+                        if (splittedCommand.size() == 2){
+                            if (splittedCommand.at(0) == "Build"){
+                                build(card, splittedCommand);
+                            }
+                            else {
+                                if (splittedCommand.at(0) == "Check"){
+                                    checkPlayer(card, splittedCommand);
+                                }
+                                else {
+                                    card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+                                    card->owner()->getSocket()->write(socketDefaults::prompt);
+                                }
+                            }
+                        }
+                        else {
+                            card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+                            card->owner()->getSocket()->write(socketDefaults::prompt);
+                        }
 					}
 				}
 			}
