@@ -369,32 +369,36 @@ void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
     }
 }
 
+void Game::printPossibleActions(shared_ptr<CharacterCard> card){
+    // Print mogelijkheden
+    if (!card->owner()->hasDoneTurnAction()){
+        card->owner()->getSocket()->write("[Take gold]" + socketDefaults::endLine);
+        card->owner()->getSocket()->write("[Draw cards]" + socketDefaults::endLine);
+        card->owner()->getSocket()->write("[See Hand] Display the card in your hands" + socketDefaults::endLine);
+        card->owner()->getSocket()->write("[See Buildings] Display the buildings you have built" + socketDefaults::endLine);
+    }
+    if (!card->owner()->hasBuild()){
+        // Show buildings to build
+        for (size_t i = 0; i < card->owner()->cardHand().size(); i++){
+            shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(i);
+            card->owner()->getSocket()->write("[Build " + to_string(i) + "] " + buildingCard->formattedString());
+        }
+    }
+
+    // See other players data
+    for (size_t i = 0; i < mPlayers.size(); i++){
+        if (mPlayers.at(i) != card->owner()){
+            card->owner()->getSocket()->write("[Check " + mPlayers.at(i)->getName() + "]" + socketDefaults::endLine);
+        }
+    }
+
+    card->owner()->getSocket()->write("[End turn]" + socketDefaults::endLine);
+    card->owner()->getSocket()->write(socketDefaults::prompt);
+}
+
 void Game::playCharactersPhase(shared_ptr<CharacterCard> card, string command){
     if (command.empty()){
-        // Print mogelijkheden
-        if (!card->owner()->hasDoneTurnAction()){
-            card->owner()->getSocket()->write("[Take gold]" + socketDefaults::endLine);
-            card->owner()->getSocket()->write("[Draw cards]" + socketDefaults::endLine);
-            card->owner()->getSocket()->write("[See Hand] Display the card in your hands" + socketDefaults::endLine);
-            card->owner()->getSocket()->write("[See Buildings] Display the buildings you have built" + socketDefaults::endLine);
-        }
-        if (!card->owner()->hasBuild()){
-            // Show buildings to build
-            for (size_t i = 0; i < card->owner()->cardHand().size(); i++){
-                shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(i);
-                card->owner()->getSocket()->write("[Build " + to_string(i) + "] " + buildingCard->formattedString());
-            }
-        }
-
-        // See other players data
-        for (size_t i = 0; i < mPlayers.size(); i++){
-            if (mPlayers.at(i) != card->owner()){
-                card->owner()->getSocket()->write("[Check " + mPlayers.at(i)->getName() + "]" + socketDefaults::endLine);
-            }
-        }
-
-        card->owner()->getSocket()->write("[End turn]" + socketDefaults::endLine);
-        card->owner()->getSocket()->write(socketDefaults::prompt);
+        printPossibleActions(card);
     }
     else {
         doTurn(card, command);
