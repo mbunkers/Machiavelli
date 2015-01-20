@@ -70,7 +70,7 @@ shared_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket, ClientCommand comm
 bool Game::loadDecks(){
     mBuildingDeck = make_shared<CardDeck<shared_ptr<BuildingCard>>>("Bouwkaarten.csv");
     mCharacterDeck = make_shared<CardDeck<shared_ptr<CharacterCard>>>("Karakterkaarten.csv");
-    return true;
+    return (mBuildingDeck->isLoaded() && mCharacterDeck->isLoaded());
 }
 
 void Game::sendErrorMessage(){
@@ -141,7 +141,7 @@ void Game::startGame(){
             sendStartMessage();
             changePhase(STARTROUND);
         }
-    } catch (exception exception) {
+    } catch (...) {
         sendErrorMessage();
     }
 }

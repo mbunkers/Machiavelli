@@ -14,6 +14,7 @@
 		0C32EFE21A4180D000679A6A /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE01A4180D000679A6A /* Card.cpp */; };
 		0C32EFE71A4181E300679A6A /* CharacterCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE51A4181E300679A6A /* CharacterCard.cpp */; };
 		0C32EFEA1A4182CA00679A6A /* BuildingCard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C32EFE81A4182CA00679A6A /* BuildingCard.cpp */; };
+		0C9929BF1A6E91A40084AD04 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C307D121A671D5B005649FC /* CoreFoundation.framework */; };
 		0CB093F61A386669001688BF /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F11A386669001688BF /* Socket.cpp */; };
 		0CB093F71A386669001688BF /* throw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F41A386669001688BF /* throw.cpp */; };
 		0CB093F91A3866AF001688BF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CB093F81A3866AF001688BF /* main.cpp */; };
@@ -97,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C9929BF1A6E91A40084AD04 /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

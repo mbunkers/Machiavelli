@@ -19,6 +19,10 @@ using namespace std;
 #include <chrono>
 #include <thread>
 
+#ifdef __APPLE__
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 namespace socketexample {
     const std::string prompt {"> \n"};
 }
@@ -95,6 +99,19 @@ void handle_client(Socket* socket) // this function runs in a separate thread
 
 int main(int argc, const char * argv[])
 {
+#ifdef __APPLE__
+    // Set working directory correctly, on OS X this is not correct yet
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
+    char path[PATH_MAX];
+    if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path, PATH_MAX)){
+        printf("Working directory is not changed. This could lead to errors!");
+    }
+
+    chdir(path);
+    CFRelease(resourcesURL);
+#endif
+
     // start command consumer thread
     thread consumer {consume_command};
     consumer.detach(); // detaching is usually ugly, but in this case the right thing to do

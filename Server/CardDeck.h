@@ -28,15 +28,14 @@ template <typename T>
 class CardDeck {
 private:
     vector<shared_ptr<Card>> mCards;
+    bool mIsLoaded;
 public:
     unique_ptr<T> make_unique(string name){
         return (unique_ptr<T>(new T(name)));
     }
 
     CardDeck<T>(string name){
-        if (loadCards(name)){
-            
-        }
+        mIsLoaded = loadCards(name);
     }
 
     ~CardDeck(){
@@ -53,6 +52,10 @@ public:
 
     CardDeck(CardDeck&&){
 
+    }
+
+    bool isLoaded(){
+        return mIsLoaded;
     }
 
     void resetCharacters(){
