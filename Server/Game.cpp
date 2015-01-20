@@ -339,6 +339,8 @@ shared_ptr<CharacterCard> Game::whoIsNextCharacter(shared_ptr<CharacterCard> car
 }
 
 void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
+	notifyPlayers("CLEAR\n");
+	notifyPlayers("TITLE\n");
     notifyPlayers("It's " + card->getName() + " turn!" + socketDefaults::endLine);
     if (card->hasOwner()){
         mCurrentCharacter = card;
@@ -444,7 +446,7 @@ void Game::drawCards(shared_ptr<CharacterCard> card){
 void Game::build(shared_ptr<CharacterCard> card, vector<string> commands){
     if (!card->owner()->hasBuild()){
         if (is_number(commands.at(1))){
-            int number = atoi(commands.at(1).c_str());
+            size_t number = atoi(commands.at(1).c_str());
             if (number < card->owner()->cardHand().size()){
                 shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(number);
                 if (card->owner()->buildCard(buildingCard)){
@@ -635,16 +637,16 @@ void Game::changePhase(phases nextPhase){
             startGame();
 		break;
 	case STARTROUND:
-
+		
             startRound();
 		break;
 	case SELECTCHARACTERS:
-
             king = getKing();
             king->setState(Player::CHOOSECARD);
             selectCharactersPhase(king, "");
 		break;
 	case PLAYCHARACTERS:
+
             nextPlayerTurn(mCurrentCharacter);
 		break;
 	case ENDGAME:
