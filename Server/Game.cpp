@@ -444,8 +444,17 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
                             if (is_number(splittedCommand.at(1))){
                                 int number = atoi(splittedCommand.at(1).c_str());
                                 if (number < card->owner()->cardHand().size()){
-                                    card->owner();
-                                    notYetImplementedMessage(card->owner());
+                                    shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(number);
+                                    if (card->owner()->buildCard(buildingCard)){
+                                        card->owner()->getSocket()->write("You have build your building" + socketDefaults::endLine);
+                                        card->owner()->getSocket()->write(socketDefaults::prompt);
+
+                                        notifyOtherPlayers(card->owner(), card->owner()->getName() + " has built " + buildingCard->getName() + "(" + buildingCard->getCardColorString() + ") cost: " + to_string(buildingCard->getBuildPrice()) + " value: " + to_string(buildingCard->getValue()) + socketDefaults::endLine);
+                                    }
+                                    else {
+                                        card->owner()->getSocket()->write("You don't have a sufficient amount of gold..." + socketDefaults::endLine);
+                                        card->owner()->getSocket()->write(socketDefaults::prompt);
+                                    }
                                 }
                                 else {
                                     card->owner()->getSocket()->write("That is not a card, try again..." + socketDefaults::endLine);

@@ -133,8 +133,9 @@ bool Player::buildCard(shared_ptr<BuildingCard> card){
         return false;
     }
 
-    mBuiltCards.push_back(card);
     mGold -= card->getBuildPrice();
+    mBuiltCards.push_back(card);
+    mCardHand.erase(remove(mCardHand.begin(), mCardHand.end(), card), mCardHand.end());
 
     return true;
 }
