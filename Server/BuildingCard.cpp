@@ -24,6 +24,10 @@ string BuildingCard::getText(){
 	return mFlavorText;
 }
 
+string BuildingCard::formattedString(){
+    return getName() + "(" + getCardColorString() + ") cost: " + to_string(getBuildPrice()) + " value: " + to_string(getValue()) + "\n";
+}
+
 bool BuildingCard::hasSpecialFunction(){
 	bool hasFunction = false;
 	if (mSpecialFunction > 0){

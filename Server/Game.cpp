@@ -152,8 +152,7 @@ void Game::displayCardHand(shared_ptr<Player> player){
 
 	for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<BuildingCard> card = cards.at(i);
-        string option = card->getName() + "(" + card->getCardColorString() + ") cost: " + to_string(card->getBuildPrice()) + " value: " + to_string(card->getValue()) + socketDefaults::endLine;
-        player->getSocket()->write(option);
+        player->getSocket()->write(card->formattedString());
     }
 }
 
@@ -162,8 +161,7 @@ void Game::displayBuiltCards(shared_ptr<Player> player){
     player->getSocket()->write("You have the following cards built" + socketDefaults::endLine);
 	for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<BuildingCard> card = cards.at(i);
-        string option = card->getName() + "(" + card->getCardColorString() + ") cost: " + to_string(card->getBuildPrice()) + " value: " + to_string(card->getValue()) + socketDefaults::endLine;
-        player->getSocket()->write(option);
+        player->getSocket()->write(card->formattedString());
     }
 }
 
@@ -383,8 +381,8 @@ void Game::playCharactersPhase(shared_ptr<CharacterCard> card, string command){
         if (!card->owner()->hasBuild()){
             // Show buildings to build
             for (size_t i = 0; i < card->owner()->cardHand().size(); i++){
-                shared_ptr<BuildingCard> characterCard = card->owner()->cardHand().at(i);
-                card->owner()->getSocket()->write("[Build " + to_string(i) + "] " + characterCard->getName() + "(" + characterCard->getCardColorString() + ") cost: " + to_string(characterCard->getBuildPrice()) + " value: " + to_string(characterCard->getValue()) + socketDefaults::endLine);
+                shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(i);
+                card->owner()->getSocket()->write("[Build " + to_string(i) + "] " + buildingCard->formattedString());
             }
         }
 
@@ -458,6 +456,7 @@ void Game::build(shared_ptr<CharacterCard> card, vector<string> commands){
             if (number < card->owner()->cardHand().size()){
                 shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(number);
                 if (card->owner()->buildCard(buildingCard)){
+                    card->owner()->setHasBuild(true);
                     card->owner()->getSocket()->write("You have build your building" + socketDefaults::endLine);
                     card->owner()->getSocket()->write(socketDefaults::prompt);
 

@@ -25,6 +25,8 @@ public:
 	string getText();
 //    ~BuildingCard();
     int getPrice();
+
+    string formattedString();
 private:
 	void setFunction(int functionId);
 	string mFlavorText;
