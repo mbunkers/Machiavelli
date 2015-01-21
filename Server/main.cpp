@@ -143,6 +143,10 @@ int main(int argc, const char * argv[])
                     thread handler {handle_client, client};
                     handler.detach(); // detaching is usually ugly, but in this case the right thing to do
                     cerr << "Server is listening for more incoming clients" << '\n';
+                    if (mGame->hasFinished()){
+                        break;
+                    }
+
                 }
             } catch (const exception& ex) {
                 cerr << ex.what() << ", resuming..." << '\n';

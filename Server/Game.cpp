@@ -147,7 +147,7 @@ void Game::startGame(){
             //Give players starting cards and gold
             for (size_t i = 0; i < mPlayers.size(); i++){
                 shared_ptr<Player> player = mPlayers.at(i);
-                player->setGold(2);
+                player->setGold(100);
 
                 for (int j = 0; j < 3; j++){
                     player->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
@@ -646,7 +646,7 @@ void Game::endRound(){
 	}
 
 	if (finishGame){
-		endGame();
+        changePhase(ENDGAME);
 	}
 	else{
 		changePhase(STARTROUND);
@@ -665,6 +665,26 @@ void Game::countScoresPhase(){
 
 void Game::endGame(){
 	//Notify players that the game has finished they should restart the program to start a new game.
+    notifyPlayers("The game has been ended!" + socketDefaults::endLine);
+
+    if (mPlayers.at(0)->calculateScore() == mPlayers.at(1)->calculateScore()){
+        notifyPlayers("It's a draw! Congratulations!" + socketDefaults::endLine);
+    }
+    else {
+        if (mPlayers.at(0)->calculateScore() > mPlayers.at(1)->calculateScore()){
+            notifyPlayers("The winner is " + mPlayers.at(0)->getName() + socketDefaults::endLine);
+        }
+        else {
+            notifyPlayers("The winner is " + mPlayers.at(1)->getName() + socketDefaults::endLine);
+        }
+    }
+
+    notifyPlayers("Here are the results per player:" + socketDefaults::endLine);
+    for (size_t i = 0; i < mPlayers.size(); i++){
+        notifyPlayers(mPlayers.at(i)->getName() + " has a score of " + to_string(mPlayers.at(i)->calculateScore()) + " points" + socketDefaults::endLine);
+    }
+
+    changePhase(FINISHED);
 }
 
 shared_ptr<Player> Game::getKing(){
@@ -697,10 +717,15 @@ void Game::changePhase(phases nextPhase){
             nextPlayerTurn(mCurrentCharacter);
 		break;
 	case ENDGAME:
+            endGame();
 		break;
 	default:
 		break;
 	}
+}
+
+bool Game::hasFinished(){
+    return mCurrentPhase == FINISHED;
 }
 
 vector<string> Game::splittedString(const string line, char delim){
