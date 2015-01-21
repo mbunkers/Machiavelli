@@ -18,7 +18,9 @@ public:
     //    ~CharacterCard();
     virtual void doSpecialAction();
 	virtual void printOptions();
+	bool hasTarget();
 private:
+	bool mHasTarget;
 };
 
 #endif /* defined(__Machiavelli__Condottiere__) */

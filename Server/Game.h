@@ -92,6 +92,12 @@ private:
 
     void listCharactersWithout(shared_ptr<CharacterCard> card);
 
+	void showDestroyTargets(shared_ptr<CharacterCard> card);
+	void destroyBuilding(shared_ptr<CharacterCard> card, string command);
+	vector<int> mValidTargets;
+
+	shared_ptr<Player> getOpponent(shared_ptr<Player> player);
+
 public:
     
 

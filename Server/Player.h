@@ -72,6 +72,9 @@ public:
 	void setKing(bool isKing);
 
     int goldForCardColor(CardColor color);
+	int destroyBuilding(int i);
+
+	void removeGold(int price);
 };
 
 #endif /* defined(__Machiavelli__Player__) */
