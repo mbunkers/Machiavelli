@@ -11,3 +11,8 @@
 Magician::Magician(string name, int priority, CardColor color): CharacterCard(name, priority, color){
 
 }
+
+void Magician::printOptions(){
+	owner()->getSocket()->write("[Swap Hand] Swap your buildingcards with your opponent\n");
+	owner()->getSocket()->write("[Swap Deck] Swap your buildingcards with an equal amount from the deck\n");
+}

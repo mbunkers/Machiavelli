@@ -15,6 +15,7 @@
 class Magician : public CharacterCard{
 public:
     Magician(string name, int priority, CardColor);
+	void printOptions();
     //    ~CharacterCard();
 private:
 };

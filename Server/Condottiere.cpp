@@ -15,3 +15,7 @@ Condottiere::Condottiere(string name, int priority, CardColor color): CharacterC
 void Condottiere::doSpecialAction(){
 
 }
+
+void Condottiere::printOptions(){
+	owner()->getSocket()->write("[Destroy] Destroy your opponent's building for it's build cost - 1\n");
+}

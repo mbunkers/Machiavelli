@@ -15,3 +15,7 @@ Thief::Thief(string name, int priority, CardColor color): CharacterCard(name, pr
 void Thief::doSpecialAction(){
 
 }
+
+void Thief::printOptions(){
+	owner()->getSocket()->write("[Steal] target a character and steal from him when it's his turn\n");
+}

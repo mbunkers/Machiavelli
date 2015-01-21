@@ -15,3 +15,7 @@ Assassin::Assassin(string name, int priority, CardColor color): CharacterCard(na
 void Assassin::doSpecialAction(){
     
 }
+
+void Assassin::printOptions(){
+	owner()->getSocket()->write("[Kill] Remove a character from the round\n");
+}

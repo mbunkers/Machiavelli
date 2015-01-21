@@ -16,6 +16,7 @@ class Thief : public CharacterCard{
 public:
     Thief(string name, int priority, CardColor);
     //    ~CharacterCard();
+	void printOptions();
     virtual void doSpecialAction();
 private:
 };

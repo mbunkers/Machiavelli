@@ -8,6 +8,7 @@
 
 #include "CharacterCard.h"
 
+
 CharacterCard::CharacterCard(string name, int priority, CardColor color): Card(name, color){
     mPriority = priority;
     mIsTaken = false;
@@ -42,4 +43,8 @@ int CharacterCard::priority(){
 
 void CharacterCard::doSpecialAction(){
     owner()->getSocket()->write("This character doesn't have an special ability\n");
+}
+
+void CharacterCard::printOptions(){
+	//keep empty
 }

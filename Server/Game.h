@@ -55,7 +55,6 @@ private:
     void selectCharactersPhase(shared_ptr<Player> player, string command);
     void playCharactersPhase(shared_ptr<CharacterCard> card, string command);
     void endRound();
-    void countScoresPhase();
     void endGame();
 	void changePhase(phases);
 

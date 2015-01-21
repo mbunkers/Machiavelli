@@ -23,6 +23,7 @@ public:
     void setOwner(shared_ptr<Player> player);
     shared_ptr<Player> owner();
     int priority();
+	virtual void printOptions();
 
 private:
     int mPriority;

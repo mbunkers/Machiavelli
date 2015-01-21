@@ -17,6 +17,7 @@ public:
     Condottiere(string name, int priority, CardColor);
     //    ~CharacterCard();
     virtual void doSpecialAction();
+	virtual void printOptions();
 private:
 };
 

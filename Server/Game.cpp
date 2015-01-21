@@ -430,11 +430,17 @@ void Game::printPossibleActions(shared_ptr<CharacterCard> card){
 		card->owner()->getSocket()->write("Options:" + socketDefaults::endLine);
 	}
 
-	// Print mogelijkheden
+	// Print starndard options
 	if (!card->owner()->hasDoneTurnAction()){
 		card->owner()->getSocket()->write("[Take gold]" + socketDefaults::endLine);
 		card->owner()->getSocket()->write("[Draw cards]" + socketDefaults::endLine);
 	}
+	
+	// print character options
+	card->printOptions();
+
+	// print special building options
+	
     // See other players data
     for (size_t i = 0; i < mPlayers.size(); i++){
         if (mPlayers.at(i) != card->owner()){
@@ -594,7 +600,7 @@ void Game::checkPlayer(shared_ptr<Player> player, vector<string> commands){
             player->getSocket()->write(otherPlayer->getName() + " has " + to_string(otherPlayer->gold()) + " golden coins" + socketDefaults::endLine);
             player->getSocket()->write(otherPlayer->getName() + " has " + to_string(otherPlayer->cardHand().size()) + " buildings in his hand" + socketDefaults::endLine);
             player->getSocket()->write(otherPlayer->getName() + " has the following buildings in his town:" + socketDefaults::endLine);
-            for (int i = 0; i < otherPlayer->builtCards().size(); i++){
+            for (size_t i = 0; i < otherPlayer->builtCards().size(); i++){
                 player->getSocket()->write(otherPlayer->builtCards().at(i)->formattedString());
             }
             if (otherPlayer->builtCards().empty()){
@@ -677,14 +683,7 @@ void Game::endRound(){
 }
 
 
-void Game::countScoresPhase(){
-		// (loop) for each player getscore()
-	// put into map  "player" "score" 
-	//sort based on scores 
-	//notify all players the scores in order from high to low and to who the scores belongs.
-	
-		
-}
+
 
 void Game::endGame(){
 	//Notify players that the game has finished they should restart the program to start a new game.
