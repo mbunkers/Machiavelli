@@ -90,7 +90,8 @@ private:
 	void cleanScreen(shared_ptr<Player> player);
 	void prompt(shared_ptr<Player> player);
 
-    void listCharactersWithout(shared_ptr<CharacterCard> card);
+    void listCharactersForAssassin(shared_ptr<CharacterCard> card);
+    void assassinAction(shared_ptr<CharacterCard> card, int command);
 
 public:
     

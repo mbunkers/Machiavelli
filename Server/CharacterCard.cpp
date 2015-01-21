@@ -12,6 +12,8 @@
 CharacterCard::CharacterCard(string name, int priority, CardColor color): Card(name, color){
     mPriority = priority;
     mIsTaken = false;
+    mIsUsingAction = false;
+    mHasUsedAction = false;
 }
 
 bool CharacterCard::hasOwner(){
@@ -51,8 +53,18 @@ void CharacterCard::printOptions(){
 
 void CharacterCard::setHasUsedAction(bool hasUsedAction){
     mHasUsedAction = hasUsedAction;
+    if (mHasUsedAction){
+        mIsUsingAction = false;
+    }
 }
 
 bool CharacterCard::hasUsedAction(){
     return mHasUsedAction;
+}
+
+void CharacterCard::setIsUsingAction(bool isUsingAction){
+    mIsUsingAction = isUsingAction;
+}
+bool CharacterCard::isUsingAction(){
+    return mIsUsingAction;
 }

@@ -26,12 +26,15 @@ public:
 	virtual void printOptions();
     void setHasUsedAction(bool hasUsedAction);
     bool hasUsedAction();
+    void setIsUsingAction(bool isUsingAction);
+    bool isUsingAction();
 
 private:
     int mPriority;
     bool mIsTaken;
     shared_ptr<Player> mCurrentOwner;
     bool mHasUsedAction;
+    bool mIsUsingAction;
     virtual void doSpecialAction();
 };
 

@@ -192,6 +192,7 @@ void Game::startRound(){
         shared_ptr<CharacterCard> card = static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(i));
         card->setIsTaken(false);
         card->setOwner(nullptr);
+        card->setHasUsedAction(false);
     }
 	changePhase(SELECTCHARACTERS);
 }
@@ -502,7 +503,37 @@ void Game::playCharactersPhase(shared_ptr<CharacterCard> card, string command){
             removeDrawnCards(card, command);			
         }
         else {
-            doTurn(card, command);
+            if (!card->isUsingAction()){
+                doTurn(card, command);
+            }
+            else {
+                if (card == dynamic_pointer_cast<Assassin>(card)){
+                    if (is_number(command)){
+                        int digit = atoi(command.c_str());
+                        if (digit > 0 && digit < 9){
+                            assassinAction(card, digit);
+                            card->setHasUsedAction(true);
+                            prompt(card->owner());
+                        }
+                        else {
+                            card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+                            prompt(card->owner());
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Game::assassinAction(shared_ptr<CharacterCard> card, int command){
+    for (size_t i = 1; i < mCharacterDeck->size(); i++){
+        shared_ptr<CharacterCard> characterToKill = static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(i));
+        if (characterToKill->priority() == command){
+            characterToKill->setOwner(nullptr);
+            notifyOtherPlayers(card->owner(), "The " + characterToKill->getName() + " has been killed this round" + socketDefaults::endLine);
+            card->owner()->getSocket()->write("You've killed the " + characterToKill->getName() + socketDefaults::endLine);
+            break;
         }
     }
 }
@@ -665,13 +696,11 @@ void Game::checkPlayer(shared_ptr<CharacterCard> card, vector<string> commands){
     checkPlayer(card->owner(), commands);
 }
 
-void Game::listCharactersWithout(shared_ptr<CharacterCard> card){
-    for (size_t i = 0; i < mCharacterDeck->size(); i++){
+void Game::listCharactersForAssassin(shared_ptr<CharacterCard> card){
+    for (size_t i = 1; i < mCharacterDeck->size(); i++){
         shared_ptr<CharacterCard> tempCard = static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(i));
-        if (card != tempCard){
-            string option = "[" + to_string(tempCard->priority()) + "]" + tempCard->getName()  + socketDefaults::endLine;
-            card->owner()->getSocket()->write(option);
-        }
+        string option = "[" + to_string(tempCard->priority()) + "]" + tempCard->getName()  + socketDefaults::endLine;
+        card->owner()->getSocket()->write(option);
     }
 }
 
@@ -716,7 +745,9 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
                         }
                         else {
                             if (command == "Kill" && card == dynamic_pointer_cast<Assassin>(card) && !card->hasUsedAction()){
-
+                                card->setIsUsingAction(true);
+                                listCharactersForAssassin(card);
+                                prompt(card->owner());
                             }
                             else {
                                 if (command == "Steal" && card == dynamic_pointer_cast<Thief>(card) && !card->hasUsedAction()){
