@@ -13,5 +13,5 @@ King::King(string name, int priority, CardColor color): CharacterCard(name, prio
 }
 
 void King::doSpecialAction(){
-    owner()->setKing(true);
+    
 }

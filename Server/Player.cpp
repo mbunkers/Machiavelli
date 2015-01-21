@@ -159,3 +159,14 @@ bool Player::hasDrawnCards(){
 void Player::removeCard(int i){
 	mCardHand.erase(mCardHand.end() - i);
 }
+
+int Player::goldForCardColor(CardColor color){
+    int addedGold = 0;
+    for (size_t i = 0; i < mBuiltCards.size(); i ++){
+        if (color == mBuiltCards.at(i)->getCardColor() && color != UNKNOWN){
+            addGold(1);
+            addedGold++;
+        }
+    }
+    return addedGold;
+}
