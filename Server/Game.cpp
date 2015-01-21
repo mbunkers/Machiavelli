@@ -123,6 +123,12 @@ void Game::pickCharacterCard(shared_ptr<Player> player){
     // Opties om kaarten in te zien
     player->getSocket()->write("[See Hand] Display the card in your hands" + socketDefaults::endLine);
     player->getSocket()->write("[See Buildings] Display the buildings you have built" + socketDefaults::endLine);
+    // See other players data
+    for (size_t i = 0; i < mPlayers.size(); i++){
+        if (mPlayers.at(i) != player){
+            player->getSocket()->write("[Check " + mPlayers.at(i)->getName() + "]" + socketDefaults::endLine);
+        }
+    }
 
     // Loop voor character kaarten typen
     // Alle character kaarten zonder owner in string bijhouden
@@ -281,8 +287,21 @@ void Game::selectCharactersPhase(shared_ptr<Player> player, string command){
                     }
                     else {
                         if (command != player->getName()){
-                            player->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-                            player->getSocket()->write(socketDefaults::prompt);
+                            vector<string> splittedCommand = splittedString(command, char(32));
+
+                            if (splittedCommand.size() == 2){
+                                if (splittedCommand.at(0) == "Check"){
+                                    checkPlayer(player, splittedCommand);
+                                }
+                                else {
+                                    player->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+                                    player->getSocket()->write(socketDefaults::prompt);
+                                }
+                            }
+                            else {
+                                player->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+                                player->getSocket()->write(socketDefaults::prompt);
+                            }
                         }
                     }
                 }
@@ -530,28 +549,41 @@ void Game::build(shared_ptr<CharacterCard> card, vector<string> commands){
     }
 }
 
-void Game::checkPlayer(shared_ptr<CharacterCard> card, vector<string> commands){
-    shared_ptr<Player> player = nullptr;
+void Game::checkPlayer(shared_ptr<Player> player, vector<string> commands){
+    shared_ptr<Player> otherPlayer = nullptr;
     for (size_t i = 0; i < mPlayers.size(); i++){
         if (mPlayers.at(i)->getName() == commands.at(1)){
-            player = mPlayers.at(i);
+            otherPlayer = mPlayers.at(i);
         }
     }
 
-    if (player == nullptr){
-        card->owner()->getSocket()->write("Player not found, try again..." + socketDefaults::endLine);
-        card->owner()->getSocket()->write(socketDefaults::prompt);
+    if (otherPlayer == nullptr){
+        player->getSocket()->write("Player not found, try again..." + socketDefaults::endLine);
+        player->getSocket()->write(socketDefaults::prompt);
     }
     else {
-        if (card->owner() == player){
-            card->owner()->getSocket()->write("Check your own options, try again..." + socketDefaults::endLine);
-            card->owner()->getSocket()->write(socketDefaults::prompt);
+        if (player == otherPlayer){
+            player->getSocket()->write("Check your own options, try again..." + socketDefaults::endLine);
+            player->getSocket()->write(socketDefaults::prompt);
         }
         else {
             // List the other players stats
-            notYetImplementedMessage(card->owner());
+            player->getSocket()->write(otherPlayer->getName() + " has " + to_string(otherPlayer->gold()) + " golden coins" + socketDefaults::endLine);
+            player->getSocket()->write(otherPlayer->getName() + " has " + to_string(otherPlayer->cardHand().size()) + " buildings in his hand" + socketDefaults::endLine);
+            player->getSocket()->write(otherPlayer->getName() + " has the following buildings in his town:" + socketDefaults::endLine);
+            for (int i = 0; i < otherPlayer->builtCards().size(); i++){
+                player->getSocket()->write(otherPlayer->builtCards().at(i)->formattedString());
+            }
+            if (otherPlayer->builtCards().empty()){
+                player->getSocket()->write("> EMPTY <" + socketDefaults::endLine);
+            }
+            player->getSocket()->write(socketDefaults::prompt);
         }
     }
+}
+
+void Game::checkPlayer(shared_ptr<CharacterCard> card, vector<string> commands){
+    checkPlayer(card->owner(), commands);
 }
 
 void Game::doTurn(shared_ptr<CharacterCard> card, string command){
@@ -653,7 +685,6 @@ void Game::changePhase(phases nextPhase){
             startGame();
 		break;
 	case STARTROUND:
-		
             startRound();
 		break;
 	case SELECTCHARACTERS:
