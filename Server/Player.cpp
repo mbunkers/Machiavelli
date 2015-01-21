@@ -175,3 +175,15 @@ int Player::goldForCardColor(CardColor color){
     }
     return addedGold;
 }
+
+void Player::clearHand(){
+    while (!mCardHand.empty()){
+        mCardHand.pop_back();
+    }
+}
+
+void Player::addMultipleCardsToHand(vector<shared_ptr<BuildingCard>> cards){
+    for (size_t i = 0; i < cards.size(); i++){
+        addCardToHand(cards.at(i));
+    }
+}

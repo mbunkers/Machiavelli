@@ -53,6 +53,7 @@ public:
     void setGold(int newGold);
     int gold();
     void addCardToHand(shared_ptr<BuildingCard> card);
+    void addMultipleCardsToHand(vector<shared_ptr<BuildingCard>> cards);
     bool buildCard(shared_ptr<BuildingCard> card);
     vector<shared_ptr<BuildingCard>> cardHand();
     vector<shared_ptr<BuildingCard>> builtCards();
@@ -74,6 +75,7 @@ public:
     void removeGold(int gold);
 
     int goldForCardColor(CardColor color);
+    void clearHand();
 };
 
 #endif /* defined(__Machiavelli__Player__) */
