@@ -70,6 +70,8 @@ public:
 	size_t getNumberOfBuildings();
 	bool isKing();
 	void setKing(bool isKing);
+
+    int goldForCardColor(CardColor color);
 };
 
 #endif /* defined(__Machiavelli__Player__) */

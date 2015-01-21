@@ -382,7 +382,33 @@ void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
     notifyPlayers("It's " + card->getName() + " turn!" + socketDefaults::endLine);
     if (card->hasOwner()){
         mCurrentCharacter = card;
-        notifyPlayers(card->owner()->getName() + " is the " + card->getName() + "!" + socketDefaults::endLine);
+
+        // If king, remove from old king and assign new king
+        if (card == dynamic_pointer_cast<King>(card)){
+            for (size_t i = 0; i < mPlayers.size(); i++){
+                mPlayers.at(i)->setKing(false);
+            }
+
+            if (!card->owner()->isKing()){
+                notifyOtherPlayers(card->owner(), "From now on, " + card->owner()->getName() + " is the king!" + socketDefaults::endLine);
+                card->owner()->getSocket()->write("You are the king now!");
+            }
+            else {
+                notifyPlayers(card->owner()->getName() + " is the " + card->getName() + "!" + socketDefaults::endLine);
+            }
+
+            card->owner()->setKing(true);
+        }
+        else {
+            notifyPlayers(card->owner()->getName() + " is the " + card->getName() + "!" + socketDefaults::endLine);
+        }
+
+        // Gold for buildings and let all the players know it
+        int addedGold = card->owner()->goldForCardColor(card->getCardColor());
+        card->owner()->getSocket()->write("You've got " + to_string(addedGold) + " golden coins for your buildings" + socketDefaults::endLine);
+        notifyOtherPlayers(card->owner(), card->owner()->getName() + " got " + to_string(addedGold) + " golden coins for his buildings" + socketDefaults::endLine);
+
+        // Start turn
         card->owner()->getSocket()->write("It's your turn, what do you want to do?" + socketDefaults::endLine);
         playCharactersPhase(mCurrentCharacter, "");
     }
@@ -678,6 +704,11 @@ void Game::endRound(){
         changePhase(ENDGAME);
 	}
 	else{
+        for (size_t i = 0; i < mPlayers.size(); i++){
+            cleanScreen(mPlayers.at(i));
+        }
+
+        notifyPlayers("A new round has started!" + socketDefaults::endLine);
 		changePhase(STARTROUND);
 	}
 }
@@ -735,7 +766,6 @@ void Game::changePhase(phases nextPhase){
             selectCharactersPhase(king, "");
 		break;
 	case PLAYCHARACTERS:
-
             nextPlayerTurn(mCurrentCharacter);
 		break;
 	case ENDGAME:
