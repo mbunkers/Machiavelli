@@ -19,28 +19,33 @@ Game::~Game(){
 void Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
     shared_ptr<Player> player = getPlayer(socket, command);
 
-    switch (mCurrentPhase){
-        case SETUP:
-            break;
-        case STARTGAME:
-            break;
-        case STARTROUND:
-            break;
-        case SELECTCHARACTERS:
-            selectCharactersPhase(player, command.get_cmd());
-            break;
-        case PLAYCHARACTERS:
-            if (player == mCurrentCharacter->owner()){
-                playCharactersPhase(mCurrentCharacter, command.get_cmd());
-            }
-            else {
-                player->getSocket()->write("Something went wrong, but it's not your turn!" + socketDefaults::endLine);
-            }
-            break;
-        case ENDGAME:
-            break;
-        default:
-            break;
+    if (player != nullptr){
+        switch (mCurrentPhase){
+            case SETUP:
+                break;
+            case STARTGAME:
+                break;
+            case STARTROUND:
+                break;
+            case SELECTCHARACTERS:
+                selectCharactersPhase(player, command.get_cmd());
+                break;
+            case PLAYCHARACTERS:
+                if (player == mCurrentCharacter->owner()){
+                    playCharactersPhase(mCurrentCharacter, command.get_cmd());
+                }
+                else {
+                    player->getSocket()->write("Something went wrong, but it's not your turn!" + socketDefaults::endLine);
+                }
+                break;
+            case ENDGAME:
+                break;
+            default:
+                break;
+        }
+    }
+    else {
+        socket->write("The game has already started... You can't enter!");
     }
 }
 
@@ -52,18 +57,24 @@ shared_ptr<Player> Game::getPlayer(shared_ptr<Socket> socket, ClientCommand comm
             }
         }
     }
+
+    if (mPlayers.size() == 2){
+        return nullptr;
+    }
+
+
     auto p = make_shared<Player>(command.get_cmd(), socket);
-    
+
     mPlayers.push_back(p);
     string cmd = command.get_cmd();
-
-    string returnValue = "Ok " + cmd + ", just wait for the other player to connect.." + socketDefaults::endLine;
-
-    socket->write(returnValue);
 
     if (mPlayers.size() == 2){
         changePhase(STARTGAME);
     }
+    else {
+        socket->write("Ok " + cmd + ", just wait for the other player to connect.." + socketDefaults::endLine);
+    }
+
     return p;
 }
 
