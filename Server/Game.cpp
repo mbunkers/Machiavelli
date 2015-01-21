@@ -676,13 +676,38 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
                                 }
                                 else {
                                     card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-									prompt(card->owner());
+                                    prompt(card->owner());
                                 }
                             }
                         }
                         else {
-                            card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-							prompt(card->owner());
+                            if (command == "Kill" && card == dynamic_pointer_cast<Assassin>(card)){
+
+                            }
+                            else {
+                                if (command == "Steal" && card == dynamic_pointer_cast<Thief>(card)){
+                                    notYetImplementedMessage(card->owner());
+                                }
+                                else {
+                                    if (command == "Destroy" && card == dynamic_pointer_cast<Condottiere>(card)){
+                                        notYetImplementedMessage(card->owner());
+                                    }
+                                    else {
+                                        if (command == "Swap Hand" && card == dynamic_pointer_cast<Magician>(card)){
+                                            notYetImplementedMessage(card->owner());
+                                        }
+                                        else {
+                                            if (command == "Swap Deck" && card == dynamic_pointer_cast<Magician>(card)){
+                                                notYetImplementedMessage(card->owner());
+                                            }
+                                            else {
+                                                card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+                                                prompt(card->owner());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 					}
 				}
