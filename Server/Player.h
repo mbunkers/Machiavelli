@@ -67,6 +67,7 @@ public:
 	void setHasDrawnCards(bool hasDrawn);
 	bool hasDrawnCards();
 	void removeCard(int index);
+    bool hasCardBuilt(string name);
 
 	size_t getNumberOfBuildings();
 	bool isKing();

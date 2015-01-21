@@ -630,16 +630,32 @@ void Game::drawCards(shared_ptr<CharacterCard> card){
     if (!card->owner()->hasDoneTurnAction()){
         shared_ptr<BuildingCard> building1 = static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard());
         shared_ptr<BuildingCard> building2 = static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard());
-        card->owner()->getSocket()->write("You drew these cards:\n");
-        card->owner()->getSocket()->write("[1] " + building1->formattedString());
-        card->owner()->getSocket()->write("[2] " + building2->formattedString());
         card->owner()->addCardToHand(building1);
         card->owner()->addCardToHand(building2);
 
-        card->owner()->setHasDoneTurnAction(true);
-        card->owner()->setHasDrawnCards(true);
-        card->owner()->getSocket()->write("Which card do you want to have ?\n");
-        prompt(card->owner());
+        if (card->owner()->hasCardBuilt("Bibliotheek")){
+            printPossibleActions(card);
+
+            notifyOtherPlayers(card->owner(), card->owner()->getName() + " drew 2 cards because he has a Bibliotheek" + socketDefaults::endLine);
+            card->owner()->getSocket()->write("You drew these cards:\n");
+            card->owner()->getSocket()->write(building1->formattedString());
+            card->owner()->getSocket()->write(building2->formattedString());
+
+            card->owner()->setHasDoneTurnAction(true);
+            card->owner()->setHasDrawnCards(false);
+
+            prompt(card->owner());
+        }
+        else {
+            card->owner()->getSocket()->write("You drew these cards:\n");
+            card->owner()->getSocket()->write("[1] " + building1->formattedString());
+            card->owner()->getSocket()->write("[2] " + building2->formattedString());
+
+            card->owner()->setHasDoneTurnAction(true);
+            card->owner()->setHasDrawnCards(true);
+            card->owner()->getSocket()->write("Which card do you want to have ?\n");
+            prompt(card->owner());
+        }
     }
     else {
         card->owner()->getSocket()->write("You already did one of your turn actions.." + socketDefaults::endLine);

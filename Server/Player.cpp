@@ -187,3 +187,12 @@ void Player::addMultipleCardsToHand(vector<shared_ptr<BuildingCard>> cards){
         addCardToHand(cards.at(i));
     }
 }
+
+bool Player::hasCardBuilt(string name){
+    for (size_t i = 0; i < mCardHand.size(); i++){
+        if (mCardHand.at(i)->getName() == name){
+            return true;
+        }
+    }
+    return false;
+}
