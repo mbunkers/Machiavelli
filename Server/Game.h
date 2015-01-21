@@ -94,6 +94,8 @@ private:
     void assassinAction(shared_ptr<CharacterCard> card, int command);
     void listCharactersForThief(shared_ptr<CharacterCard> card);
     void thiefAction(shared_ptr<CharacterCard> card, int command);
+    void swapHand(shared_ptr<CharacterCard> card);
+    void swapDeck(shared_ptr<CharacterCard> card);
 
 public:
     
