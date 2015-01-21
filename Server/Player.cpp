@@ -81,9 +81,14 @@ void Player::addGold(int goldToAdd){
     mGold += goldToAdd;
 }
 
+void Player::removeGold(int gold){
+    mGold -= gold;
+}
+
 void Player::setGold(int newGold){
     mGold = newGold;
 }
+
 int Player::gold(){
     return mGold;
 }

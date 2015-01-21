@@ -14,6 +14,7 @@ CharacterCard::CharacterCard(string name, int priority, CardColor color): Card(n
     mIsTaken = false;
     mIsUsingAction = false;
     mHasUsedAction = false;
+    mIsBeingRobbed = false;
 }
 
 bool CharacterCard::hasOwner(){
@@ -65,6 +66,15 @@ bool CharacterCard::hasUsedAction(){
 void CharacterCard::setIsUsingAction(bool isUsingAction){
     mIsUsingAction = isUsingAction;
 }
+
 bool CharacterCard::isUsingAction(){
     return mIsUsingAction;
+}
+
+void CharacterCard::setIsBeingRobbed(bool isBeingRobbed){
+    mIsBeingRobbed = isBeingRobbed;
+}
+
+bool CharacterCard::isBeingRobbed(){
+    return mIsBeingRobbed;
 }

@@ -193,6 +193,7 @@ void Game::startRound(){
         card->setIsTaken(false);
         card->setOwner(nullptr);
         card->setHasUsedAction(false);
+        card->setIsBeingRobbed(false);
     }
 	changePhase(SELECTCHARACTERS);
 }
@@ -419,6 +420,26 @@ void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
             notifyPlayers(card->owner()->getName() + " is the " + card->getName() + "!" + socketDefaults::endLine);
         }
 
+        if (card->isBeingRobbed()){
+            int gold = card->owner()->gold();
+
+            shared_ptr<CharacterCard> thief = nullptr;
+
+            for (size_t i = 0; i < mCharacterDeck->size(); i++){
+                shared_ptr<CharacterCard> tempCard = static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(i));
+                if (tempCard == dynamic_pointer_cast<Thief>(tempCard)){
+                    thief = static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(i));
+                }
+            }
+
+            thief->owner()->addGold(gold);
+            card->owner()->removeGold(gold);
+
+            notifyOtherPlayers(card->owner(), card->owner()->getName() + " is being robbed and lost " + to_string(gold) + " golden coins" + socketDefaults::endLine);
+            card->owner()->getSocket()->write("You lost " + to_string(gold) + " golden coins" + socketDefaults::endLine);
+            thief->owner()->getSocket()->write("You've robbed " + to_string(gold) + "golden coins from " + card->owner()->getName() + socketDefaults::endLine);
+        }
+
         // Gold for buildings and let all the players know it
         int addedGold = card->owner()->goldForCardColor(card->getCardColor());
         card->owner()->getSocket()->write("You've got " + to_string(addedGold) + " golden coins for your buildings" + socketDefaults::endLine);
@@ -521,6 +542,22 @@ void Game::playCharactersPhase(shared_ptr<CharacterCard> card, string command){
                         }
                     }
                 }
+                else {
+                    if (card == dynamic_pointer_cast<Thief>(card)){
+                        if (is_number(command)){
+                            int digit = atoi(command.c_str());
+                            if (digit > 0 && digit < 9){
+                                thiefAction(card, digit);
+                                card->setHasUsedAction(true);
+                                prompt(card->owner());
+                            }
+                            else {
+                                card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+                                prompt(card->owner());
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -533,6 +570,18 @@ void Game::assassinAction(shared_ptr<CharacterCard> card, int command){
             characterToKill->setOwner(nullptr);
             notifyOtherPlayers(card->owner(), "The " + characterToKill->getName() + " has been killed this round" + socketDefaults::endLine);
             card->owner()->getSocket()->write("You've killed the " + characterToKill->getName() + socketDefaults::endLine);
+            break;
+        }
+    }
+}
+
+void Game::thiefAction(shared_ptr<CharacterCard> card, int command){
+    for (size_t i = 1; i < mCharacterDeck->size(); i++){
+        shared_ptr<CharacterCard> characterToRob = static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(i));
+        if (characterToRob->priority() == command){
+            characterToRob->setIsBeingRobbed(true);
+            notifyOtherPlayers(card->owner(), "The " + characterToRob->getName() + " will be robbed this round" + socketDefaults::endLine);
+            card->owner()->getSocket()->write("You will robbed the " + characterToRob->getName() + socketDefaults::endLine);
             break;
         }
     }
@@ -699,7 +748,15 @@ void Game::checkPlayer(shared_ptr<CharacterCard> card, vector<string> commands){
 void Game::listCharactersForAssassin(shared_ptr<CharacterCard> card){
     for (size_t i = 1; i < mCharacterDeck->size(); i++){
         shared_ptr<CharacterCard> tempCard = static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(i));
-        string option = "[" + to_string(tempCard->priority()) + "]" + tempCard->getName()  + socketDefaults::endLine;
+        string option = "[" + to_string(tempCard->priority()) + "]" + tempCard->getName() + socketDefaults::endLine;
+        card->owner()->getSocket()->write(option);
+    }
+}
+
+void Game::listCharactersForThief(shared_ptr<CharacterCard> card){
+    for (size_t i = 2; i < mCharacterDeck->size(); i++){
+        shared_ptr<CharacterCard> tempCard = static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(i));
+        string option = "[" + to_string(tempCard->priority()) + "]" + tempCard->getName() + socketDefaults::endLine;
         card->owner()->getSocket()->write(option);
     }
 }
@@ -751,7 +808,9 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
                             }
                             else {
                                 if (command == "Steal" && card == dynamic_pointer_cast<Thief>(card) && !card->hasUsedAction()){
-                                    notYetImplementedMessage(card->owner());
+                                    card->setIsUsingAction(true);
+                                    listCharactersForThief(card);
+                                    prompt(card->owner());
                                 }
                                 else {
                                     if (command == "Destroy" && card == dynamic_pointer_cast<Condottiere>(card) && !card->hasUsedAction()){
