@@ -88,6 +88,9 @@ private:
     void pickCard(shared_ptr<Player> player, int command);
     void removeCard(shared_ptr<Player> player, int command);
     void printPossibleActions(shared_ptr<CharacterCard> card);
+	void cleanScreen(shared_ptr<Player> player);
+	void prompt(shared_ptr<Player> player);
+
 public:
     
 
