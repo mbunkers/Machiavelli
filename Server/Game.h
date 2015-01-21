@@ -34,6 +34,7 @@ private:
 		SELECTCHARACTERS = 3,
 		PLAYCHARACTERS = 4,
 		ENDGAME = 5,
+        FINISHED = 6,
 	};
 
     enum phases mCurrentPhase = SETUP;
@@ -93,6 +94,7 @@ public:
     Game();
     ~Game();
     void handleRequest(shared_ptr<Socket> socket, ClientCommand command);
+    bool hasFinished();
 };
 
 #endif /* defined(__Machiavelli__Game__) */
