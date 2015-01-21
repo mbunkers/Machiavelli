@@ -71,6 +71,8 @@ public:
 	bool isKing();
 	void setKing(bool isKing);
 
+    void removeGold(int gold);
+
     int goldForCardColor(CardColor color);
 };
 

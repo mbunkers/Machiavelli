@@ -92,6 +92,8 @@ private:
 
     void listCharactersForAssassin(shared_ptr<CharacterCard> card);
     void assassinAction(shared_ptr<CharacterCard> card, int command);
+    void listCharactersForThief(shared_ptr<CharacterCard> card);
+    void thiefAction(shared_ptr<CharacterCard> card, int command);
 
 public:
     

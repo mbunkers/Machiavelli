@@ -28,6 +28,8 @@ public:
     bool hasUsedAction();
     void setIsUsingAction(bool isUsingAction);
     bool isUsingAction();
+    void setIsBeingRobbed(bool isBeingRobbed);
+    bool isBeingRobbed();
 
 private:
     int mPriority;
@@ -36,6 +38,7 @@ private:
     bool mHasUsedAction;
     bool mIsUsingAction;
     virtual void doSpecialAction();
+    bool mIsBeingRobbed;
 };
 
 #endif /* defined(__Machiavelli__CharacterCard__) */
