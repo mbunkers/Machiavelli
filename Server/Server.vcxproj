@@ -78,25 +78,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Architect.h" />
+    <ClInclude Include="Assassin.h" />
     <ClInclude Include="BuildingCard.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="CardDeck.h" />
+    <ClInclude Include="CardFactory.h" />
     <ClInclude Include="CharacterCard.h" />
     <ClInclude Include="ClientCommand.h" />
+    <ClInclude Include="Condottiere.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="King.h" />
+    <ClInclude Include="Magician.h" />
+    <ClInclude Include="Merchant.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Preacher.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="Sync_queue.h" />
+    <ClInclude Include="Thief.h" />
     <ClInclude Include="throw.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Architect.cpp" />
+    <ClCompile Include="Assassin.cpp" />
     <ClCompile Include="BuildingCard.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CardFactory.cpp" />
     <ClCompile Include="CharacterCard.cpp" />
+    <ClCompile Include="Condottiere.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="King.cpp" />
+    <ClCompile Include="Magician.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Merchant.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Preacher.cpp" />
     <ClCompile Include="Socket.cpp" />
+    <ClCompile Include="Thief.cpp" />
     <ClCompile Include="throw.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

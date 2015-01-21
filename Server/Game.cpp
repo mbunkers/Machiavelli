@@ -84,8 +84,7 @@ void Game::sendStartMessage(){
     for (size_t i = 0; i < mPlayers.size(); i++){
         shared_ptr<Player> tempPlayer = mPlayers.at(i);
         shared_ptr<Socket> socket = tempPlayer->getSocket();
-        socket->write("CLEAR\n");
-        socket->write("TITLE\n");
+		cleanScreen(tempPlayer);
         if (player != tempPlayer){
             socket->write("The game has started and it's " + player->getName() + "'s turn!" + socketDefaults::endLine);
         }
@@ -158,11 +157,14 @@ void Game::displayCardHand(shared_ptr<Player> player){
 
 void Game::displayBuiltCards(shared_ptr<Player> player){
     vector<shared_ptr<BuildingCard>> cards = player->builtCards();
-    player->getSocket()->write("You have the following cards built" + socketDefaults::endLine);
+    player->getSocket()->write("This is your current town:" + socketDefaults::endLine);
 	for (size_t i = 0; i < cards.size(); i++){
         shared_ptr<BuildingCard> card = cards.at(i);
         player->getSocket()->write(card->formattedString());
     }
+	if (cards.size() == 0){
+		player->getSocket()->write(">EMPTY<" + socketDefaults::endLine);
+	}
 }
 
 void Game::startRound(){
@@ -201,11 +203,11 @@ void Game::pickCard(shared_ptr<Player> player, int command){
         player->setState(Player::DISCARDCARD);
         player->getSocket()->write("You must remove a card from the characterdeck" + socketDefaults::endLine);
         pickCharacterCard(player);
-        player->getSocket()->write(socketDefaults::prompt);
+		prompt(player);
     }
     else {
         player->getSocket()->write("Option not found, try again..."  + socketDefaults::endLine);
-        player->getSocket()->write(socketDefaults::prompt);
+		prompt(player);
     }
 }
 
@@ -225,7 +227,7 @@ void Game::removeCard(shared_ptr<Player> player, int command){
     }
     else {
         player->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-        player->getSocket()->write(socketDefaults::prompt);
+		prompt(player);
     }
 }
 
@@ -237,17 +239,17 @@ void Game::selectCharactersPhase(shared_ptr<Player> player, string command){
     if (player != nullptr){
         if (command == "See Hand"){
             displayCardHand(player);
-            player->getSocket()->write(socketDefaults::prompt);
+			prompt(player);
         }
         else{
             if (command == "See Buildings"){
                 displayBuiltCards(player);
-                player->getSocket()->write(socketDefaults::prompt);
+				prompt(player);
             }
             else {
                 if (command == ""){
                     pickCharacterCard(player);
-                    player->getSocket()->write(socketDefaults::prompt);
+					prompt(player);
                 }
                 else {
                     if (is_number(command)){
@@ -259,19 +261,20 @@ void Game::selectCharactersPhase(shared_ptr<Player> player, string command){
                             }
                             else {
                                 if (player->mState == Player::DISCARDCARD){
+									cleanScreen(player);
                                     removeCard(player, digit);
                                 }
                             }
                         }
                         else {
                             player->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-                            player->getSocket()->write(socketDefaults::prompt);
+							prompt(player);
                         }
                     }
                     else {
                         if (command != player->getName()){
                             player->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-                            player->getSocket()->write(socketDefaults::prompt);
+							prompt(player);
                         }
                     }
                 }
@@ -314,7 +317,7 @@ void Game::assignNextPlayerCardChoosing(shared_ptr<Player> player){
     nextPlayer->setState(Player::CHOOSECARD);
     nextPlayer->getSocket()->write("It's your turn now" + socketDefaults::endLine);
     pickCharacterCard(nextPlayer);
-    nextPlayer->getSocket()->write(socketDefaults::prompt);
+	prompt(nextPlayer);
 }
 
 bool Game::is_number(const string& s){
@@ -345,8 +348,7 @@ shared_ptr<CharacterCard> Game::whoIsNextCharacter(shared_ptr<CharacterCard> car
 }
 
 void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
-	notifyPlayers("CLEAR\n");
-	notifyPlayers("TITLE\n");
+	//cleanScreen(card->owner());
     notifyPlayers("It's " + card->getName() + " turn!" + socketDefaults::endLine);
     if (card->hasOwner()){
         mCurrentCharacter = card;
@@ -370,21 +372,39 @@ void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
 }
 
 void Game::printPossibleActions(shared_ptr<CharacterCard> card){
-    // Print mogelijkheden
-    if (!card->owner()->hasDoneTurnAction()){
-        card->owner()->getSocket()->write("[Take gold]" + socketDefaults::endLine);
-        card->owner()->getSocket()->write("[Draw cards]" + socketDefaults::endLine);
-        card->owner()->getSocket()->write("[See Hand] Display the card in your hands" + socketDefaults::endLine);
-        card->owner()->getSocket()->write("[See Buildings] Display the buildings you have built" + socketDefaults::endLine);
-    }
+	cleanScreen(card->owner());
+
+	//standard info
+	card->owner()->getSocket()->write("You are the " + card->getName() + socketDefaults::endLine);
+	card->owner()->getSocket()->write("Coinpurse: " + to_string(card->owner()->gold()) + " pieces of gold" + socketDefaults::endLine);
+	displayBuiltCards(card->owner());
+	card->owner()->getSocket()->write(" " + socketDefaults::endLine);
+	
+	
     if (!card->owner()->hasBuild()){
         // Show buildings to build
+		card->owner()->getSocket()->write("Options:" + socketDefaults::endLine);
         for (size_t i = 0; i < card->owner()->cardHand().size(); i++){
             shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(i);
             card->owner()->getSocket()->write("[Build " + to_string(i) + "] " + buildingCard->formattedString());
         }
-    }
+	}
+	else {
+		// Show buildings you have in your hand
+		card->owner()->getSocket()->write("Buildings in hand:" + socketDefaults::endLine);
+		for (size_t i = 0; i < card->owner()->cardHand().size(); i++){
+			shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(i);
+			card->owner()->getSocket()->write(buildingCard->formattedString());
+		}
+		card->owner()->getSocket()->write(" " + socketDefaults::endLine);
+		card->owner()->getSocket()->write("Options:" + socketDefaults::endLine);
+	}
 
+	// Print mogelijkheden
+	if (!card->owner()->hasDoneTurnAction()){
+		card->owner()->getSocket()->write("[Take gold]" + socketDefaults::endLine);
+		card->owner()->getSocket()->write("[Draw cards]" + socketDefaults::endLine);
+	}
     // See other players data
     for (size_t i = 0; i < mPlayers.size(); i++){
         if (mPlayers.at(i) != card->owner()){
@@ -393,16 +413,16 @@ void Game::printPossibleActions(shared_ptr<CharacterCard> card){
     }
 
     card->owner()->getSocket()->write("[End turn]" + socketDefaults::endLine);
-    card->owner()->getSocket()->write(socketDefaults::prompt);
 }
 
 void Game::playCharactersPhase(shared_ptr<CharacterCard> card, string command){
     if (command.empty()){
         printPossibleActions(card);
+		prompt(card->owner());
 	}
     else {
         if (card->owner()->hasDrawnCards()){ //After cards have been drawn
-            removeDrawnCards(card, command);
+            removeDrawnCards(card, command);			
         }
         else {
             doTurn(card, command);
@@ -427,7 +447,7 @@ void Game::endTurn(shared_ptr<CharacterCard> card){
 
 void Game::notYetImplementedMessage(shared_ptr<Player> player){
     player->getSocket()->write("Not yet implemented, try again..." + socketDefaults::endLine);
-    player->getSocket()->write(socketDefaults::prompt);
+	prompt(player);
 }
 
 void Game::takeGold(shared_ptr<CharacterCard> card){
@@ -435,15 +455,15 @@ void Game::takeGold(shared_ptr<CharacterCard> card){
         int goldToAdd = 2;
         card->owner()->addGold(goldToAdd);
         card->owner()->setHasDoneTurnAction(true);
-
+		printPossibleActions(card);
         card->owner()->getSocket()->write("You got " + to_string(goldToAdd) + " golden coins from the bank" + socketDefaults::endLine);
         card->owner()->getSocket()->write("You have a total of " + to_string(card->owner()->gold()) + " golden coins" + socketDefaults::endLine);
         notifyOtherPlayers(card->owner(), card->owner()->getName() + " took " + to_string(goldToAdd) + " golden coins" + socketDefaults::endLine);
-        card->owner()->getSocket()->write(socketDefaults::prompt);
+		prompt(card->owner());
     }
     else {
         card->owner()->getSocket()->write("You already did one of your turn actions.." + socketDefaults::endLine);
-        card->owner()->getSocket()->write(socketDefaults::prompt);
+		prompt(card->owner());
     }
 }
 
@@ -460,11 +480,11 @@ void Game::drawCards(shared_ptr<CharacterCard> card){
 		card->owner()->setHasDoneTurnAction(true);
 		card->owner()->setHasDrawnCards(true);
 		card->owner()->getSocket()->write("Which card do you want to have ?\n");
-		card->owner()->getSocket()->write(socketDefaults::prompt);
+		prompt(card->owner());
     }
     else {
         card->owner()->getSocket()->write("You already did one of your turn actions.." + socketDefaults::endLine);
-        card->owner()->getSocket()->write(socketDefaults::prompt);
+		prompt(card->owner());
     }
 }
 
@@ -478,11 +498,14 @@ void Game::removeDrawnCards(shared_ptr<CharacterCard> card, string command){
 		}
 		card->owner()->setHasDrawnCards(false);
 		notifyPlayers(card->owner()->getName() + " draws a building card\n");
+		printPossibleActions(card);
+		prompt(card->owner());
 	}
 	else {
 		card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+		prompt(card->owner());
 	}
-	card->owner()->getSocket()->write(socketDefaults::prompt);
+	
 }
 
 void Game::build(shared_ptr<CharacterCard> card, vector<string> commands){
@@ -492,30 +515,30 @@ void Game::build(shared_ptr<CharacterCard> card, vector<string> commands){
             if (number < card->owner()->cardHand().size()){
                 shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(number);
                 if (card->owner()->buildCard(buildingCard)){
-                    card->owner()->setHasBuild(true);
+                    card->owner()->setHasBuild(true);		
+					printPossibleActions(card);
                     card->owner()->getSocket()->write("You have build your building" + socketDefaults::endLine);
-                    card->owner()->getSocket()->write(socketDefaults::prompt);
-
                     notifyOtherPlayers(card->owner(), card->owner()->getName() + " has built " + buildingCard->getName() + "(" + buildingCard->getCardColorString() + ") cost: " + to_string(buildingCard->getBuildPrice()) + " value: " + to_string(buildingCard->getValue()) + socketDefaults::endLine);
+					prompt(card->owner());
                 }
                 else {
                     card->owner()->getSocket()->write("You don't have a sufficient amount of gold..." + socketDefaults::endLine);
-                    card->owner()->getSocket()->write(socketDefaults::prompt);
+					prompt(card->owner());
                 }
             }
             else {
                 card->owner()->getSocket()->write("That is not a card, try again..." + socketDefaults::endLine);
-                card->owner()->getSocket()->write(socketDefaults::prompt);
+				prompt(card->owner());
             }
         }
         else {
             card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-            card->owner()->getSocket()->write(socketDefaults::prompt);
+			prompt(card->owner());
         }
     }
     else {
         card->owner()->getSocket()->write("You have already built a building..." + socketDefaults::endLine);
-        card->owner()->getSocket()->write(socketDefaults::prompt);
+		prompt(card->owner());
     }
 }
 
@@ -529,12 +552,12 @@ void Game::checkPlayer(shared_ptr<CharacterCard> card, vector<string> commands){
 
     if (player == nullptr){
         card->owner()->getSocket()->write("Player not found, try again..." + socketDefaults::endLine);
-        card->owner()->getSocket()->write(socketDefaults::prompt);
+		prompt(card->owner());
     }
     else {
         if (card->owner() == player){
             card->owner()->getSocket()->write("Check your own options, try again..." + socketDefaults::endLine);
-            card->owner()->getSocket()->write(socketDefaults::prompt);
+			prompt(card->owner());
         }
         else {
             // List the other players stats
@@ -558,12 +581,12 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
 			else {
 				if (command == "See hand"){
 					displayCardHand(card->owner());
-					card->owner()->getSocket()->write(socketDefaults::prompt);
+					prompt(card->owner());
 				}
 				else {
 					if (command == "See buildings"){
 						displayBuiltCards(card->owner());
-						card->owner()->getSocket()->write(socketDefaults::prompt);
+						prompt(card->owner());
 					}
 					else {
 						vector<string> splittedCommand = splittedString(command, char(32));
@@ -578,13 +601,13 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
                                 }
                                 else {
                                     card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-                                    card->owner()->getSocket()->write(socketDefaults::prompt);
+									prompt(card->owner());
                                 }
                             }
                         }
                         else {
                             card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-                            card->owner()->getSocket()->write(socketDefaults::prompt);
+							prompt(card->owner());
                         }
 					}
 				}
@@ -671,3 +694,12 @@ vector<string> Game::splittedString(const string line, char delim){
     return elems;
 }
 
+void Game::cleanScreen(shared_ptr<Player> player){
+	player->getSocket()->write("CLEAR" + socketDefaults::endLine);
+	player->getSocket()->write("TITLE" + socketDefaults::endLine);
+}
+
+
+void Game::prompt(shared_ptr<Player> player){
+	player->getSocket()->write(socketDefaults::prompt);
+}
