@@ -399,6 +399,21 @@ void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
 
             card->owner()->setKing(true);
         }
+		//If merchant add an extra coin to yer poket
+		else if (card == dynamic_pointer_cast<Merchant>(card)){
+			notifyPlayers(card->owner()->getName() + " is the " + card->getName() + "!" + socketDefaults::endLine);
+			card->owner()->addGold(1);
+			card->owner()->getSocket()->write("You've received 1 gold coin because of your trading skills" + socketDefaults::endLine);
+			notifyOtherPlayers(card->owner(), card->owner()->getName() + " got 1 golden coin because he is a greedy bastard" + socketDefaults::endLine);
+		}
+		//If architect ye shall receive 2 building cards
+		else if (card == dynamic_pointer_cast<Architect>(card)){
+			notifyPlayers(card->owner()->getName() + " is the " + card->getName() + "!" + socketDefaults::endLine);
+			card->owner()->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
+			card->owner()->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
+			card->owner()->getSocket()->write("You've designed 2 new buildings and put them into your hand" + socketDefaults::endLine);
+			notifyOtherPlayers(card->owner(), card->owner()->getName() + " received 2 building cards because of his character" + socketDefaults::endLine);
+		}
         else {
             notifyPlayers(card->owner()->getName() + " is the " + card->getName() + "!" + socketDefaults::endLine);
         }
@@ -576,8 +591,17 @@ void Game::build(shared_ptr<CharacterCard> card, vector<string> commands){
             size_t number = atoi(commands.at(1).c_str());
             if (number < card->owner()->cardHand().size()){
                 shared_ptr<BuildingCard> buildingCard = card->owner()->cardHand().at(number);
-                if (card->owner()->buildCard(buildingCard)){
-                    card->owner()->setHasBuild(true);		
+				if (card->owner()->buildCard(buildingCard)){
+					if (card == dynamic_pointer_cast<Architect>(card)){
+						static_pointer_cast<Architect>(card)->doSpecialAction();
+						if (static_pointer_cast<Architect>(card)->buildLimitReached()){
+							card->owner()->setHasBuild(true);
+						}
+					}
+					else{
+						card->owner()->setHasBuild(true);
+					}				
+                    		
 					printPossibleActions(card);
                     card->owner()->getSocket()->write("You have build your building" + socketDefaults::endLine);
                     notifyOtherPlayers(card->owner(), card->owner()->getName() + " has built " + buildingCard->getName() + "(" + buildingCard->getCardColorString() + ") cost: " + to_string(buildingCard->getBuildPrice()) + " value: " + to_string(buildingCard->getValue()) + socketDefaults::endLine);

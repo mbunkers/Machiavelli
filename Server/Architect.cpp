@@ -9,9 +9,18 @@
 #include "Architect.h"
 
 Architect::Architect(string name, int priority, CardColor color): CharacterCard(name, priority, color){
-
+	mBuildCount = 0;
+	mBuildlimit = 3;
 }
 
 void Architect::doSpecialAction(){
+	mBuildCount++;
+}
 
+bool Architect::buildLimitReached(){
+	if (mBuildCount == mBuildlimit){
+		mBuildCount = 0;
+		return true;
+	}
+	return false;
 }

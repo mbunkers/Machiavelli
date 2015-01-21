@@ -17,7 +17,10 @@ public:
     Architect(string name, int priority, CardColor);
     //    ~CharacterCard();
     virtual void doSpecialAction();
+	bool buildLimitReached();
 private:
+	int mBuildlimit;
+	int mBuildCount;
 };
 
 #endif /* defined(__Machiavelli__Architect__) */
