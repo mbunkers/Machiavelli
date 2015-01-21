@@ -48,3 +48,11 @@ void CharacterCard::doSpecialAction(){
 void CharacterCard::printOptions(){
 	//keep empty
 }
+
+void CharacterCard::setHasUsedAction(bool hasUsedAction){
+    mHasUsedAction = hasUsedAction;
+}
+
+bool CharacterCard::hasUsedAction(){
+    return mHasUsedAction;
+}

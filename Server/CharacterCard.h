@@ -24,12 +24,14 @@ public:
     shared_ptr<Player> owner();
     int priority();
 	virtual void printOptions();
+    void setHasUsedAction(bool hasUsedAction);
+    bool hasUsedAction();
 
 private:
     int mPriority;
     bool mIsTaken;
     shared_ptr<Player> mCurrentOwner;
-
+    bool mHasUsedAction;
     virtual void doSpecialAction();
 };
 

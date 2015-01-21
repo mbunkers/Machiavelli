@@ -665,6 +665,16 @@ void Game::checkPlayer(shared_ptr<CharacterCard> card, vector<string> commands){
     checkPlayer(card->owner(), commands);
 }
 
+void Game::listCharactersWithout(shared_ptr<CharacterCard> card){
+    for (size_t i = 0; i < mCharacterDeck->size(); i++){
+        shared_ptr<CharacterCard> tempCard = static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(i));
+        if (card != tempCard){
+            string option = "[" + to_string(tempCard->priority()) + "]" + tempCard->getName()  + socketDefaults::endLine;
+            card->owner()->getSocket()->write(option);
+        }
+    }
+}
+
 void Game::doTurn(shared_ptr<CharacterCard> card, string command){
 	if (command == "End turn"){
 		endTurn(card);
@@ -700,13 +710,38 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
                                 }
                                 else {
                                     card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-									prompt(card->owner());
+                                    prompt(card->owner());
                                 }
                             }
                         }
                         else {
-                            card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
-							prompt(card->owner());
+                            if (command == "Kill" && card == dynamic_pointer_cast<Assassin>(card) && !card->hasUsedAction()){
+
+                            }
+                            else {
+                                if (command == "Steal" && card == dynamic_pointer_cast<Thief>(card) && !card->hasUsedAction()){
+                                    notYetImplementedMessage(card->owner());
+                                }
+                                else {
+                                    if (command == "Destroy" && card == dynamic_pointer_cast<Condottiere>(card) && !card->hasUsedAction()){
+                                        notYetImplementedMessage(card->owner());
+                                    }
+                                    else {
+                                        if (command == "Swap Hand" && card == dynamic_pointer_cast<Magician>(card) && !card->hasUsedAction()){
+                                            notYetImplementedMessage(card->owner());
+                                        }
+                                        else {
+                                            if (command == "Swap Deck" && card == dynamic_pointer_cast<Magician>(card) && !card->hasUsedAction()){
+                                                notYetImplementedMessage(card->owner());
+                                            }
+                                            else {
+                                                card->owner()->getSocket()->write("Option not found, try again..." + socketDefaults::endLine);
+                                                prompt(card->owner());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 					}
 				}
