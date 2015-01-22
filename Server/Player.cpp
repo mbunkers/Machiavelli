@@ -104,8 +104,8 @@ vector<shared_ptr<BuildingCard>> Player::builtCards(){
     return mBuiltCards;
 }
 
-void Player::setFirstFinished(){
-	mFirstFinished = true;
+void Player::setFirstFinished(bool first){
+	mFirstFinished = first;
 }
 
 void Player::setState(enum states newState){
@@ -163,6 +163,10 @@ bool Player::hasDrawnCards(){
 
 void Player::removeCard(int i){
 	mCardHand.erase(mCardHand.end() - i);
+}
+
+bool Player::hasEightBuildings(){
+    return mBuiltCards.size() >= 8;
 }
 
 int Player::destroyBuilding(int i){
