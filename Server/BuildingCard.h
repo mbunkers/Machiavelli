@@ -20,6 +20,7 @@ public:
 	int getBuildPrice();
 	void setValue(int value);
 	bool hasSpecialFunction();
+	bool isIndestructable();
 	//void doSpecialFunction();
 	//int getFunctionId();
 	string getText();
@@ -33,6 +34,7 @@ private:
 	int mSpecialFunction;
     int mValue;
 	int mPrice;
+	bool mIndestructable;
 };
 
 #endif /* defined(__Machiavelli__BuildingCard__) */

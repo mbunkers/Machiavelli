@@ -14,6 +14,7 @@ BuildingCard::BuildingCard(string name, int value, CardColor color, string flavo
     mValue = value;
 	mFlavorText = flavorText;
 	setFunction(specialFunction);
+	mIndestructable = false;
 }
 
 int BuildingCard::getValue(){
@@ -40,6 +41,7 @@ void BuildingCard::setFunction(int functionId){
 	switch (functionId){
 	case 1:
 	case 2:
+		mIndestructable = true;
 	case 3:
 	case 4:
 	case 5:
@@ -59,4 +61,8 @@ void BuildingCard::setFunction(int functionId){
 
 int BuildingCard::getBuildPrice(){
 	return mPrice;
+}
+
+bool BuildingCard::isIndestructable(){
+	return mIndestructable;
 }

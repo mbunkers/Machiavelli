@@ -78,6 +78,7 @@ public:
 
     int goldForCardColor(CardColor color);
     void clearHand();
+	int destroyBuilding(int i);
 };
 
 #endif /* defined(__Machiavelli__Player__) */

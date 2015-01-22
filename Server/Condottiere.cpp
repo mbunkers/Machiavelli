@@ -9,13 +9,22 @@
 #include "Condottiere.h"
 
 Condottiere::Condottiere(string name, int priority, CardColor color): CharacterCard(name, priority, color){
+	mHasTarget = false;
 
 }
 
 void Condottiere::doSpecialAction(){
-
+	mHasTarget = true;
 }
 
 void Condottiere::printOptions(){
-	owner()->getSocket()->write("[Destroy] Destroy your opponent's building for it's build cost - 1\n");
+	if (!hasUsedAction()){
+		owner()->getSocket()->write("[Destroy] Destroy your opponent's building for it's build cost - 1\n");
+	}
+}
+
+bool Condottiere::hasTarget(){
+	bool temp = mHasTarget;
+	mHasTarget = false;
+	return temp;
 }

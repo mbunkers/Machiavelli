@@ -438,6 +438,8 @@ void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
             notifyOtherPlayers(card->owner(), card->owner()->getName() + " received 2 building cards because of his character" + socketDefaults::endLine);
         }
         else {
+			//set value to false just in case
+			card->setHasUsedAction(false);
             notifyPlayers(card->owner()->getName() + " is the " + card->getName() + "!" + socketDefaults::endLine);
         }
 
@@ -466,6 +468,8 @@ void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
         card->owner()->getSocket()->write("You've got " + to_string(addedGold) + " golden coins for your buildings" + socketDefaults::endLine);
         notifyOtherPlayers(card->owner(), card->owner()->getName() + " got " + to_string(addedGold) + " golden coins for his buildings" + socketDefaults::endLine);
 
+		
+		
         // Start turn
         card->owner()->getSocket()->write("It's your turn, what do you want to do?" + socketDefaults::endLine);
         playCharactersPhase(mCurrentCharacter, "");
@@ -546,6 +550,9 @@ void Game::playCharactersPhase(shared_ptr<CharacterCard> card, string command){
         if (card->owner()->hasDrawnCards()){ //After cards have been drawn
             removeDrawnCards(card, command);
         }
+		else if (mValidTargets.size() > 0){
+			destroyBuilding(card, command);
+		}
         else {
             if (!card->isUsingAction()){
                 doTurn(card, command);
@@ -906,7 +913,7 @@ void Game::doTurn(shared_ptr<CharacterCard> card, string command){
                             }
                             else {
                                 if (command == "Destroy" && card == dynamic_pointer_cast<Condottiere>(card) && !card->hasUsedAction()){
-                                    notYetImplementedMessage(card->owner());
+                                    showDestroyTargets(card);
                                 }
                                 else {
                                     if (command == "Swap Hand" && card == dynamic_pointer_cast<Magician>(card) && !card->hasUsedAction()){
@@ -1111,4 +1118,71 @@ void Game::cleanScreen(shared_ptr<Player> player){
 
 void Game::prompt(shared_ptr<Player> player){
     player->getSocket()->write(socketDefaults::prompt);
+}
+
+void Game::showDestroyTargets(shared_ptr<CharacterCard> card){
+	shared_ptr<Player> opponent = getOpponent(card->owner());
+	//check for preacher
+	if (!static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(4))->hasOwner() || static_pointer_cast<CharacterCard>(mCharacterDeck->cardAtIndex(4))->owner() == card->owner()){
+		//check if opponent hasn't got 8+ buildings
+		if (opponent->builtCards().size() < 8){
+			for (size_t i = 0; i < opponent->builtCards().size(); i++){
+				//not destructable check
+				if (!opponent->builtCards().at(i)->isIndestructable()){
+					if ((opponent->builtCards().at(i)->getBuildPrice() - 1) <= card->owner()->gold()){
+						card->owner()->getSocket()->write("[" + to_string(i) + "] " + opponent->builtCards().at(i)->formattedString());
+						mValidTargets.push_back(static_cast<int>(i));
+					}
+				}
+			}
+			if (mValidTargets.size() > 0){
+				card->owner()->getSocket()->write("[Cancel]" + socketDefaults::endLine);
+			}
+			else{
+				card->owner()->getSocket()->write("There are no valid targets" + socketDefaults::endLine);
+			}
+		}
+		else {
+			card->owner()->getSocket()->write("Your opponent is immune he has more 8 or more buildings" + socketDefaults::endLine);
+			card->setHasUsedAction(true);
+		}
+	}
+	else {
+		card->owner()->getSocket()->write("The blessings of the preacher has blocked you" + socketDefaults::endLine);
+		card->setHasUsedAction(true);
+	}
+
+	prompt(card->owner());
+}
+
+void Game::destroyBuilding(shared_ptr<CharacterCard> card, string command){
+	shared_ptr<Player> opponent = getOpponent(card->owner());
+	if (is_number(command)){
+		int target = atoi(command.c_str());
+		if (find(mValidTargets.begin(), mValidTargets.end(), target) != mValidTargets.end()){
+			int price = opponent->destroyBuilding(target);
+			card->owner()->removeGold(price);
+			cleanScreen(card->owner());
+			printPossibleActions(card);
+			card->owner()->getSocket()->write("destroyed you've paid " + to_string(price) + socketDefaults::endLine);
+			card->setHasUsedAction(true);
+		}
+	}
+	else if(command == "Cancel"){
+		mValidTargets.clear();
+		card->owner()->getSocket()->write("Cancelled..." + socketDefaults::endLine);
+	}
+	prompt(card->owner());
+}
+
+
+shared_ptr<Player> Game::getOpponent(shared_ptr<Player> player){
+	shared_ptr<Player> opponent;
+	for (size_t i = 0; i < mPlayers.size(); i++){
+		shared_ptr<Player> tempPlayer = mPlayers.at(i);
+		if (player != tempPlayer){
+			opponent = tempPlayer;
+		}
+	}
+	return opponent;
 }
