@@ -460,7 +460,7 @@ void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
 
             notifyOtherPlayers(card->owner(), card->owner()->getName() + " is being robbed and lost " + to_string(gold) + " golden coins" + socketDefaults::endLine);
             card->owner()->getSocket()->write("You lost " + to_string(gold) + " golden coins" + socketDefaults::endLine);
-            thief->owner()->getSocket()->write("You've robbed " + to_string(gold) + "golden coins from " + card->owner()->getName() + socketDefaults::endLine);
+            thief->owner()->getSocket()->write("You've robbed " + to_string(gold) + " golden coins from " + card->owner()->getName() + socketDefaults::endLine);
         }
 
         // Gold for buildings and let all the players know it
@@ -611,7 +611,7 @@ void Game::thiefAction(shared_ptr<CharacterCard> card, int command){
         if (characterToRob->priority() == command){
             characterToRob->setIsBeingRobbed(true);
             notifyOtherPlayers(card->owner(), "The " + characterToRob->getName() + " will be robbed this round" + socketDefaults::endLine);
-            card->owner()->getSocket()->write("You will robbed the " + characterToRob->getName() + socketDefaults::endLine);
+            card->owner()->getSocket()->write("You will rob the " + characterToRob->getName() + socketDefaults::endLine);
             break;
         }
     }
