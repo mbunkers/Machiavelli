@@ -1143,13 +1143,17 @@ void Game::showDestroyTargets(shared_ptr<CharacterCard> card){
 			}
 		}
 		else {
-			card->owner()->getSocket()->write("Your opponent is immune he has more 8 or more buildings" + socketDefaults::endLine);
 			card->setHasUsedAction(true);
+			cleanScreen(card->owner());
+			printPossibleActions(card);
+			card->owner()->getSocket()->write("Your opponent is immune he has more 8 or more buildings" + socketDefaults::endLine);
 		}
 	}
 	else {
-		card->owner()->getSocket()->write("The blessings of the preacher has blocked you" + socketDefaults::endLine);
 		card->setHasUsedAction(true);
+		cleanScreen(card->owner());
+		printPossibleActions(card);
+		card->owner()->getSocket()->write("The blessings of the preacher has blocked you" + socketDefaults::endLine);
 	}
 
 	prompt(card->owner());
@@ -1164,7 +1168,8 @@ void Game::destroyBuilding(shared_ptr<CharacterCard> card, string command){
 			card->owner()->removeGold(price);
 			cleanScreen(card->owner());
 			printPossibleActions(card);
-			card->owner()->getSocket()->write("destroyed you've paid " + to_string(price) + socketDefaults::endLine);
+			card->owner()->getSocket()->write("Destroyed you've paid " + to_string(price) + socketDefaults::endLine);
+			mValidTargets.clear();
 			card->setHasUsedAction(true);
 		}
 	}

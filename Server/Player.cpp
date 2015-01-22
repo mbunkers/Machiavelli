@@ -167,7 +167,7 @@ void Player::removeCard(int i){
 
 int Player::destroyBuilding(int i){
 	int price = mBuiltCards[i]->getBuildPrice() - 1;
-	mBuiltCards.erase(mBuiltCards.end() - i);
+	mBuiltCards.erase(mBuiltCards.begin() + i);
 	return price;
 }
 
