@@ -18,7 +18,9 @@ void Condottiere::doSpecialAction(){
 }
 
 void Condottiere::printOptions(){
-	owner()->getSocket()->write("[Destroy] Destroy your opponent's building for it's build cost - 1\n");
+	if (!hasUsedAction()){
+		owner()->getSocket()->write("[Destroy] Destroy your opponent's building for it's build cost - 1\n");
+	}
 }
 
 bool Condottiere::hasTarget(){
