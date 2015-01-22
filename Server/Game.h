@@ -40,6 +40,7 @@ private:
     enum phases mCurrentPhase = SETUP;
 
     shared_ptr<CharacterCard> mCurrentCharacter;
+    shared_ptr<Player> mFirstPlayer;
 
     vector<shared_ptr<Player>> mPlayers;
     shared_ptr<Player> getPlayer(shared_ptr<Socket> socket, ClientCommand command);

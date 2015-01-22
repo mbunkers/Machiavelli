@@ -10,6 +10,8 @@
 
 Game::Game(){
     mPlayers = vector<shared_ptr<Player>>();
+    mFirstPlayer = nullptr;
+    mCurrentCharacter = nullptr;
 }
 
 Game::~Game(){
@@ -621,6 +623,16 @@ void Game::endTurn(shared_ptr<CharacterCard> card){
     // Reset values
     card->owner()->setHasDoneTurnAction(false);
     card->owner()->setHasBuild(false);
+
+    if (mFirstPlayer == nullptr){
+        if (card->owner()->hasEightBuildings()){
+            mFirstPlayer = card->owner();
+            for (size_t i = 0; i < mPlayers.size(); i++){
+                mPlayers.at(i)->setFirstFinished(false);
+            }
+            card->owner()->setFirstFinished(true);
+        }
+    }
 
     shared_ptr<CharacterCard> newCard = nullptr;
     newCard = whoIsNextCharacter(card);

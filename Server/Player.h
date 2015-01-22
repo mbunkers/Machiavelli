@@ -58,7 +58,7 @@ public:
     vector<shared_ptr<BuildingCard>> cardHand();
     vector<shared_ptr<BuildingCard>> builtCards();
 
-	void setFirstFinished();
+	void setFirstFinished(bool first);
     void setState(enum states newState);
     void setHasDoneTurnAction(bool state);
     bool hasDoneTurnAction();
@@ -79,6 +79,8 @@ public:
     int goldForCardColor(CardColor color);
     void clearHand();
 	int destroyBuilding(int i);
+
+    bool hasEightBuildings();
 };
 
 #endif /* defined(__Machiavelli__Player__) */
