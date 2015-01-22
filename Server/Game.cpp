@@ -39,6 +39,7 @@ void Game::handleRequest(shared_ptr<Socket> socket, ClientCommand command){
                 }
                 break;
             case ENDGAME:
+                chooseColorForEndGame(player, command.get_cmd());
                 break;
             default:
                 break;
@@ -149,7 +150,13 @@ void Game::startGame(){
                 player->setGold(100);
 
                 for (int j = 0; j < 3; j++){
-                    player->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
+                    shared_ptr<BuildingCard> card = static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard());
+                    if (card != nullptr){
+                        player->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
+                    }
+                    else {
+                        player->getSocket()->write("The buildingsdeck is empty" + socketDefaults::endLine);
+                    }
                 }
             }
 
@@ -411,8 +418,22 @@ void Game::nextPlayerTurn(shared_ptr<CharacterCard> card){
         //If architect ye shall receive 2 building cards
         else if (card == dynamic_pointer_cast<Architect>(card)){
             notifyPlayers(card->owner()->getName() + " is the " + card->getName() + "!" + socketDefaults::endLine);
-            card->owner()->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
-            card->owner()->addCardToHand(static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard()));
+
+            shared_ptr<BuildingCard> card1 = static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard());
+            shared_ptr<BuildingCard> card2 = static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard());
+            if (card1 != nullptr){
+                card->owner()->addCardToHand(card1);
+            }
+            else {
+                card->owner()->getSocket()->write("The buildingsdeck is empty" + socketDefaults::endLine);
+            }
+            if (card2 != nullptr){
+                card->owner()->addCardToHand(card2);
+            }
+            else {
+                card->owner()->getSocket()->write("The buildingsdeck is empty" + socketDefaults::endLine);
+            }
+
             card->owner()->getSocket()->write("You've designed 2 new buildings and put them into your hand" + socketDefaults::endLine);
             notifyOtherPlayers(card->owner(), card->owner()->getName() + " received 2 building cards because of his character" + socketDefaults::endLine);
         }
@@ -630,16 +651,31 @@ void Game::drawCards(shared_ptr<CharacterCard> card){
     if (!card->owner()->hasDoneTurnAction()){
         shared_ptr<BuildingCard> building1 = static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard());
         shared_ptr<BuildingCard> building2 = static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard());
-        card->owner()->addCardToHand(building1);
-        card->owner()->addCardToHand(building2);
+
+        if (building1 != nullptr){
+            card->owner()->addCardToHand(building1);
+        }
+        else {
+            card->owner()->getSocket()->write("The buildingsdeck is empty" + socketDefaults::endLine);
+        }
+        if (building2 != nullptr){
+            card->owner()->addCardToHand(building2);
+        }
+        else {
+            card->owner()->getSocket()->write("The buildingsdeck is empty" + socketDefaults::endLine);
+        }
 
         if (card->owner()->hasCardBuilt("Bibliotheek")){
             printPossibleActions(card);
 
             notifyOtherPlayers(card->owner(), card->owner()->getName() + " drew 2 cards because he has a Bibliotheek" + socketDefaults::endLine);
             card->owner()->getSocket()->write("You drew these cards:\n");
-            card->owner()->getSocket()->write(building1->formattedString());
-            card->owner()->getSocket()->write(building2->formattedString());
+            if (building1){
+                card->owner()->getSocket()->write(building1->formattedString());
+            }
+            if (building2){
+                card->owner()->getSocket()->write(building2->formattedString());
+            }
 
             card->owner()->setHasDoneTurnAction(true);
             card->owner()->setHasDrawnCards(false);
@@ -648,8 +684,12 @@ void Game::drawCards(shared_ptr<CharacterCard> card){
         }
         else {
             card->owner()->getSocket()->write("You drew these cards:\n");
-            card->owner()->getSocket()->write("[1] " + building1->formattedString());
-            card->owner()->getSocket()->write("[2] " + building2->formattedString());
+            if (building1){
+                card->owner()->getSocket()->write("[1] " + building1->formattedString());
+            }
+            if (building2) {
+                card->owner()->getSocket()->write("[2] " + building2->formattedString());
+            }
 
             card->owner()->setHasDoneTurnAction(true);
             card->owner()->setHasDrawnCards(true);
@@ -805,9 +845,19 @@ void Game::swapDeck(shared_ptr<CharacterCard> card){
     if (card->owner()->cardHand().size() > 0){
         size_t numberOfCards = card->owner()->cardHand().size();
         card->owner()->clearHand();
+        bool isEmpty = false;
         for (size_t i = 0; i < numberOfCards; i++){
             shared_ptr<BuildingCard> buildingCard = static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard());
-            card->owner()->addCardToHand(buildingCard);
+            if (buildingCard != nullptr){
+                card->owner()->addCardToHand(buildingCard);
+            }
+            else {
+                isEmpty = true;
+            }
+        }
+
+        if (isEmpty){
+            card->owner()->getSocket()->write("You got less cards because the buildingsdeck is empty" + socketDefaults::endLine);
         }
 
         notifyOtherPlayers(card->owner(), card->owner()->getName() + " swapped it's cardhand with the buildingsdeck" + socketDefaults::endLine);
@@ -923,31 +973,84 @@ void Game::endRound(){
     }
 }
 
+void Game::chooseColorForEndGame(shared_ptr<Player> player, string colorString){
+    CardColor color = colorForString(colorString);
+    if (color == UNKNOWN){
+        player->getSocket()->write("This isn't a valid color. Choose one from above" + socketDefaults::endLine);
+        prompt(player);
+    }
+    else {
+        endGame(color);
+    }
+}
 
+CardColor Game::colorForString(string stringColor){
+    if (stringColor == "geel"){
+        return YELLOW;
+    }
+    if (stringColor == "blauw"){
+        return BLUE;
+    }
+    if (stringColor == "lila"){
+        return LILA;
+    }
+    if (stringColor == "groen"){
+        return GREEN;
+    }
+    if (stringColor == "rood"){
+        return RED;
+    }
+    return UNKNOWN;
+}
 
-
-void Game::endGame(){
+void Game::endGame(CardColor color){
     //Notify players that the game has finished they should restart the program to start a new game.
     notifyPlayers("The game has been ended!" + socketDefaults::endLine);
 
-    if (mPlayers.at(0)->calculateScore() == mPlayers.at(1)->calculateScore()){
-        notifyPlayers("It's a draw! Congratulations!" + socketDefaults::endLine);
+    shared_ptr<Player> player = nullptr;
+    shared_ptr<BuildingCard> buildingCard = nullptr;
+    for (size_t i = 0; i < mPlayers.size(); i++){
+        if (mPlayers.at(i)->hasCardBuilt("Hof der Wonderen")){
+            player = mPlayers.at(i);
+            buildingCard = mPlayers.at(i)->buildcard("Hof der Wonderen");
+        }
+    }
+
+    // When the card is there the players must pick a color
+    if (buildingCard != nullptr && color == UNKNOWN){
+        player->getSocket()->write("You've got the " + buildingCard->getName() + " build. Which color should it be?" + socketDefaults::endLine);
+        player->getSocket()->write("[geel]" + socketDefaults::endLine);
+        player->getSocket()->write("[blauw]" + socketDefaults::endLine);
+        player->getSocket()->write("[groen]" + socketDefaults::endLine);
+        player->getSocket()->write("[geel]" + socketDefaults::endLine);
+        player->getSocket()->write("[lila]" + socketDefaults::endLine);
+        prompt(player);
+        notifyOtherPlayers(player, player->getName() + " has the " + buildingCard->getName() + " and may change it's color" + socketDefaults::endLine);
     }
     else {
-        if (mPlayers.at(0)->calculateScore() > mPlayers.at(1)->calculateScore()){
-            notifyPlayers("The winner is " + mPlayers.at(0)->getName() + socketDefaults::endLine);
+        if (buildingCard != nullptr && color != UNKNOWN){
+            buildingCard->changeColor(color);
+        }
+
+        if (mPlayers.at(0)->calculateScore() == mPlayers.at(1)->calculateScore()){
+            notifyPlayers("It's a draw! Congratulations!" + socketDefaults::endLine);
         }
         else {
-            notifyPlayers("The winner is " + mPlayers.at(1)->getName() + socketDefaults::endLine);
+            if (mPlayers.at(0)->calculateScore() > mPlayers.at(1)->calculateScore()){
+                notifyPlayers("The winner is " + mPlayers.at(0)->getName() + socketDefaults::endLine);
+            }
+            else {
+                notifyPlayers("The winner is " + mPlayers.at(1)->getName() + socketDefaults::endLine);
+            }
         }
-    }
 
-    notifyPlayers("Here are the results per player:" + socketDefaults::endLine);
-    for (size_t i = 0; i < mPlayers.size(); i++){
-        notifyPlayers(mPlayers.at(i)->getName() + " has a score of " + to_string(mPlayers.at(i)->calculateScore()) + " points" + socketDefaults::endLine);
+        notifyPlayers("Here are the results per player:" + socketDefaults::endLine);
+        for (size_t i = 0; i < mPlayers.size(); i++){
+            notifyPlayers(mPlayers.at(i)->getName() + " has a score of " + to_string(mPlayers.at(i)->calculateScore()) + " points" + socketDefaults::endLine);
+        }
+        
+        changePhase(FINISHED);
     }
-
-    changePhase(FINISHED);
 }
 
 shared_ptr<Player> Game::getKing(){
@@ -979,7 +1082,7 @@ void Game::changePhase(phases nextPhase){
             nextPlayerTurn(mCurrentCharacter);
             break;
         case ENDGAME:
-            endGame();
+            endGame(UNKNOWN);
             break;
         default:
             break;

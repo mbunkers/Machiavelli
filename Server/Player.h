@@ -68,6 +68,7 @@ public:
 	bool hasDrawnCards();
 	void removeCard(int index);
     bool hasCardBuilt(string name);
+    shared_ptr<BuildingCard> buildcard(string name);
 
 	size_t getNumberOfBuildings();
 	bool isKing();

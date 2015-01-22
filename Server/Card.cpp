@@ -39,3 +39,7 @@ string Card::getCardColorString(){
             break;
     }
 }
+
+void Card::changeColor(CardColor color){
+    mColor = color;
+}

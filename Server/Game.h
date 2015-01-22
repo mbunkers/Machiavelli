@@ -55,7 +55,7 @@ private:
     void selectCharactersPhase(shared_ptr<Player> player, string command);
     void playCharactersPhase(shared_ptr<CharacterCard> card, string command);
     void endRound();
-    void endGame();
+    void endGame(CardColor color);
 	void changePhase(phases);
 
     // Actions
@@ -97,6 +97,8 @@ private:
     void swapHand(shared_ptr<CharacterCard> card);
     void swapDeck(shared_ptr<CharacterCard> card);
 
+    void chooseColorForEndGame(shared_ptr<Player> player, string colorString);
+    CardColor colorForString(string stringColor);
 public:
     
 

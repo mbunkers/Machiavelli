@@ -31,6 +31,7 @@ public:
     string getName();
 
     string getCardColorString();
+    void changeColor(CardColor color);
 
 private:
     string mName;

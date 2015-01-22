@@ -189,10 +189,19 @@ void Player::addMultipleCardsToHand(vector<shared_ptr<BuildingCard>> cards){
 }
 
 bool Player::hasCardBuilt(string name){
-    for (size_t i = 0; i < mCardHand.size(); i++){
-        if (mCardHand.at(i)->getName() == name){
+    for (size_t i = 0; i < mBuiltCards.size(); i++){
+        if (mBuiltCards.at(i)->getName() == name){
             return true;
         }
     }
     return false;
+}
+
+shared_ptr<BuildingCard> Player::buildcard(string name){
+    for (size_t i = 0; i < mBuiltCards.size(); i++){
+        if (mBuiltCards.at(i)->getName() == name){
+            return mBuiltCards.at(i);
+        }
+    }
+    return nullptr;
 }

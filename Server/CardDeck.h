@@ -113,9 +113,12 @@ public:
     }
 
     shared_ptr<Card> drawCard(){
-        shared_ptr<Card> card = mCards.at(mCards.size() - 1);
-        mCards.pop_back();
-        return card;
+        if (mCards.size() > 0){
+            shared_ptr<Card> card = mCards.at(mCards.size() - 1);
+            mCards.pop_back();
+            return card;
+        }
+        return nullptr;
     }
 
     bool loadCards(string name){
