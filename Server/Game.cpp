@@ -1180,7 +1180,8 @@ void Game::destroyBuilding(shared_ptr<CharacterCard> card, string command){
 			card->owner()->removeGold(price);
 			cleanScreen(card->owner());
 			printPossibleActions(card);
-			card->owner()->getSocket()->write("Destroyed you've paid " + to_string(price) + socketDefaults::endLine);
+			card->owner()->getSocket()->write("Destroyed a building and you've paid " + to_string(price) + socketDefaults::endLine);
+            notifyOtherPlayers(card->owner(), card->owner()->getName() + " has destroyed a building from " + opponent->getName() + socketDefaults::endLine);
 			mValidTargets.clear();
 			card->setHasUsedAction(true);
 		}
