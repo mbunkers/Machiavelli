@@ -241,6 +241,7 @@ void Game::pickCard(shared_ptr<Player> player, int command){
 
 void Game::removeCard(shared_ptr<Player> player, int command){
     if (attachPlayerToCard(nullptr, command)){
+        cleanScreen(player);
         notifyOtherPlayers(player, player->getName() + " removed a card from the characterdeck"  + socketDefaults::endLine);
         // Volgende speler aanwijzen
         player->setState(Player::IDLE);
@@ -289,7 +290,6 @@ void Game::selectCharactersPhase(shared_ptr<Player> player, string command){
                             }
                             else {
                                 if (player->mState == Player::DISCARDCARD){
-                                    cleanScreen(player);
                                     removeCard(player, digit);
                                 }
                             }
