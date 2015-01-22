@@ -147,7 +147,7 @@ void Game::startGame(){
             //Give players starting cards and gold
             for (size_t i = 0; i < mPlayers.size(); i++){
                 shared_ptr<Player> player = mPlayers.at(i);
-                player->setGold(100);
+                player->setGold(2);
 
                 for (int j = 0; j < 3; j++){
                     shared_ptr<BuildingCard> card = static_pointer_cast<BuildingCard>(mBuildingDeck->drawCard());
