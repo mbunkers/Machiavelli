@@ -3,7 +3,7 @@
 //  Machiavelli
 //
 //  Created by Marc Bunkers on 17/12/14.
-//  Copyright (c) 2014 Marc Bunkers. All rights reserved.
+//  Copyright (c) 2014 Marc Bunkers & Leon van Tuijl. All rights reserved.
 //
 
 #include "BuildingCard.h"
